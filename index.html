@@ -53,6 +53,8 @@
     display: block;
     user-select: none;
     -webkit-user-select: none;
+    border-radius: 6px;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 160, 80, 0.05);
   }
 
   /* Hotspot areas — positioned as % of the image.
@@ -439,17 +441,22 @@
     }
   };
 
-  // Size the image to cover the viewport, keeping aspect ratio.
-  // Position hotspot layer to match.
+  // Size the image to CONTAIN within the viewport, keeping aspect ratio.
+  // Full image is always visible with letterboxing if needed. Position hotspot layer to match.
   function fitImage() {
     var vw = window.innerWidth;
     var vh = window.innerHeight;
     var w, h, left, top;
 
+    // Leave a small margin so the image isn't flush against the edges
+    var margin = 0.96;
+
     if (vw / vh > IMG_ASPECT) {
-      w = vw; h = vw / IMG_ASPECT;
+      // Viewport wider than image — fit by height
+      h = vh * margin; w = h * IMG_ASPECT;
     } else {
-      h = vh; w = vh * IMG_ASPECT;
+      // Viewport taller than image — fit by width
+      w = vw * margin; h = w / IMG_ASPECT;
     }
     left = (vw - w) / 2;
     top = (vh - h) / 2;
