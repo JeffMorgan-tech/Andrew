@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Andrew — Software Support Specialist</title>
+<script>
+  // Redirect small screens / touch devices to the mobile page
+  (function() {
+    var isMobile = window.innerWidth < 900 ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile && !/[?&]desktop=1/.test(window.location.search)) {
+      window.location.replace('mobile.html');
+    }
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
@@ -113,6 +123,9 @@
     position: relative;
     max-width: 600px;
     width: 92%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 80px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 160, 80, 0.12);
@@ -129,6 +142,7 @@
   .popup-monitor {
     width: 100%;
     height: 220px;
+    flex-shrink: 0;
     background-image: url('AndrewOfficeImage.png');
     background-repeat: no-repeat;
     position: relative;
@@ -153,6 +167,25 @@
   .popup-episodes {
     background: linear-gradient(180deg, #0f1620 0%, #0a0e14 100%);
     padding: 24px 28px 28px;
+    overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 160, 80, 0.4) transparent;
+  }
+
+  .popup-episodes::-webkit-scrollbar {
+    width: 8px;
+  }
+  .popup-episodes::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .popup-episodes::-webkit-scrollbar-thumb {
+    background: rgba(212, 160, 80, 0.35);
+    border-radius: 4px;
+  }
+  .popup-episodes::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 160, 80, 0.55);
   }
 
   .popup-episodes h2 {
