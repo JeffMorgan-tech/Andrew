@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E05</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0e1520;
+    color: var(--text-cream);
+    font-family: 'Courier Prime', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  /* ── VHS Top Bar ── */
+  .vhs-bar {
+    width: 100%;
+    background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px; color: #4a5e78;
+    border-bottom: 2px solid #243048;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .vhs-bar .rec {
+    color: var(--vhs-red);
+    font-weight: bold;
+    animation: blink 1.2s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode {
+    font-family: 'Courier Prime', monospace;
+    color: #5a7090;
+    letter-spacing: 2px;
+  }
+
+  /* ── TV Frame ── */
+  .tv-frame {
+    width: 95%;
+    max-width: 900px;
+    margin: 30px auto;
+    background: var(--tv-bezel);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow:
+      0 0 60px rgba(0,0,0,0.8),
+      inset 0 0 30px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .tv-frame::before {
+    content: 'TOSHIBA';
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #304060;
+    letter-spacing: 4px;
+  }
+
+  .screen {
+    background: var(--screen-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid #243048;
+  }
+  .screen::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      var(--scanline) 0px,
+      var(--scanline) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ── Title Card ── */
+  .title-card {
+    text-align: center;
+    padding: 50px 20px 40px;
+    background: linear-gradient(180deg, #141e30 0%, #121a28 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .title-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%);
+    animation: glow-rotate 8s linear infinite;
+  }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .show-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 6vw, 52px);
+    background: linear-gradient(180deg, #d4a050 0%, #c08840 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 1;
+    text-shadow: none;
+    line-height: 1.1;
+  }
+  .show-subtitle {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(14px, 3vw, 20px);
+    color: #6a7e98a9e;
+    margin-top: 8px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-info {
+    margin-top: 18px;
+    font-size: 13px; color: #4a5e78e78;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(16px, 3.5vw, 22px);
+    color: var(--vhs-blue);
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-desc {
+    font-size: 12px;
+    color: #4a5a6e;
+    margin-top: 14px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  /* ── Script Body ── */
+  .script-body {
+    padding: 30px clamp(15px, 4vw, 40px);
+    background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%);
+    line-height: 1.75;
+    font-size: clamp(14px, 2.2vw, 16px);
+  }
+
+  /* Scene Headers */
+  .scene-header {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--laugh-gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 40px 0 8px;
+    padding: 12px 0;
+    border-top: 2px solid #243048;
+    border-bottom: 1px solid #1a2438;
+    position: relative;
+  }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num {
+    color: var(--vhs-red);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 2px;
+    letter-spacing: 5px;
+  }
+
+  /* Stage Directions */
+  .stage-dir {
+    color: #6a6a7a;
+    font-style: italic;
+    margin: 14px 0;
+    padding: 8px 14px;
+    border-left: 3px solid #2a3e58;
+    background: rgba(140,160,190,0.03);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Character Names */
+  .char {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 16px;
+    display: block;
+    font-size: 13px;
+  }
+  .char.andrew { color: var(--vhs-blue); }
+  .char.luke { color: #5aaa7a; }
+  .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); }
+  .char.devon { color: var(--devon-gray); }
+  .char.jeff { color: var(--jeff-orange); }
+
+  /* Dialogue */
+  .dial {
+    margin: 4px 0 12px 20px;
+    color: var(--text-white);
+  }
+  .paren {
+    color: #506880;
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  /* Laugh Track Cue */
+  .laugh {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(212,160,80,0.08);
+    border: 1px solid rgba(212,160,80,0.15);
+    color: var(--laugh-gold);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 8px 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: default;
+    animation: laugh-fade 0.4s ease;
+  }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SFX */
+  .sfx {
+    color: var(--highlight);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 10px 0;
+    opacity: 0.7;
+  }
+
+  /* Credits */
+  .credits {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 2px solid #243048;
+    background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%);
+  }
+  .credits p {
+    color: #4a5a6e;
+    font-size: 12px;
+    margin: 4px 0;
+    letter-spacing: 1px;
+  }
+  .credits .filmed {
+    color: #4a6480;
+    font-family: 'Special Elite', cursive;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .tv-frame { padding: 10px; border-radius: 10px; }
+    .script-body { padding: 20px 12px; }
+    .dial { margin-left: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- VHS Top Bar -->
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:22:31</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<!-- TV Frame -->
+<div class="tv-frame">
+<div class="screen">
+
+<!-- Title Card -->
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 5</div>
+  <div class="episode-title">"The Chain of Command (of Fools)"</div>
+  <div class="episode-desc">GUEST STARRING: TINA, DEVON & JEFF M.</div>
+</div>
+
+<!-- Script -->
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Monday Morning, Team Standup
+</div>
+
+<div class="stage-dir">A six-person Teams call. ANDREW is in his usual home office setup. LUKE has graduated from bed to an actual desk, though his bathrobe is still visible at the collar. ANTHONY is at a real desk today — progress — though a Starbucks cup is prominently visible. TINA's background is immaculate: organized shelves, a small succulent garden, and a whiteboard with color-coded notes. DEVON's camera shows a dim room, a single desk lamp, and what appears to be the same chair he's been sitting in since 2007. JEFF M. is standing — not sitting — at what appears to be a treadmill desk, actively walking, with three monitors visible behind him.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Good morning everyone. As you know, we've had some... growing pains on the team. So today I want to walk through our internal escalation process. How we route tickets up the chain when they're beyond our scope.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(already talking before Andrew finishes, walking briskly on treadmill)</span> Love it. LOVE it. Escalations. Beautiful. I actually built a flowchart for this last Tuesday. It's forty-seven nodes. I'll screen share. Actually, hold on, I'll just send it to everyone's personal emails. What's everyone's personal email? Devon, I already have yours — I found it on a 2014 forum post.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(long, weary exhale)</span> ...Of course you did.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(bright, chipper, hand raised like she's in class)</span> Ooh! I love this topic! When I was in the field, escalation was everything. You learn fast when you're standing in front of a broken machine and the customer is staring at you like you personally built it wrong.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(whispering to Anthony in chat — but accidentally unmutes)</span> Dude, how long do you think this is gonna go? I've got a burrito in the microwave.</div>
+
+<div class="sfx">♪ TEAMS UNMUTE CHIME ♪</div>
+
+<div class="stage-dir">Dead silence on the call. Everyone stares.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(frozen)</span> ...That was a metaphor.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(eyes closed, composing himself)</span> Luke. It is nine-oh-three in the morning.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Breakfast burrito. It's a whole different category.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(monotone, staring at nothing)</span> Nothing matters. Continue.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "The Flowchart"
+</div>
+
+<div class="stage-dir">ANDREW shares his screen. A clean, simple flowchart appears: "Tier 1 → Tier 2 → Engineering → Management." Four boxes. Four arrows. Beautiful simplicity.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Okay. Here's the escalation path. It's simple. Tier 1 is us. If we can't fix it, we document everything and escalate to Tier 2. If Tier 2 can't fix it, it goes to Engineering. If Engineering says it's a business decision, Management. That's it. Four steps. Any questions?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(already screen sharing over Andrew, revealing a flowchart that looks like a conspiracy theory board)</span> Yeah so I took your version and optimized it. What you're looking at is my Escalation Decision Matrix. It accounts for ticket severity, customer tier, time zone offsets, Mercury retrograde —</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Mercury retrograde?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">You'd be amazed how many P1s happen during Mercury retrograde, Andrew. I tracked it. I have a spreadsheet. I'll send it to you. Actually, I already sent it to you. Check your email. I also sent it to your manager. And your manager's manager. And someone named "Brenda" in HR — I'm not totally sure who she is but she seemed important on the org chart.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(checking email, visibly alarmed)</span> Jeff. Jeff, you sent this to the VP of Operations.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(completely unbothered)</span> Good. She should know about the retrograde correlation.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(genuinely trying to help)</span> You know what, I think both approaches have merit! Andrew, yours is great for structure. Jeff, yours is... very thorough. Maybe we can find a happy medium?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(not looking up)</span> There is no happy medium. There's only medium.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(undeterred, still smiling)</span> Devon, I love your energy!</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I don't have energy. That's the point.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  Act Two — "The Live Escalation"
+</div>
+
+<div class="stage-dir">An hour later. A real P2 ticket has come in: customer's system is throwing errors after an update. ANDREW decides this is a perfect teaching moment. The full team is still on the call.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Alright, perfect timing. Real ticket just came in. We're going to walk through this together. Luke, you're up. Read the ticket and tell me — what's your first step?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(reading, mouth full of burrito)</span> Uh... customer says their system is — hold on — <span class="paren">(chewing)</span> — throwing error codes after the 4.2 update. So... I escalate it?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">No! That's the whole point of today! What do you do <em>before</em> you escalate?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(long pause)</span> ...Escalate it mentally? Like pre-escalation?</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(pointing at camera)</span> We talked about this! "Pre-resolution" is not a thing, and "pre-escalation" is also not a thing!</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(helpfully)</span> I'd Google it.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(haunted flashback to Episode 4)</span> We are <em>not</em> sending customers links to Google, Anthony.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">I wasn't going to send them the link. I was going to Google it for <em>myself</em> and then pretend I knew the answer.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(finally turning toward the camera, the slowest head-turn in television history)</span> I've seen this error before. I saw it in 2016. And in 2019. And last March. It's the update package conflicting with legacy config files. The knowledge article is KB-4471. I've memorized it. Because I've done this four hundred times. And no one ever reads the article. They just escalate. And then Engineering sends it back. And then it gets re-escalated. And then I fix it anyway. And then I go home. And then I come back. And it happens again.</div>
+
+<div class="stage-dir">A long, devastating silence.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">This is the circle of life.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(leaning into camera, hand on heart)</span> Devon, that was beautiful and also deeply sad. When I was in the field, we had a saying: "Check the KB before you call HQ!" We even had little stickers.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I remember the stickers. I still have one. It's on this monitor. It's faded. Like my will to explain things.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(suddenly appearing very close to his camera, having apparently leaned in from the treadmill)</span> Okay wait wait wait. Devon. KB-4471. Legacy config conflict. I actually fixed this permanently three weeks ago. I wrote a script that auto-detects the conflict at install and patches it before the error triggers. I deployed it to the staging environment. I also deployed it to production. I didn't ask permission. It's been live for nineteen days. No one's noticed because there haven't been any tickets about it. Until this one. Which means this customer isn't on the latest build. Devon — what build are they on? Actually, hold on, I'll check. I already have access to their environment.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">You have access to their — HOW do you have access to their environment?!</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(shrugging)</span> I asked. They said yes. People usually say yes when you just... ask.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Jeff, you can't just — there are <em>protocols!</em> There's a whole access request process! You need approval from —</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">Oh, I got approval. I emailed Brenda in HR.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">BRENDA IN HR IS NOT THE APPROVAL PATH FOR SYSTEM ACCESS!</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(sincerely confused)</span> She approved it though. She was very nice about it.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(quiet, almost reverent)</span> ...He fixed it? He actually fixed the config thing?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">Three weeks ago, yeah. Also, Devon, I noticed your home address is on that 2014 forum post. You should probably take that down. I know where you live now. Not in a weird way. Just in an "I-was-doing-research" way.</div>
+
+<div class="stage-dir">DEVON reaches over and slowly turns off his webcam.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Three — "The Proper Way (In Theory)"
+</div>
+
+<div class="stage-dir">ANDREW has regained control of the screen share. He has added a new slide to his presentation. It reads: "ESCALATION IS NOT YOUR FIRST OPTION. IT IS YOUR LAST RESORT." Below it, in smaller text: "YES, LUKE, YOU STILL HAVE TO TRY FIRST."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Okay. Let's reset. Here is the correct escalation workflow. Step one: Customer reports an issue. Step two: You — the Tier 1 agent — <em>investigate.</em> Check the knowledge base. Check known issues. Reproduce the problem if you can. Step three: If you still can't resolve it, you document <em>everything</em> you've tried. And I mean everything. Not "I looked at it." Not "Seemed broken." Actual steps. Actual results. Step four: Only <em>then</em> do you submit the escalation request through the proper channel, with your documentation attached.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(taking enthusiastic notes)</span> This is exactly like field work! We had a checklist — engine status, error codes, calibration logs — all before we could radio back to the home office. If you called in without your checklist, they'd just say "call us back when you've got it" and hang up. <span class="paren">(laughing fondly)</span> One time I forgot the calibration log and my supervisor made me drive forty-five minutes back to the site to get it. In a snowstorm! Best lesson I ever learned.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">They still do that. Except now instead of driving forty-five minutes, you just get a passive-aggressive Slack emoji from a guy named "Kyle" in Tier 2.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">The <em>point</em> is — and Tina's got this exactly right — documentation is what separates a good escalation from a bad one. If you hand Tier 2 a ticket that just says "it's broken, please fix," you know what they're going to do?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Fix it?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">They're going to send it back! They're going to send it right back to you with a note that says "insufficient information." And then the customer waits another day. And then the customer gets mad. And then the customer calls <em>my</em> phone. And I am running out of ways to say "I apologize for the delay" without sounding like a hostage.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(raising hand while still walking on treadmill)</span> Quick thought. What if we just skip Tier 2 entirely? In my experience, Tier 2 is a bottleneck. I've done the math. Average Tier 2 resolution time: four-point-seven days. Average time for me to just fix it myself: eleven minutes. I have a proposal. It's thirty-two pages. I already sent it to Brenda.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(head in hands)</span> Jeff. Please stop sending things to Brenda.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">She likes hearing from me, Andrew. She said I "brighten her inbox." Direct quote. I framed it.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(who has been quietly typing during all of this)</span> Hey Andrew? So I've been following along and I actually just tried what you said. I found the KB article Devon mentioned, followed the steps, and... I think I fixed the customer's issue? The error stopped. I documented everything. Screenshots, timestamps, the whole thing. I put it in the ticket notes. Should I close it or does Tier 2 still need to look at it?</div>
+
+<div class="stage-dir">Stunned silence. ANDREW slowly removes his hands from his face. DEVON leans forward. Even JEFF M. stops walking.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(emotional)</span> Anthony. That is... that is exactly correct. That is the process. You just did the entire process.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(shrugging)</span> Well yeah. It was on the slide.</div>
+
+<div class="laugh applause">Applause</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(quietly, almost smiling — the first time this season)</span> ...There's hope.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(clapping)</span> Anthony! That's amazing! That's exactly how we did it in the field! Welcome to the club!</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(annoyed)</span> I was <em>going</em> to do that. I was just waiting until after my burrito.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(back to walking, already typing)</span> Great work Anthony. I'm going to add you to my private Slack channel. It's called "People On This Team Who Actually Do Things." Right now it's just me. And Brenda, but she doesn't know she's in it.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:15 PM. ANDREW is at his desk, reviewing the day's ticket metrics. For the first time, the "CLOSED TODAY" column has numbers next to names other than his own. He exhales. Then his email pings.</div>
+
+<div class="sfx">♪ EMAIL NOTIFICATION ♪</div>
+
+<div class="stage-dir">It's from BRENDA IN HR. Subject line: "RE: RE: RE: Escalation Matrix / Mercury Retrograde / System Access / 32-Page Proposal." The body reads: "Hi Andrew — Is Jeff M. your direct report? He's emailed me fourteen times today. He seems wonderful but I need to set a boundary. Also, what is a 'P1'? Thanks, Brenda."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading, slowly nodding)</span> Fourteen times.</div>
+
+<div class="stage-dir">A Teams message pops up from JEFF M.: "Hey Andrew, quick question — what's Devon's blood type? It's for the team emergency contact database I'm building. I know it's not my job. I just think someone should do it. Also I friended your wife on LinkedIn. She seems great."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW opens his desk drawer. The Fiji brochure from last episode is still there. He picks it up. Looks at it. Puts it back. Opens a different drawer. Pulls out a second brochure — this one for Patagonia. Twice as far away.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading brochure)</span> "No cell towers for two hundred miles."</div>
+
+<div class="stage-dir">His phone buzzes. A text from TINA: "Great session today Andrew! I made a recap document with color-coded highlights! Also I baked everyone virtual cookies 🍪 — check your email! 😊" ANDREW smiles in spite of himself.</div>
+
+<div class="stage-dir">Another buzz. Text from DEVON: "I'll be out tomorrow. Personal day. Just kidding. I'll be here. I'm always here."</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">Another buzz. Text from LUKE: "yo andrew can I expense a microwave? for my workstation. it's for the burritos. it's ergonomic."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(putting down both brochures, shaking his head, half-smiling)</span> Same time tomorrow.</div>
+
+<div class="laugh applause">Applause — warm and sustained</div>
+
+<div class="sfx">♪ END THEME — UPBEAT SYNTH, FREEZE FRAME ON ANDREW HOLDING BOTH TRAVEL BROCHURES ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY ....................... ANTHONY</p>
+  <p>TINA .......................... TINA</p>
+  <p>DEVON ......................... DEVON</p>
+  <p>JEFF M. ....................... JEFF M.</p>
+  <p>BRENDA (HR) ................... BRENDA (VIA EMAIL ONLY)</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(several of whom escalated their complaints improperly)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">PREVIOUSLY ON "ANDREW": Luke was caught sleeping. Anthony was at Starbucks.</p>
+  <p style="color:#555; font-size:11px;">Nothing has changed. And yet — somehow — everything has.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

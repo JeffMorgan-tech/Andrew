@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E11</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0e1520; color: var(--text-cream); font-family: 'Courier Prime', monospace; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+  .vhs-bar { width: 100%; background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #4a5e78; border-bottom: 2px solid #243048; position: sticky; top: 0; z-index: 100; }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+  .tv-frame { width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel); border-radius: 18px; padding: 20px; box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6); position: relative; }
+  .tv-frame::before { content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px; }
+  .screen { background: var(--screen-bg); border-radius: 8px; overflow: hidden; position: relative; border: 3px solid #243048; }
+  .screen::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px); pointer-events: none; z-index: 10; }
+  .title-card { text-align: center; padding: 50px 20px 40px; background: linear-gradient(180deg, #141e30 0%, #121a28 100%); position: relative; overflow: hidden; }
+  .title-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%); animation: glow-rotate 8s linear infinite; }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+  .show-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(28px, 6vw, 52px); background: linear-gradient(180deg, #d4a050 0%, #c08840 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1; }
+  .show-subtitle { font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px); color: #6a7e98a9e; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase; position: relative; z-index: 1; }
+  .episode-info { margin-top: 18px; font-size: 13px; color: #4a5e78e78; letter-spacing: 2px; position: relative; z-index: 1; }
+  .episode-title { font-family: 'Special Elite', cursive; font-size: clamp(16px, 3.5vw, 22px); color: var(--vhs-blue); margin-top: 10px; position: relative; z-index: 1; }
+  .episode-desc { font-size: 12px; color: #4a5a6e; margin-top: 14px; letter-spacing: 1px; position: relative; z-index: 1; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+  .script-body { padding: 30px clamp(15px, 4vw, 40px); background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%); line-height: 1.75; font-size: clamp(14px, 2.2vw, 16px); }
+  .scene-header { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(16px, 3vw, 20px); color: var(--laugh-gold); text-transform: uppercase; letter-spacing: 3px; margin: 40px 0 8px; padding: 12px 0; border-top: 2px solid #243048; border-bottom: 1px solid #1a2438; position: relative; }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num { color: var(--vhs-red); font-size: 12px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+  .stage-dir { color: #6a6a7a; font-style: italic; margin: 14px 0; padding: 8px 14px; border-left: 3px solid #2a3e58; background: rgba(140,160,190,0.03); border-radius: 0 4px 4px 0; }
+  .char { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; display: block; font-size: 13px; }
+  .char.andrew { color: var(--vhs-blue); } .char.luke { color: #5aaa7a; } .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); } .char.devon { color: var(--devon-gray); } .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); } .char.corine { color: var(--corine-teal); }
+  .char.carlos { color: var(--carlos-copper); } .char.juwan { color: var(--juwan-sky); }
+  .dial { margin: 4px 0 12px 20px; color: var(--text-white); }
+  .paren { color: #506880; font-style: italic; font-size: 13px; }
+  .laugh { display: inline-flex; align-items: center; gap: 6px; background: rgba(212,160,80,0.08); border: 1px solid rgba(212,160,80,0.15); color: var(--laugh-gold); font-size: 11px; padding: 3px 10px; border-radius: 20px; margin: 8px 0; letter-spacing: 1px; text-transform: uppercase; cursor: default; animation: laugh-fade 0.4s ease; }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .sfx { color: var(--highlight); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0; opacity: 0.7; }
+  /* Email styling */
+  .email-block { background: rgba(140,160,190,0.05); border: 1px solid #2a3a50; border-radius: 6px; padding: 14px; margin: 12px 0; font-size: 13px; }
+  .email-block .email-header { color: #7a8a9e; font-size: 11px; margin-bottom: 8px; line-height: 1.6; }
+  .email-block .email-header span { color: #a4b4c4; }
+  .email-block .email-body { color: #b4c4d4; line-height: 1.6; }
+  .credits { text-align: center; padding: 40px 20px; border-top: 2px solid #243048; background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%); }
+  .credits p { color: #4a5a6e; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .credits .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 16px; }
+  @media (max-width: 600px) { .tv-frame { padding: 10px; border-radius: 10px; } .script-body { padding: 20px 12px; } .dial { margin-left: 10px; } }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:23:58</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 11</div>
+  <div class="episode-title">"Email Distribution Lists"</div>
+  <div class="episode-desc">SOMEONE REPLIED ALL.<br>JEFF WILL FIND THEM.</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Thursday, 8:47 AM
+</div>
+
+<div class="stage-dir">ANDREW logs in. Normal morning. Coffee. Tickets. The gentle hum of remote work. Then his Outlook pings. And pings again. And pings six more times in rapid succession. He opens his inbox. There are forty-three new emails. All from the same thread. The original email was a company-wide announcement from the CEO — a standard quarterly update sent to the global distribution list. Reply-all is supposed to be disabled on this list. It is, in fact, famously disabled. IT locked it down two years ago after the Great Reply-All Incident of 2022, which reportedly generated four hundred responses in ninety minutes and crashed the Exchange server.</div>
+
+<div class="stage-dir">And yet. Someone has replied all. To the entire company. And the reply — sent from what appears to be an anonymous or masked address — contains no text. Just an image. A meme. A cow — a Holstein dairy cow, standing upright, holding a sign that reads: "This isn't a TV show, Greg." No context. No explanation. Just a cow, a message, and three crying-laughing emojis. And every single person on the support team knows exactly which Greg this is about.</div>
+
+<div class="email-block">
+  <div class="email-header">
+    From: <span>SHS_Internal_User</span><br>
+    To: <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f3b29f9fdeb09c9e83929d8adeb49f9c91929fb3809a969e969d80de9b96929f879b9a9d96968180dd909c9e">[email&#160;protected]</a></span><br>
+    Subject: <span>RE: Q2 Company Update — A Message from Leadership</span>
+  </div>
+  <div class="email-body">
+    [IMAGE: A Holstein cow holding a sign that reads "This isn't a TV show, Greg."]<br><br>
+    😂😂😂
+  </div>
+</div>
+
+<div class="stage-dir">ANDREW stares at it. The entire company — thousands of people — has just received a meme roasting Greg from SDS. From someone no one can identify. On a list that shouldn't allow replies. Andrew's mouth falls open. Then — slowly — the corner of his mouth turns up.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(quietly, fighting a grin)</span> ...Oh no.</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "The Crime Scene"
+</div>
+
+<div class="stage-dir">The team Slack channel is already on fire. Everyone saw it.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(in Slack)</span> WHO REPLIED ALL TO THE CEO'S EMAIL WITH A COW MEME 💀💀💀</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(in Slack)</span> ABOUT GREG?? SOMEONE SENT A GREG MEME TO THE ENTIRE COMPANY??</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(in Slack)</span> Respect.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(in Slack, precisely)</span> The global distribution list has reply-all disabled. This shouldn't be possible. Either someone has elevated permissions, or the list configuration was changed. This is a security concern.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(in Slack)</span> I've seen reply-all disasters in my time, but never an anonymous one. That's a new flavor. 😂</div>
+
+<div class="stage-dir">Then JEFF M. enters the chat. When Jeff enters a chat, the energy shifts. You can feel it. The treadmill starts.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(in Slack, all business)</span> I'm looking into this. The sender address is "SHS_Internal_User" — that's not a real mailbox. It's either a shared mailbox, a service account, or a forwarding alias. I'm going to find out which one. Give me an hour.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM to Juwan)</span> Jeff just went full detective mode.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(DM back)</span> This is the most dangerous version of Jeff. This is Jeff with a mystery. Buckle up.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT ONE-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  "The Investigation"
+</div>
+
+<div class="stage-dir">JEFF M. has gone to work. Over the next three hours, the team receives periodic updates from him in Slack — each one more unhinged than the last. He has created a dedicated channel called #reply-all-investigation.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(#reply-all-investigation, 9:30 AM)</span> UPDATE 1: "SHS_Internal_User" is a shared mailbox created in 2019 for an internal survey pilot. It was supposed to be decommissioned. It was not decommissioned. Someone still has access. I'm pulling the access list now.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(#reply-all-investigation, 10:15 AM)</span> UPDATE 2: The access list has fourteen people on it. I've cross-referenced all fourteen with the email timestamp and their Outlook login activity. Four of them weren't logged in at the time. Three are on PTO. Two are in a different time zone and it was 5 AM for them. That leaves five suspects. I'm emailing all five.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(in the channel)</span> Jeff, you can't just email people and accuse them of reply-all crimes.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">I'm not accusing. I'm "following up on a distribution list anomaly." The tone is professional. I used bullet points.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(joining the investigation channel — she's been waiting for this)</span> Jeff, I want to be clear: I support the investigation. The distribution list security is a legitimate concern. But you can't create shadow accounts or impersonate IT. If you need access logs, submit a formal request through the IT service portal. Form ITR-2200. I have the link bookmarked.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">Corine, I already submitted ITR-2200 forty minutes ago. I also submitted ITR-2201, which is the follow-up form for when 2200 doesn't get a response within thirty minutes. And I submitted ITR-2202, which I'm ninety percent sure I invented.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(checking)</span> ...ITR-2202 doesn't exist.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">It does now. I created it. I also cc'd Brenda on all three forms. She needs to know about this. It's a security matter.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(lurking in the channel, camera still off)</span> He cc'd Brenda on a form he invented. This is the best day I've had in months.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(#reply-all-investigation, 11:45 AM)</span> UPDATE 3: Three of the five suspects have responded to my "follow-up." All three deny involvement. One of them — Kevin in Facilities — responded "lol wasn't me but whoever did it is a legend." Kevin is not a suspect but he is now on my watchlist for attitude.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(#reply-all-investigation, 12:30 PM)</span> UPDATE 4: I've narrowed it to two suspects. One of them is an automated service account that sends internal survey reminders. The other is a person. A real person. Who I now believe accidentally replied to the CEO's email from the shared mailbox, thinking they were replying to a completely different email thread. I'm one login timestamp away from confirmation.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(edge of her seat, pen perpendicular — the excitement position)</span> Who is it.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">I need the IT access log to confirm. Which I will have in approximately — <span class="paren">(checks email)</span> — it just came in.</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Two — "The Reveal"
+</div>
+
+<div class="stage-dir">1:00 PM. JEFF M. calls an emergency team huddle. The whole team is on. Even DEVON turns his mic up louder than usual, which is as close to excitement as Devon gets. JEFF is standing at his treadmill desk, but the treadmill is off. He's not walking. This is the Jeff equivalent of a dramatic entrance.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">I have the results. The shared mailbox — SHS_Internal_User — was accessed at 8:31 AM this morning by one person. I cross-referenced the login with the email send timestamp: 8:32 AM. One minute. That's our window. I matched the IP to the VPN access log, confirmed the device ID, and correlated it with the user's Outlook session token.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(on the edge of his seat)</span> WHO WAS IT?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(beat)</span> It was Brenda.</div>
+
+<div class="stage-dir">Silence. Complete, total, devastating silence.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">...Brenda.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">Brenda. From HR. My Brenda.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">THE Brenda? The Brenda you've been emailing for the entire season?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(quiet, stricken)</span> The very same.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(the closest he's ever come to laughter)</span> ...This is poetry.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">Wait — how did Brenda have access to that shared mailbox?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">She was on the original 2019 survey pilot team. Her access was never revoked. And based on her email patterns — which I have been tracking, professionally, for months — I believe what happened is this: Brenda had two Outlook windows open. In one window, she was drafting a message to her coworker Pam, who she apparently shares memes with regularly. The cow meme about Greg — she'd been sitting on it since the HR investigation in Episode 6. She thought it was hilarious. She wanted to share it privately. But in the other window, the CEO's company-wide email was open. She dragged the image into the wrong compose window and hit reply-all from the shared mailbox — which, unlike her personal mailbox, <em>does</em> have reply-all permissions on the global list because it was configured as a survey distribution tool.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">She was trying to send her friend a meme about Greg and accidentally blasted it to the entire company.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(head in hands, laughing)</span> Brenda has been sitting on that meme since the HR investigation. She's been holding a grudge this whole time. Through a <em>cow.</em></div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">From an anonymous shared mailbox that nobody knew she still had access to. Yes.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">So Brenda — the person Jeff has been emailing unsolicited documents to for months — has been secretly collecting Greg memes. And accidentally shared one with four thousand people.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(staring at the screen, processing something deep)</span> ...I feel like I should have known. I track her email patterns. I should have seen this coming. She's been forwarding memes to Pam at an increasing rate since the Greg investigation. Three memes in one week last month. The frequency was accelerating. It was right there. In the data. And I missed it.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Jeff, you're talking about Brenda's meme-forwarding habits like they're intelligence reports.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">They <em>are</em> intelligence reports, Andrew. Everything is an intelligence report if you're paying attention.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(already typing)</span> I'm drafting a recommendation to IT to revoke access on all dormant shared mailboxes from the 2019 pilot. This is a security gap. Jeff's investigation was... <span class="paren">(searching for the right word)</span> ...unorthodox. But the finding is valid. The shared mailbox should be decommissioned immediately.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">I'll co-sign the recommendation. I'll also send Brenda a private note letting her know what happened. Gently. Professionally. She's probably mortified.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Jeff — maybe let HR handle the HR person.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(considering this)</span> ...But who does HR go to when HR is the problem?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">That's the most philosophical thing you've ever said.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "The Aftermath"
+</div>
+
+<div class="stage-dir">By afternoon, the company-wide thread has died down. IT has locked the shared mailbox. The reply-all storm is over. But the legend is just beginning. Across the company, the anonymous cow meme has already become folklore. Kevin in Facilities changed his Teams avatar to the cow. Someone in Marketing printed it and taped it to the break room wall. Greg has not logged into Slack since 10 AM.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(on a private call with Andrew)</span> Well. That was a day.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(laughing)</span> Jeff investigated for four hours, created a fake IT form, tracked email session tokens, and the culprit was the one person in the company he's been emailing unsolicited spreadsheets to since January. And she was sending a Greg meme. To her friend Pam. Brenda has been a secret Greg hater this entire time.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(smiling)</span> You know what the funniest part is? Brenda emailed me this afternoon. She said — and I quote — "Rachelle, I think Jeff M. from your team is the only person in this company who would have figured out it was me. He's either brilliant or terrifying. Possibly both."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">What did you tell her?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">I told her: "Both. Definitely both."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:30 PM. JEFF M. is at his desk. Treadmill running again. Three monitors glowing. But he's not looking at the project. He's looking at his email. He has one draft open. It's addressed to Brenda. The subject line reads: "No Judgment — Just Wanted to Say the Cow Thing Was Legendary." The body reads: "Hi Brenda, I hope you're having a good afternoon. I want you to know that your reply-all was the single greatest accidental email in the history of this company. For what it's worth, the entire support team agrees with the cow. Greg needed to hear it. Also, if it makes you feel any better, I once accidentally sent a forty-seven-node escalation flowchart to the VP of Operations. We all have our moments. — Jeff M. / P.S. If you have more Greg memes, I would like to subscribe. Professionally."</div>
+
+<div class="stage-dir">He reads it one more time. Hits send. Then opens his phone and texts Devon, Tina, and Andrew a meme at the exact same time: it's a screenshot of the original cow meme, but Jeff has edited it. The cow is now holding a sign that reads: "tHiS iSn'T a Tv ShOw GrEg." The Spongebob treatment. Applied to a cow. At 5:32 PM. Early for Jeff. This one was personal.</div>
+
+<div class="laugh applause">Applause</div>
+
+<div class="sfx">♪ END THEME — UPBEAT SYNTH — FREEZE FRAME ON THE #REPLY-ALL-INVESTIGATION CHANNEL, STILL OPEN, ALREADY LEGENDARY ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY ....................... ANTHONY</p>
+  <p>TINA .......................... TINA</p>
+  <p>DEVON ......................... DEVON (BEST DAY IN MONTHS)</p>
+  <p>JEFF M. ....................... JEFF M. (DETECTIVE. INVESTIGATOR. FRIEND.)</p>
+  <p>CORINE ........................ CORINE (BY THE BOOK, ALWAYS)</p>
+  <p>RACHELLE ...................... RACHELLE</p>
+  <p>CARLOS ........................ CARLOS</p>
+  <p>JUWAN ......................... JUWAN</p>
+  <p>BRENDA (HR) ................... BRENDA (THE REPLY-ALL CULPRIT. AT LAST, SHE HAS A STORY.)</p>
+  <p>KEVIN (FACILITIES) ............ KEVIN (NOT A SUSPECT. CHANGED HIS AVATAR TO THE COW.)</p>
+  <p>THE COW ....................... AN ICON. A LEGEND. A MOMENT.</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(several of whom replied all to ask what happened)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">PREVIOUSLY ON "ANDREW": Tina saved the helpdesk.</p>
+  <p style="color:#555; font-size:11px;">This week, Brenda broke the email. Jeff found her. The cow lives forever.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-

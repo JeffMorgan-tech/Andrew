@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E07</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0e1520;
+    color: var(--text-cream);
+    font-family: 'Courier Prime', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  .vhs-bar {
+    width: 100%;
+    background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px; color: #4a5e78;
+    border-bottom: 2px solid #243048;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .vhs-bar .rec {
+    color: var(--vhs-red);
+    font-weight: bold;
+    animation: blink 1.2s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode {
+    font-family: 'Courier Prime', monospace;
+    color: #5a7090;
+    letter-spacing: 2px;
+  }
+
+  .tv-frame {
+    width: 95%;
+    max-width: 900px;
+    margin: 30px auto;
+    background: var(--tv-bezel);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow:
+      0 0 60px rgba(0,0,0,0.8),
+      inset 0 0 30px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .tv-frame::before {
+    content: 'TOSHIBA';
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #304060;
+    letter-spacing: 4px;
+  }
+
+  .screen {
+    background: var(--screen-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid #243048;
+  }
+  .screen::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      var(--scanline) 0px,
+      var(--scanline) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .title-card {
+    text-align: center;
+    padding: 50px 20px 40px;
+    background: linear-gradient(180deg, #141e30 0%, #121a28 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .title-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%);
+    animation: glow-rotate 8s linear infinite;
+  }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .show-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 6vw, 52px);
+    background: linear-gradient(180deg, #d4a050 0%, #c08840 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 1;
+    line-height: 1.1;
+  }
+  .show-subtitle {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(14px, 3vw, 20px);
+    color: #6a7e98a9e;
+    margin-top: 8px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-info {
+    margin-top: 18px;
+    font-size: 13px; color: #4a5e78e78;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(16px, 3.5vw, 22px);
+    color: var(--vhs-blue);
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-desc {
+    font-size: 12px;
+    color: #4a5a6e;
+    margin-top: 14px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .script-body {
+    padding: 30px clamp(15px, 4vw, 40px);
+    background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%);
+    line-height: 1.75;
+    font-size: clamp(14px, 2.2vw, 16px);
+  }
+
+  .scene-header {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--laugh-gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 40px 0 8px;
+    padding: 12px 0;
+    border-top: 2px solid #243048;
+    border-bottom: 1px solid #1a2438;
+    position: relative;
+  }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num {
+    color: var(--vhs-red);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 2px;
+    letter-spacing: 5px;
+  }
+
+  .stage-dir {
+    color: #6a6a7a;
+    font-style: italic;
+    margin: 14px 0;
+    padding: 8px 14px;
+    border-left: 3px solid #2a3e58;
+    background: rgba(140,160,190,0.03);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .char {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 16px;
+    display: block;
+    font-size: 13px;
+  }
+  .char.andrew { color: var(--vhs-blue); }
+  .char.luke { color: #5aaa7a; }
+  .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); }
+  .char.devon { color: var(--devon-gray); }
+  .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); }
+  .char.corine { color: var(--corine-teal); }
+  .char.carlos { color: var(--carlos-copper); }
+  .char.juwan { color: var(--juwan-sky); }
+
+  .dial {
+    margin: 4px 0 12px 20px;
+    color: var(--text-white);
+  }
+  .paren {
+    color: #506880;
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .laugh {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(212,160,80,0.08);
+    border: 1px solid rgba(212,160,80,0.15);
+    color: var(--laugh-gold);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 8px 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: default;
+    animation: laugh-fade 0.4s ease;
+  }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .sfx {
+    color: var(--highlight);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 10px 0;
+    opacity: 0.7;
+  }
+
+  .credits {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 2px solid #243048;
+    background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%);
+  }
+  .credits p {
+    color: #4a5a6e;
+    font-size: 12px;
+    margin: 4px 0;
+    letter-spacing: 1px;
+  }
+  .credits .filmed {
+    color: #4a6480;
+    font-family: 'Special Elite', cursive;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .tv-frame { padding: 10px; border-radius: 10px; }
+    .script-body { padding: 20px 12px; }
+    .dial { margin-left: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:23:42</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 7</div>
+  <div class="episode-title">"The Mute Button Exists for a Reason"</div>
+  <div class="episode-desc">INTRODUCING CARLOS & JUWAN<br>FULL ENSEMBLE CAST</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Thursday, 10:00 AM, Weekly Team Standup
+</div>
+
+<div class="stage-dir">The full team is on the weekly standup call. Ten webcam boxes on screen. RACHELLE is hosting. Everyone is settled in. The call has that familiar Thursday morning energy — half-awake, half-caffeinated, fully remote. RACHELLE begins speaking. And then — from somewhere on the call — a sound.</div>
+
+<div class="sfx">♪ LOUD, WET, AGGRESSIVE CRUNCHING ♪</div>
+
+<div class="stage-dir">Every webcam box freezes. Eyes dart. RACHELLE pauses mid-sentence. The crunching continues. It is catastrophic. It sounds like someone feeding a log into a wood chipper. Slowly.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(pausing gracefully)</span> ...It sounds like someone might have their mic open. If you're eating, maybe just —</div>
+
+<div class="sfx">♪ EVEN LOUDER CRUNCH — A CELERY STICK HAS BEEN ANNIHILATED ♪</div>
+
+<div class="stage-dir">It's LUKE. Of course it's Luke. He's eating what appears to be an entire bag of kettle chips directly into his Blue Yeti microphone, which is set to cardioid mode — the mode specifically designed to capture every nuance of the human voice, and apparently, every decibel of a barbecue chip being destroyed between molars.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(mouth full, oblivious)</span> Sorry, what? I'm here. Go ahead.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">Ten people stare at their screens. ANDREW's face is a portrait of exhaustion. DEVON has already muted himself, turned off his camera, and — based on the subtle shift in his silhouette — is considering turning off his computer entirely.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM to Juwan)</span> Please tell me you're hearing this.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(DM back)</span> Bro I had to take my headphones off. It sounded like he was eating gravel.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "The Intervention That Wasn't"
+</div>
+
+<div class="stage-dir">After the standup. ANDREW, JUWAN, TINA, and CARLOS are on a smaller call — the unofficial post-standup debrief that happens every Thursday, where the actual opinions come out. CARLOS is visible on camera for the first time: salt-and-pepper beard, a faded Cisco Systems t-shirt from approximately 2009, and the calm demeanor of a man who has survived every era of remote work — from dial-up conference calls to Zoom fatigue to whatever fresh hell Teams is.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(leaning back in his chair, arms behind his head, deeply at peace)</span> Man, that standup was something. I've been doing remote work since before it was called remote work — we just called it "working" — and I have <em>never</em> heard someone eat that loudly on a call. And I was on calls with guys who mowed their lawns during sprint reviews.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial">It's not just today though. Last Tuesday he was eating an apple during the P1 bridge call. An <em>apple.</em> On a priority one. I'm trying to troubleshoot a downed server and all I can hear is this man going at a Honeycrisp like it personally wronged him.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(trying to be diplomatic, as always)</span> Okay, in Luke's defense — he's still pretty new, and maybe no one ever told him about call etiquette? When I was in the field, we didn't have this problem because you couldn't eat a sandwich and hold a calibration tool at the same time. Well — Marcus in Phoenix tried once, but that's a different story.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Tina, I appreciate the optimism, but this isn't a one-time thing. Luke eats on <em>every</em> call. Morning standup? Cereal. Afternoon sync? Chips. One-on-ones with me? Last week he ate a full rotisserie chicken. I could hear the bones, Tina. The <em>bones.</em></div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(nodding slowly, zen-like)</span> See, here's the thing. In the old days, we had a rule: if you're not talking, you're on mute. Simple. Beautiful. It was like an unwritten law of the internet. Nobody taught it. You just <em>knew.</em> It was instinct. Like not replying-all to a company-wide email.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial">But that's the thing — Luke doesn't mute. Ever. He treats the mute button like it's decorative. Like it's a suggestion.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I've literally watched him look at the mute button, acknowledge it exists, and then not press it. It's like watching someone see a "WET PAINT" sign and sit down anyway.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(chuckling)</span> You know what? I'll talk to him. Old head to new guy. No pressure. Just a vibe check.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(skeptical but amused)</span> A vibe check about chewing?</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial">Brother, I once had to explain to a grown man in 2004 that you can't use a leaf blower during a client demo. Trust me. I've done this before.</div>
+
+<div class="laugh">Laugh track</div>
+
+<!-- ═══════════ ACT ONE-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  Meanwhile — "It's Not Just Luke"
+</div>
+
+<div class="stage-dir">Simultaneous call. CORINE, DEVON, and JEFF M. CORINE has clearly called this meeting herself. She has a slide deck. One slide. The slide says: "MUTE ETIQUETTE — A MANDATORY REFRESHER."</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">I want to address the elephant in the room. Or rather, the bag of kettle chips in the room.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(camera off, as always)</span> It's not just Luke. Anthony ate a burrito bowl on the Tuesday sync last week. I could hear the foil. And the guacamole. Don't ask me how I heard the guacamole. I just did.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">The employee handbook, section 4.8, states: "Participants in virtual meetings should maintain a professional audio environment free from disruptive background noise." Eating a family-size bag of Lay's into a condenser microphone is — I would argue — disruptive background noise.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(walking on treadmill, slightly out of breath)</span> So I actually did some research on this. The average human chewing sound registers at about sixty to seventy decibels. That's the same as a normal conversation. But — and this is the key part — a kettle chip, due to its rigid crystalline structure and high fracture point, peaks at eighty-five decibels at close range. That's the same as a garbage disposal. I tested it. I bought four brands of chips and recorded myself eating each one into a calibrated mic. Kettle-cooked was the loudest. Pringles were the quietest because of the uniform density. I have a spreadsheet.</div>
+
+<div class="stage-dir">Silence.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">...You tested this?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">Four brands. Three mic distances. Two jaw speeds. I sent the results to Brenda.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(pinching the bridge of her nose)</span> Why did you send chip acoustics data to Brenda in HR?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">She's on my distribution list. Everyone should have a distribution list. Devon, you're on it too. I added you last Tuesday.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I know. I've been getting emails about things I never asked to know. Yesterday it was a heat map of our team's Slack response times by hour.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">You're welcome.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">Regardless of the... chip study... the point stands. We need to establish a team norm. Mics muted when not speaking. No eating during active discussion. And if you absolutely must eat, you use push-to-talk like a civilized human being.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">We've had this conversation four times in three years. Nothing changes. People eat. Mics stay hot. The circle of life continues.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(quiet fire)</span> Not on my watch.</div>
+
+<div class="laugh">Laugh track</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Two — "The Talk"
+</div>
+
+<div class="stage-dir">CARLOS has pulled LUKE and ANTHONY into a casual call. His approach is the opposite of a lecture — he's reclined, relaxed, a cup of coffee in hand. The vibe is "cool uncle at Thanksgiving," not "principal's office."</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial">Alright fellas. How you doing? Settling in okay?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Yeah man, it's been solid. I feel like I'm really hitting my stride.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Same. Getting the hang of the ticket flow. Andrew's been showing us the ropes.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial">Good. Good. Hey, let me ask you something. And this isn't a big deal, just a remote work thing. When you guys are on calls — like the standup this morning — what's your setup look like? You eating at your desk? Snacking? Just curious.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(completely unsuspecting)</span> Oh yeah, always. I mean, it's one of the perks of working from home, right? I keep a whole snack drawer. I've got chips, granola bars, those little cheese crackers — you know the ones with the orange filling?</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(smiling patiently)</span> I know the ones.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Plus I do breakfast during morning standup because the timing works out perfect. Today was kettle chips. Yesterday was toast. Monday I did a smoothie but the blender was too loud so I made it <em>before</em> the call. I'm learning.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(maintaining composure)</span> Right. So here's the thing, and I say this with love — the mic picks up <em>everything.</em> Like, everything everything. I've been remote since before you were probably in high school, and the number one rule I learned early on is: if you're not talking, hit mute. And if you're eating? Brother, you are on mute. Full stop. No exceptions. Not because anyone's mad. Just because nobody on earth wants to hear someone eat a kettle chip through a studio mic at ten in the morning.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(slowly connecting dots)</span> Wait. Is this about me too? I eat on calls sometimes.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial">Anthony, last Tuesday, Devon DM'd me and said — and I'm quoting — "I can hear Anthony's guacamole and I want to leave this planet."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(horrified)</span> He heard the guacamole?!</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial">He heard the guacamole.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(genuinely processing this)</span> So wait — this whole time — people have been hearing me eat?</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial">Luke. Rachelle paused mid-sentence this morning because your chips were louder than her voice. On her own call. That she was hosting.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(long, dawning horror)</span> ...Oh no.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(same energy)</span> ...Oh <em>no.</em></div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(taking a calm sip of coffee)</span> Yeah. But look — no one's in trouble. It's just a remote work thing you gotta learn. Mute is your best friend. Use it. Love it. Marry it if you have to.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Carlos... how many calls have I eaten on?</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(very gentle)</span> All of them, my man. Every single one.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "The Reformation"
+</div>
+
+<div class="stage-dir">The next morning. Friday standup. RACHELLE is hosting again. The full team is on. There's a nervous energy. ANDREW and JUWAN are side-chatting in DMs, watching.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Good morning everyone. Before we start — I just want to say how much I appreciate this team's adaptability. It's been a great week. Now, let's go around. Luke, you want to kick us off?</div>
+
+<div class="stage-dir">Silence. LUKE's camera is on. He is sitting at his desk. His hands are folded. The desk is completely bare. No chips. No cereal. No burrito. No food of any kind. It looks like a crime scene that's been scrubbed clean. There is a single glass of water.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(speaking carefully, hands visible at all times like a man in a police lineup)</span> Good morning. I closed four tickets yesterday. Two P3s, one P2, and a knowledge article update. No outstanding blockers. <span class="paren">(beat)</span> I am not eating anything.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM to Juwan)</span> He announced it. He actually announced that he's not eating.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(DM back)</span> That man is traumatized. Carlos broke him gently.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(also visibly food-free)</span> Morning. Three tickets closed. Pipeline's clean. And I want everyone to know I am currently muted when I'm not speaking. <span class="paren">(unmutes, speaks, mutes immediately — an audible click)</span></div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(nodding with deep, paternal satisfaction, coffee in hand)</span> Beautiful.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(camera still off, but somehow you can hear the almost-smile)</span> ...It's quiet. I forgot what quiet sounded like on these calls. It's been years.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(beaming)</span> I'm so proud of you guys! When I was in the field, we had a saying — "a clean channel is a productive channel!" This is exactly that!</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(pulling up her notes)</span> For the record, I'd like to formalize this. I'm proposing a team operating agreement — section one: audio hygiene. Subsection A: muting protocol. Subsection B: acceptable and unacceptable foods during calls. I've drafted a tier list.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(grinning)</span> A food tier list for meetings? Okay I actually need to see that.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">Tier S — silent foods: water, soft bread, yogurt. Tier A — low risk: bananas, soft granola bars. Tier B — proceed with caution: sandwiches, pasta. Tier C — mute required: anything crunchy, soups with slurping potential. Tier F — absolutely not: kettle chips, apples, celery, anything involving a blender.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(appearing suddenly very close to camera)</span> This aligns with my chip acoustics research. I'll cross-reference Corine's tier list with my decibel data and produce a unified document. I'm calling it the Unified Snack Protocol. I'll send it to Brenda.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reflexively)</span> Don't send it to Brenda.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">She's going to love it, Andrew. She told me she looks forward to my emails now. I think she was being sincere. Although Juwan said it might have been sarcasm. But I ran the message through a sentiment analysis tool and it scored seventy-eight percent positive, so.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(to Andrew, sidebar)</span> I did tell him that. I thought it was obvious. He ran sentiment analysis on it.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Yeah. That tracks.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(smiling warmly, bringing it home)</span> Alright everyone. I love the energy this morning. Clean audio, good updates, and — I can't believe I'm saying this — a food tier list that I might actually laminate. Let's have a great Friday.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(raising his coffee mug to the camera)</span> Proud of you, young bloods.</div>
+
+<div class="laugh applause">Applause</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:00 PM. ANDREW and JUWAN on a private call, end-of-week wind-down. Both relaxed, both amused by the week.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial">You know what the funniest part of today was? Luke muted himself so aggressively every time he stopped talking that I could hear the button click. Every time. Click. Talk. Click. Talk. Click. He's overcorrected into a telegraph operator.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Better than the alternative. I still have PTSD from the rotisserie chicken incident. I heard him tear a wing off, Juwan. Through my AirPods. While I was explaining ticket prioritization.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(laughing)</span> Nah, the wildest part is that Carlos fixed it in like ten minutes. No drama. No big meeting. Just "hey bro, mute exists." And Luke was like, "Oh. Okay." That was it.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Carlos is a different breed, man. He's seen it all. He's been remote since remote meant a phone cord long enough to reach the other room.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial">Legend. Absolute legend.</div>
+
+<div class="stage-dir">A Teams notification pops up. Group message from JEFF M.: "Hello team. I've completed the Unified Snack Protocol v1.0. It is 14 pages. It includes a decision tree, a decibel reference chart, and a recommended mic distance calculator based on food hardness index. I've sent it to Brenda, Rachelle, Corine, Devon, and the VP of Operations. Please review by Monday."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(reading it)</span> ...He sent a fourteen-page snack document to the VP of Operations.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">He sent it to the VP of Operations.</div>
+
+<div class="stage-dir">Another message from JEFF M.: "aLsO lUkE i CaN sTiLl HeAr YoU cHeWiNg GrAnOlA iN tHe BaCkGrOuNd Of YoUr StAtUs UpDaTe ToDaY. tIeR c FoOd. MuTe ReQuIrEd."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">A reply from LUKE: "...I thought I was muted." A reply from DEVON: "You were not." A reply from CORINE: "Incident logged."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW leans back. Looks at the Patagonia brochure still sitting on his desk from last episode. Looks at the screen. Looks back at the brochure.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(to Juwan)</span> You ever think about just... moving to the mountains? No Wi-Fi? No Teams? Just... silence?</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(grinning)</span> Nah. I'd miss the chaos. Wouldn't you?</div>
+
+<div class="stage-dir">ANDREW thinks about it. Really thinks. Then his phone buzzes. It's a DM from CARLOS: "Good week, brother. Same time Monday. I'll bring the coffee, you bring the patience. 😎" ANDREW smiles.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">...Yeah. I would.</div>
+
+<div class="laugh applause">Applause — warm and sustained</div>
+
+<div class="sfx">♪ END THEME — UPBEAT SYNTH, FREEZE FRAME ON ANDREW AND JUWAN LAUGHING ON THE CALL, THE PATAGONIA BROCHURE UNTOUCHED ON THE DESK ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY ....................... ANTHONY</p>
+  <p>TINA .......................... TINA</p>
+  <p>DEVON ......................... DEVON</p>
+  <p>JEFF M. ....................... JEFF M.</p>
+  <p>CORINE ........................ CORINE</p>
+  <p>RACHELLE ...................... RACHELLE</p>
+  <p>CARLOS ........................ CARLOS</p>
+  <p>JUWAN ......................... JUWAN</p>
+  <p>BRENDA (HR) ................... BRENDA (ADDED TO JEFF'S DISTRIBUTION LIST)</p>
+  <p>THE KETTLE CHIPS .............. THEMSELVES</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(all of whom were asked to mute during taping)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">PREVIOUSLY ON "ANDREW": The team faced a bully. This week, they faced kettle chips.</p>
+  <p style="color:#555; font-size:11px;">Both were equally loud.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

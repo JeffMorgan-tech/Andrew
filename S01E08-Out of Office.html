@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E08</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0e1520; color: var(--text-cream); font-family: 'Courier Prime', monospace; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+
+  .vhs-bar { width: 100%; background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #4a5e78; border-bottom: 2px solid #243048; position: sticky; top: 0; z-index: 100; }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+
+  .tv-frame { width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel); border-radius: 18px; padding: 20px; box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6); position: relative; }
+  .tv-frame::before { content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px; }
+
+  .screen { background: var(--screen-bg); border-radius: 8px; overflow: hidden; position: relative; border: 3px solid #243048; }
+  .screen::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px); pointer-events: none; z-index: 10; }
+
+  .title-card { text-align: center; padding: 50px 20px 40px; background: linear-gradient(180deg, #141e30 0%, #121a28 100%); position: relative; overflow: hidden; }
+  .title-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%); animation: glow-rotate 8s linear infinite; }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .show-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(28px, 6vw, 52px); background: linear-gradient(180deg, #d4a050 0%, #c08840 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1; }
+  .show-subtitle { font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px); color: #6a7e98a9e; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase; position: relative; z-index: 1; }
+  .episode-info { margin-top: 18px; font-size: 13px; color: #4a5e78e78; letter-spacing: 2px; position: relative; z-index: 1; }
+  .episode-title { font-family: 'Special Elite', cursive; font-size: clamp(16px, 3.5vw, 22px); color: var(--vhs-blue); margin-top: 10px; position: relative; z-index: 1; }
+  .episode-desc { font-size: 12px; color: #4a5a6e; margin-top: 14px; letter-spacing: 1px; position: relative; z-index: 1; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+  .script-body { padding: 30px clamp(15px, 4vw, 40px); background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%); line-height: 1.75; font-size: clamp(14px, 2.2vw, 16px); }
+
+  .scene-header { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(16px, 3vw, 20px); color: var(--laugh-gold); text-transform: uppercase; letter-spacing: 3px; margin: 40px 0 8px; padding: 12px 0; border-top: 2px solid #243048; border-bottom: 1px solid #1a2438; position: relative; }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num { color: var(--vhs-red); font-size: 12px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+
+  .stage-dir { color: #6a6a7a; font-style: italic; margin: 14px 0; padding: 8px 14px; border-left: 3px solid #2a3e58; background: rgba(140,160,190,0.03); border-radius: 0 4px 4px 0; }
+
+  .char { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; display: block; font-size: 13px; }
+  .char.andrew { color: var(--vhs-blue); } .char.luke { color: #5aaa7a; } .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); } .char.devon { color: var(--devon-gray); } .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); } .char.corine { color: var(--corine-teal); }
+  .char.carlos { color: var(--carlos-copper); } .char.juwan { color: var(--juwan-sky); }
+
+  .dial { margin: 4px 0 12px 20px; color: var(--text-white); }
+  .paren { color: #506880; font-style: italic; font-size: 13px; }
+
+  .laugh { display: inline-flex; align-items: center; gap: 6px; background: rgba(212,160,80,0.08); border: 1px solid rgba(212,160,80,0.15); color: var(--laugh-gold); font-size: 11px; padding: 3px 10px; border-radius: 20px; margin: 8px 0; letter-spacing: 1px; text-transform: uppercase; cursor: default; animation: laugh-fade 0.4s ease; }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .sfx { color: var(--highlight); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0; opacity: 0.7; }
+
+  /* Group chat styling */
+  .group-chat { background: rgba(140,160,190,0.03); border: 1px solid #2a3a50; border-radius: 8px; padding: 14px; margin: 12px 0; font-size: 13px; }
+  .group-chat .gc-header { color: var(--vhs-blue); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #222; }
+  .group-chat .gc-msg { margin: 6px 0; color: #a4b4c4; line-height: 1.5; }
+  .group-chat .gc-msg .gc-name { font-weight: 700; color: #c0d0e0; margin-right: 4px; }
+  .group-chat .gc-msg .gc-time { color: #5a6a7e; font-size: 11px; margin-left: 6px; }
+  .group-chat .gc-reaction { display: inline-block; background: rgba(140,160,190,0.06); border: 1px solid #2a3a50; border-radius: 12px; padding: 2px 8px; font-size: 12px; margin-top: 4px; margin-right: 4px; }
+
+  .credits { text-align: center; padding: 40px 20px; border-top: 2px solid #243048; background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%); }
+  .credits p { color: #4a5a6e; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .credits .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 16px; }
+
+  @media (max-width: 600px) { .tv-frame { padding: 10px; border-radius: 10px; } .script-body { padding: 20px 12px; } .dial { margin-left: 10px; } }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:23:47</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 8</div>
+  <div class="episode-title">"Out of Office"</div>
+  <div class="episode-desc">THE MEMORIAL DAY EPISODE<br>SEVEN TIME ZONES. ONE GROUP CHAT. ZERO TICKETS.</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Friday Before Memorial Day, 4:47 PM
+</div>
+
+<div class="stage-dir">The last standup before the long weekend. Nobody is pretending to care about tickets anymore. LUKE has already changed his Teams status to "🏖️ ALMOST FREE." ANTHONY's says "🎮 Loading Weekend..." DEVON's says what it always says: nothing. The call has the loose, giddy energy of the last period before summer break. RACHELLE is wrapping up.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Okay, on-call schedule is posted. I trust everyone saw it. Before we sign off — I thought it'd be nice to go around and share weekend plans. It's a long one. You've all earned it.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(already leaning back, more relaxed than the team has ever seen him)</span> I'll go first. My girlfriend and I are getting out of Wisconsin for a few days. Road trip. Cabin up north. No laptop. No tickets. No Teams notifications. Three days of hiking, sleeping in, and pretending the ticketing system doesn't exist.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Hold on. <em>Andrew</em> is sleeping in? The same Andrew who said — and I quote — "nine o'clock means nine o'clock, not nine-oh-one"?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">That was a work context, Luke.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">You said it with your whole chest, man. You pointed at the camera. I felt it in my soul.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">What time are you sleeping in till? Like, nine-fifteen? Nine-thirty? Give us a number so we can judge you fairly.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(small grin)</span> I'm not answering that.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(camera off, voice from the void)</span> He's going to set an alarm anyway. He can't help it. It's in his blood.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(pause)</span> ...My girlfriend already hid my phone charger for the weekend so I wouldn't.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">She knows me too well.</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "Operation Unpack"
+</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Tina! What's the weekend looking like?</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(camera on, but the background has changed — her usual organized shelves are gone, replaced by a wall of cardboard boxes stacked floor to ceiling)</span> Okay, so! Big news! We officially moved! Florida to Cleveland! The truck got here last Wednesday and we have been <em>drowning</em> in boxes ever since. My husband opened one looking for the coffee maker and found my grandmother's Christmas ornaments. He opened another one looking for towels and found — I am not making this up — a bag of pool noodles. We don't have a pool anymore, Andrew. We moved to Ohio.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">So... Memorial Day is unpacking weekend.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(pulling out a color-coded spreadsheet that she has printed and laminated)</span> Memorial Day is <em>operation unpack!</em> I made a schedule. Saturday: kitchen and living room. Sunday: bedrooms and bathrooms. Monday: pictures on walls, patio setup, and — this is the big one — the succulent garden gets its new home! I already drew a layout. Each plant has an assigned spot based on sunlight exposure.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">You laminated the schedule.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">It's a three-day operation, Devon! You don't go into a three-day operation without lamination!</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I've never laminated anything in my life. And I've survived.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(gently)</span> Devon, your camera has been off for eight episodes. We don't know if you've survived.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">How's Cleveland compared to Florida so far?</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">Cold. <span class="paren">(beat)</span> It's May and I wore a jacket yesterday. In Florida, I wore a jacket once. In 2019. Ironically. But honestly? I love it. The house is beautiful, the neighborhood is quiet, and my husband keeps saying "we have a <em>basement!</em>" like he discovered a new continent. He's been going down there just to stand in it.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">The only thing I miss is the warm weather. And Publix. I <em>really</em> miss Publix.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(solemnly)</span> Publix chicken tender subs are a top-five sandwich. I don't even live in Florida and I know that.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(hand on heart)</span> Anthony, thank you. That means more than you know.</div>
+
+<div class="laugh ooh">Audience: "Aww"</div>
+
+<!-- ═══════════ ACT ONE-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  "The Gamers and the Gearheads"
+</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Anthony, how about you?</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(the most alive he has ever been on a work call)</span> Three days. No contact. Phone on silent. Blinds closed. I've got a mini fridge next to my setup stocked with energy drinks and those little pizza rolls you can microwave in ninety seconds. I've got a backlog of games that goes back to March. I'm talking Elden Ring DLC, the new COD season, maybe some Baldur's Gate if I'm feeling intellectual — which I won't be, because by hour twelve I'll be running on Mountain Dew and spite.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">So your Memorial Day plan is to become a goblin.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(without hesitation)</span> A high-performance goblin, Andrew. There's a difference.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">What's your setup? Like, what headset are you running?</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">HyperX Cloud II. Classic. Reliable.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(shaking his head)</span> See, that's fine for <em>gaming</em>. But for work? I've been going deep this week. Deep, Anthony. I'm spending the weekend testing auto-mute headsets. You know — the ones with the sensor that mutes when you stop talking? I watched like six hours of YouTube reviews. There's a guy called "MuteKing" who does side-by-side audio comparisons. He tested one while eating Doritos and you couldn't hear a single crunch.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(genuine surprise)</span> Wait. You're spending your long weekend... researching headsets? For work?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(dead serious)</span> Andrew, after the kettle chip incident, and the burrito before that — I've accepted who I am. I'm a snacker. I can't change that. But I <em>can</em> change my equipment. This is an engineering problem, not a willpower problem.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(appearing close to camera, treadmill audible)</span> Which models are you looking at? I need specifics. Some auto-mute headsets have a trigger floor of fifty decibels, which means a kettle chip at close range would still activate the mic. You'd be automating the problem, not solving it. I'll send you my chip acoustics spreadsheet. Cross-reference column D — that's the fracture-point decibel rating by brand.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">I was looking at the Jabra Evolve2 75 —</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(instantly)</span> Good choice. Forty-decibel trigger floor. Teams certified. ANC rated to twenty-six decibels. I own two. One for the treadmill desk, one for the standing desk. I rotate based on which desk I'm at, which changes hourly based on a productivity cycle I designed. I call it the Shimmer Protocol. I'll send you the documentation.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">The Shimmer Protocol?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">It's named after the phenomenon in physics where light oscillates between states. I oscillate between desks. The metaphor is elegant. Brenda didn't understand it either but she said "please stop explaining" which I took as engagement.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Two — "The Brooders and the Breeders"
+</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Devon — you've been very quiet. What's the holiday looking like up in Vermont?</div>
+
+<div class="stage-dir">A long pause. Classic Devon pause. The pause that by now the team has learned to wait through, like a loading screen that always delivers eventually.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(slowly)</span> ...I'll be home.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(gently)</span> Any plans?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I have a book.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">What book?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">"The Stranger" by Camus.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(to Luke, in a DM that he accidentally sends to the group chat)</span> that is the most devon book of all time</div>
+
+<div class="stage-dir">Everyone sees it. ANTHONY freezes.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I saw that.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(mortified)</span> ...It was a compliment?</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(ignoring it entirely)</span> I might sit on the porch if the weather isn't aggressive. Vermont in May is unpredictable. You'll get seventy degrees and sunshine at noon and then a frost warning by six. The state can't commit to a season. I relate to that.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">That's it? Just the book and the porch?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(a beat, quieter)</span> ...I'll probably grill something. Chicken thighs. There's a marinade my mom used to make — lemon, garlic, rosemary. I make it every Memorial Day. The grill's been sitting under a tarp since last September. I'll clean it off. Fire it up. It's a whole thing.</div>
+
+<div class="stage-dir">The gentlest silence the team has ever produced.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(voice cracking slightly)</span> Devon...</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">Don't.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(already tearing up)</span> That's so SWEET —</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">Tina. I am begging you. Don't make it a thing.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(wiping eyes)</span> It's already a thing! You make your mom's recipe every Memorial Day! That's BEAUTIFUL!</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(long, defeated exhale)</span> ...This is why I keep my camera off.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(rescuing Devon with the grace of a woman who manages humans and livestock)</span> Well, since we're on the topic of outdoor activities — my weekend is going to be all about the babies.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">...Babies?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Baby chickens and turkeys! Our latest clutch hatched ten days ago — eight chicks and four turkey poults. This weekend we're transitioning them from the brooder to the outdoor run, which means I'll be outside in the Texas heat basically all three days making sure they're eating, drinking, staying cool, and not getting picked on by the older hens.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Wait — Rachelle raises chickens? Like, real chickens?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(pulling out her phone, showing the camera)</span> Real chickens! Look at this one. This is Dolly. She's the runt. She falls asleep standing up. I have to check on her every two hours because she just... topples over.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(melting)</span> Oh my god.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">And <em>this</em> is Big Tex. He's a turkey poult. He's the largest of the four and he's absolutely fearless. He tried to fight a garden hose yesterday. He lost. He tried again today. Lost again. He'll try tomorrow. That's just who he is.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">So Big Tex keeps fighting the garden hose even though he's lost every time?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Every single time.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(looking directly at Luke and Anthony)</span> ...Sounds familiar.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Hey!</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">That was about us, wasn't it.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(diplomatic smile)</span> The turkeys are also very sweet. They just need patience. And supervision. And sometimes you have to physically stop them from eating rocks.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(quietly)</span> That's definitely about them.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">The heat is the real challenge though. It's supposed to hit a hundred on Monday. In Texas, Memorial Day isn't a holiday — it's a survival exercise. I'll be out there with a misting fan, a shade tent, and enough electrolyte water for twelve birds and one very stubborn turkey who keeps charging the hose.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(hand on heart)</span> Rachelle, can you send us pictures? Of Dolly? Please?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">I'll set up a photo thread in the group chat. Daily Dolly updates.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(ecstatic)</span> DAILY DOLLY!</div>
+
+<div class="laugh applause">Applause</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "And Jeff?"
+</div>
+
+<div class="stage-dir">The round-robin is nearly done. Everyone has shared. Except one person. The team turns, collectively, to JEFF M.'s webcam box. He's been uncharacteristically quiet for the last four minutes. His treadmill is still audible. But there's a new sound in the background — distant, high-pitched, and chaotic. It sounds like a small human is running into a wall repeatedly. Because a small human is running into a wall repeatedly.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Jeff — you're the last one! What's Memorial Day looking like in Indiana?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(looking up like he just remembered other people exist, then flinching at a crash offscreen)</span> Oh. Right. Plans. So — my wife has informed me that I am not allowed to touch the project this weekend. Those were her exact words. "Do not touch the project." She said it twice. She also hid my portable monitor.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(grinning)</span> My girlfriend hid my phone charger. We're living the same life.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">We are not living the same life, Andrew. You have a cabin and a lake. I have three teenage daughters who are currently arguing about the bathroom at a volume that violates OSHA workplace noise standards, and a three-year-old son who just discovered he can open the refrigerator by himself. He's been opening it and closing it for forty minutes. Just... opening. Closing. Opening. Closing. He thinks it's a game. It's not a game. The milk is warm now.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Wait — Jeff, you have <em>four kids?</em></div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">Three girls — fifteen, fourteen, and thirteen. And a three-year-old boy who I am convinced is conducting stress tests on every appliance in the house. Last week he put a Hot Wheels car in the toaster. Not because he was confused. He looked me in the eye and did it. He knew what he was doing. The car melted. The toaster survived. I documented the incident.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">You documented your toddler putting a car in the toaster?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">Anthony, I document everything. That's not new information.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(camera off, quiet realization)</span> ...This explains so much about you.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">What does that mean?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">The treadmill. The three monitors. The project. The memes at three AM. You're not a workaholic, Jeff. You're a man seeking refuge.</div>
+
+<div class="stage-dir">The longest pause JEFF M. has ever taken.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(quietly)</span> ...The project doesn't argue about who used whose shampoo, Devon. The project doesn't open the refrigerator forty times in a row. The project <em>makes sense.</em></div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(hand on heart)</span> Jeff, that's actually really sweet in a weird way. You love your family so much that you need a treadmill desk and three monitors just to cope.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">I don't "cope," Tina. I optimize. There's a difference. But — yes. My wife wants us to do a family cookout on Monday. I'll be on grill duty. My oldest daughter is bringing her boyfriend, who I have already run a background check on. He seems fine. His GPA is a 3.4, which is acceptable but not impressive. I've prepared conversation topics in case he's boring. I also bought sparklers for the three-year-old, which my wife said was "a terrible idea" but I've done the math on sparkler-related injuries and the risk profile is manageable at his height.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">You ran a risk profile on sparklers.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">At his height, the flame is at a safe radial distance from his face. I'll send you the calculations. Actually — I'll just text them to you at two AM. Which reminds me. Fair warning to everyone: I will be sending memes this weekend. My brain doesn't turn off when the workday ends. It just... pivots. To memes. Tina, Devon, Andrew — check your phones tonight. I found one about remote work that's going to change your life.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">Jeff, you sent me a meme at three-seventeen AM last Tuesday. It was a picture of a cat sitting at a desk with the caption "me pretending to care about the Monday standup." I was asleep. My phone lit up. I read it. I exhaled through my nose. And then I couldn't fall back asleep for an hour.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">But you exhaled. That's engagement, Devon.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">He sent me one at midnight on Saturday — it was a golden retriever in a hard hat with the caption "me showing up to the Monday standup with nothing to report." I laughed so hard I woke up my husband. He was not amused. I saved it.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I get them too. Sometimes three in a row. No context. No greeting. Just — meme, meme, meme. At one-forty-five in the morning. I've stopped questioning it. I just wake up and there's Jeff content waiting for me like a deranged newspaper.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(genuinely proud)</span> I curate. I don't spam. Every meme is selected for the specific recipient based on their personality, sense of humor, and current emotional state as estimated by their most recent Slack activity. It's a system.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">It's unhinged.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">It's both.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(smiling warmly)</span> Jeff, that sounds like a wonderful weekend.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(a beat, then — softer, almost surprised by himself)</span> ...Yeah. It will be. My kids are loud and exhausting and my son will probably try to eat a sparkler. But they're... they're good. They're really good.</div>
+
+<div class="stage-dir">The briefest, gentlest silence. The team sees Jeff — the real Jeff — for half a second.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(immediately recovering)</span> I'll also be sneaking in two hours of project work on Saturday while everyone's asleep. My wife doesn't know about this. If anyone tells her I will deny it and also revoke your access to the Unified Snack Protocol.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(laughing)</span> There he is.</div>
+
+<div class="laugh applause">Applause</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  Tag — Saturday Morning, The Group Chat
+</div>
+
+<div class="stage-dir">The long weekend begins. The team group chat lights up over the next 48 hours.</div>
+
+<div class="group-chat">
+  <div class="gc-header">🏖️ TEAM CHAT — MEMORIAL DAY WEEKEND</div>
+
+  <div class="gc-msg"><span class="gc-name">Rachelle:</span> Good morning team! Here's your first Daily Dolly update 🐣 [image: a tiny yellow chick asleep standing up next to a water dish]<span class="gc-time">7:12 AM SAT</span></div>
+  <div class="gc-msg"><span class="gc-name">Tina:</span> DOLLY 😭😭😭💛<span class="gc-time">7:13 AM</span></div>
+  <div class="gc-msg"><span class="gc-name">Tina:</span> Update from Cleveland: Found the coffee maker!! It was in a box labeled "GARAGE MISC." My husband has been formally reprimanded.<span class="gc-time">8:45 AM</span></div>
+
+  <div class="gc-msg"><span class="gc-name">Luke:</span> Auto-mute headset #1 arrived. Testing now. Eating Doritos directly into the mic as a stress test. Will report back.<span class="gc-time">10:30 AM</span></div>
+  <div class="gc-msg"><span class="gc-name">Luke:</span> UPDATE: Headset muted during the Doritos but unmuted when I coughed. So it blocks chips but not coughs. This is a design flaw. Emailing the manufacturer.<span class="gc-time">11:02 AM</span></div>
+  <div class="gc-msg"><span class="gc-name">Jeff M.:</span> wHaT mOdEl DiD yOu BuY<span class="gc-time">11:03 AM</span></div>
+  <div class="gc-msg"><span class="gc-name">Luke:</span> The EPOS Adapt 560.<span class="gc-time">11:04 AM</span></div>
+  <div class="gc-msg"><span class="gc-name">Jeff M.:</span> Forty-five decibel trigger floor. I told you. Column D. You didn't read column D.<span class="gc-time">11:04 AM</span></div>
+  <div class="gc-reaction">💀 4</div>
+
+  <div class="gc-msg"><span class="gc-name">Anthony:</span> Hour 6. Three Red Bulls deep. Just cleared a dungeon in Elden Ring that I've been stuck on since March. Nobody talk to me. I'm in the zone.<span class="gc-time">3:15 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Andrew:</span> [image: a lake surrounded by pine trees, two camp chairs, a cooler] No Wi-Fi. No tickets. Just vibes.<span class="gc-time">4:22 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Luke:</span> Andrew is that a COOLER? The man who told me "nine o'clock means nine o'clock" is drinking beer by a lake at 4 PM??<span class="gc-time">4:24 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Andrew:</span> It's Memorial Day weekend, Luke. Different rules.<span class="gc-time">4:25 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Devon:</span> Hypocrisy.<span class="gc-time">4:26 PM</span></div>
+  <div class="gc-reaction">🤣 6</div>
+</div>
+
+<div class="group-chat">
+  <div class="gc-header">🏖️ TEAM CHAT — SUNDAY</div>
+
+  <div class="gc-msg"><span class="gc-name">Rachelle:</span> Daily Dolly #2! She discovered grass today. She was very suspicious of it. Big Tex tried to fight the sprinkler. He lost. Again. 🐣🦃 [image attached]<span class="gc-time">7:30 AM SUN</span></div>
+  <div class="gc-msg"><span class="gc-name">Tina:</span> BIG TEX NEVER LEARNS AND I LOVE HIM<span class="gc-time">7:31 AM</span></div>
+
+  <div class="gc-msg"><span class="gc-name">Tina:</span> Bathroom is DONE. All towels are out of boxes. My husband found the pool noodles again. In a different box. We don't have a pool. We moved to OHIO.<span class="gc-time">12:15 PM</span></div>
+  <div class="gc-reaction">😂 5</div>
+
+  <div class="gc-msg"><span class="gc-name">Devon:</span> [image: a single plate of grilled chicken thighs on a back porch table, Vermont hills in the background, a book next to it] <span class="gc-time">6:48 PM</span></div>
+
+  <div class="stage-dir">No caption. No commentary. Just the photo. The team knows what it means.</div>
+
+  <div class="gc-msg"><span class="gc-name">Tina:</span> 💛<span class="gc-time">6:49 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Andrew:</span> 🙏<span class="gc-time">6:51 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Rachelle:</span> That looks wonderful, Devon.<span class="gc-time">6:52 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Devon:</span> It was fine.<span class="gc-time">6:55 PM</span></div>
+
+  <div class="stage-dir">Everyone knows it was more than fine.</div>
+
+  <div class="gc-msg"><span class="gc-name">Anthony:</span> Hour 22. I've ascended. I can see through walls. The pizza rolls have become load-bearing in my diet. Do not perceive me.<span class="gc-time">11:30 PM</span></div>
+  <div class="gc-reaction">💀 3</div> <div class="gc-reaction">👑 2</div>
+</div>
+
+<div class="group-chat">
+  <div class="gc-header">🏖️ TEAM CHAT — MONDAY (MEMORIAL DAY)</div>
+
+  <div class="gc-msg"><span class="gc-name">Rachelle:</span> Final Daily Dolly! All babies made it through the weekend! Dolly graduated to the outdoor run. Big Tex fought the garden hose one more time. This time he didn't lose. (He didn't win either. It was a draw.) 🐣🦃🎉 [image attached]<span class="gc-time">8:00 AM MON</span></div>
+  <div class="gc-msg"><span class="gc-name">Tina:</span> I'm going to cry at this picture every day for the rest of my life<span class="gc-time">8:01 AM</span></div>
+
+  <div class="gc-msg"><span class="gc-name">Tina:</span> THE SUCCULENT GARDEN IS PLANTED. Every plant in its assigned spot. The Haworthia is in partial shade. The Echeveria has full sun. Cleveland, Ohio, you have been BOTANICALLY ORGANIZED. [image: immaculate patio garden]<span class="gc-time">2:30 PM</span></div>
+  <div class="gc-reaction">🌱 4</div> <div class="gc-reaction">🏡 3</div>
+
+  <div class="gc-msg"><span class="gc-name">Luke:</span> FINAL HEADSET REPORT: Tested 3 models over 3 days. Winner is the Jabra Evolve2 75. Ate an entire bag of kettle chips on a test call with my brother. He heard nothing. NOTHING. The Snack Protocol has been defeated by technology. Jeff I'm sending you the results.<span class="gc-time">3:15 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Jeff M.:</span> Excellent. I'll integrate your findings into the Unified Snack Protocol v2.0. You'll be credited. Also — cookout update from Indiana. My three-year-old tried to eat a sparkler. I caught him. Risk profile held. The boyfriend's GPA came up in conversation. He did not appreciate the question. My wife told me to stop. I stopped. (I didn't stop. I just got subtler.)<span class="gc-time">3:18 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Andrew:</span> Jeff how did you subtly bring up a teenager's GPA at a cookout<span class="gc-time">3:20 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Jeff M.:</span> I asked him what his "five-year plan" was. He said "I'm seventeen." I said "Exactly. You should have one by now." My daughter hasn't spoken to me in two hours but I stand by the question. Also I snuck in 3 hours of project work this morning. My wife thinks I was "going for a walk." The walk was to my car. Where I had a laptop. Don't tell her.<span class="gc-time">3:22 PM</span></div>
+  <div class="gc-reaction">💀 7</div> <div class="gc-reaction">❤️ 5</div> <div class="gc-reaction">👨‍👧‍👧 2</div>
+
+  <div class="gc-msg"><span class="gc-name">Devon:</span> Jeff sent me a meme at 2:41 AM. It was a turkey standing in front of a garden hose with the caption "Big Tex energy." I have questions about his sleep schedule and none of them are good.<span class="gc-time">8:30 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Tina:</span> HE SENT ME THE SAME ONE AT 2:43 AM 😂<span class="gc-time">8:31 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Andrew:</span> 2:47 AM here. Same meme. He staggered the send times. Like a professional.<span class="gc-time">8:33 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Jeff M.:</span> I don't batch-send. Each delivery is timed for maximum impact based on the recipient's estimated REM cycle.<span class="gc-time">8:34 PM</span></div>
+  <div class="gc-reaction">💀 9</div> <div class="gc-reaction">😴 3</div>
+
+  <div class="gc-msg"><span class="gc-name">Anthony:</span> Final score: 52 hours of gaming. 4 games completed. 11 Red Bulls consumed. 1 existential crisis at hour 38 where I questioned if I was playing the game or if the game was playing me. Didn't shower. No regrets. See you all tomorrow.<span class="gc-time">9:00 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Devon:</span> Shower before the standup. Please.<span class="gc-time">9:02 PM</span></div>
+  <div class="gc-reaction">🤣 8</div>
+
+  <div class="gc-msg"><span class="gc-name">Andrew:</span> Heading home tomorrow morning. Best weekend I've had in a long time. Thanks for the group chat, everybody. It was nice to be away but still feel like... I don't know. Like we're a team even when we're not working.<span class="gc-time">10:15 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Tina:</span> 💛💛💛<span class="gc-time">10:16 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Devon:</span> See you Tuesday.<span class="gc-time">10:20 PM</span></div>
+  <div class="gc-msg"><span class="gc-name">Rachelle:</span> Rest up, everyone. You earned it. 🐣<span class="gc-time">10:22 PM</span></div>
+</div>
+
+<div class="stage-dir">The group chat goes quiet. Across five different states — Wisconsin, Ohio, Vermont, Texas, and Indiana — the team logs off. The weekend ends the way the best ones do: not with anything dramatic, but with the quiet knowledge that you've got people. Even if they're just names on a screen. Even if one of them sends you memes at 2:41 AM calibrated to your REM cycle.</div>
+
+<div class="laugh applause">Applause — warm and sustained</div>
+
+<div class="sfx">♪ END THEME — SOFTER ARRANGEMENT, ACOUSTIC GUITAR UNDER THE SYNTH — NO FREEZE FRAME TONIGHT, JUST A SLOW FADE ON THE GROUP CHAT, THE LITTLE 🐣 EMOJI GLOWING ON SCREEN ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW (WISCONSIN)</p>
+  <p>LUKE .......................... LUKE (HEADSET TESTING LAB)</p>
+  <p>ANTHONY ....................... ANTHONY (THE GAMING CAVE)</p>
+  <p>TINA .......................... TINA (CLEVELAND, FORMERLY FLORIDA, MISSING PUBLIX)</p>
+  <p>DEVON ......................... DEVON (VERMONT. PORCH. BOOK.)</p>
+  <p>RACHELLE ...................... RACHELLE (TEXAS, WITH DOLLY AND BIG TEX)</p>
+  <p>JEFF M. ....................... JEFF M. (INDIANA, 4 KIDS, A HIDDEN LAPTOP, AND YOUR 3 AM MEME DEALER)</p>
+  <p>BRENDA (HR) ................... BRENDA (NOT INVOLVED THIS WEEK, SOMEHOW)</p>
+  <p>DOLLY ......................... HERSELF (SURVIVED THE WEEKEND)</p>
+  <p>BIG TEX ....................... HIMSELF (FOUGHT THE HOSE. TIED.)</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(who were given pool noodles for reasons no one can explain)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">PREVIOUSLY ON "ANDREW": The team learned about mute buttons.</p>
+  <p style="color:#555; font-size:11px;">This week, they learned about each other.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

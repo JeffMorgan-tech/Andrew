@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E02</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0e1520; color: var(--text-cream); font-family: 'Courier Prime', monospace;
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
+  }
+
+  .vhs-bar {
+    width: 100%; background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%);
+    padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: #4a5e78; border-bottom: 2px solid #243048; position: sticky; top: 0; z-index: 100;
+  }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+
+  .tv-frame {
+    width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel);
+    border-radius: 18px; padding: 20px;
+    box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6); position: relative;
+  }
+  .tv-frame::before {
+    content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%;
+    transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px;
+  }
+
+  .screen {
+    background: var(--screen-bg); border-radius: 8px; overflow: hidden;
+    position: relative; border: 3px solid #243048;
+  }
+  .screen::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px);
+    pointer-events: none; z-index: 10;
+  }
+
+  .title-card {
+    text-align: center; padding: 50px 20px 40px;
+    background: linear-gradient(180deg, #141e30 0%, #121a28 100%);
+    position: relative; overflow: hidden;
+  }
+  .title-card::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%);
+    animation: glow-rotate 8s linear infinite;
+  }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .show-title {
+    font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(28px, 6vw, 52px);
+    background: linear-gradient(180deg, #d4a050 0%, #c08840 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1;
+  }
+  .show-subtitle {
+    font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px);
+    color: #6a7e98a9e; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase; position: relative; z-index: 1;
+  }
+  .episode-info { margin-top: 18px; font-size: 13px; color: #4a5e78e78; letter-spacing: 2px; position: relative; z-index: 1; }
+  .episode-title {
+    font-family: 'Special Elite', cursive; font-size: clamp(16px, 3.5vw, 22px);
+    color: var(--vhs-blue); margin-top: 10px; position: relative; z-index: 1;
+  }
+  .episode-desc {
+    font-size: 12px; color: #4a5a6e; margin-top: 14px; letter-spacing: 1px;
+    position: relative; z-index: 1; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6;
+  }
+
+  .script-body {
+    padding: 30px clamp(15px, 4vw, 40px);
+    background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%);
+    line-height: 1.75; font-size: clamp(14px, 2.2vw, 16px);
+  }
+
+  .scene-header {
+    font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(16px, 3vw, 20px);
+    color: var(--laugh-gold); text-transform: uppercase; letter-spacing: 3px;
+    margin: 40px 0 8px; padding: 12px 0; border-top: 2px solid #243048;
+    border-bottom: 1px solid #1a2438; position: relative;
+  }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num { color: var(--vhs-red); font-size: 12px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+
+  .stage-dir {
+    color: #6a6a7a; font-style: italic; margin: 14px 0; padding: 8px 14px;
+    border-left: 3px solid #2a3e58; background: rgba(140,160,190,0.03); border-radius: 0 4px 4px 0;
+  }
+
+  .char { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; display: block; font-size: 13px; }
+  .char.andrew { color: var(--vhs-blue); }
+  .char.luke { color: #5aaa7a; }
+  .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); }
+  .char.devon { color: var(--devon-gray); }
+  .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); }
+  .char.corine { color: var(--corine-teal); }
+
+  .dial { margin: 4px 0 12px 20px; color: var(--text-white); }
+  .paren { color: #506880; font-style: italic; font-size: 13px; }
+
+  .laugh {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(212,160,80,0.08); border: 1px solid rgba(212,160,80,0.15);
+    color: var(--laugh-gold); font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    margin: 8px 0; letter-spacing: 1px; text-transform: uppercase; cursor: default;
+    animation: laugh-fade 0.4s ease;
+  }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .sfx { color: var(--highlight); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0; opacity: 0.7; }
+
+  .credits {
+    text-align: center; padding: 40px 20px; border-top: 2px solid #243048;
+    background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%);
+  }
+  .credits p { color: #4a5a6e; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .credits .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 16px; }
+
+  @media (max-width: 600px) {
+    .tv-frame { padding: 10px; border-radius: 10px; }
+    .script-body { padding: 20px 12px; }
+    .dial { margin-left: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:22:34</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 2</div>
+  <div class="episode-title">"New Hires.."</div>
+  <div class="episode-desc">ANDREW SEEKS WISDOM FROM THE MENTORS.<br>THE MENTORS HAVE OPINIONS.</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Three Weeks In
+</div>
+
+<div class="stage-dir">ANDREW's home office. He's reviewing the new hires' timesheets on one monitor and their ticket history on the other. His face tells the story before any dialogue does. On the timesheet: LUKE has clocked in at 9:00 exactly twice in three weeks. Every other day ranges from 9:17 to — on one memorable occasion — 10:42, with a note that reads "alarm situation (again)." ANTHONY's times are more consistent, hovering around 9:08 to 9:15, which would be fine except for the fact that his Teams status doesn't go green until roughly thirty minutes after he clocks in, which suggests a Starbucks detour is involved.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(rubbing his temples, talking to no one)</span> Three weeks. Clocked in on time... four times. Combined. Between two people.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">He pulls up their ticket notes. LUKE's most recent note reads: "Customer had issue. Looked into it. Will follow up." That's the entire note. For a P2 ticket. ANTHONY's latest reads: "Sent customer a link." No indication of <em>what</em> link. Just... a link. Into the void. ANDREW closes his eyes.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(opening eyes, decision made)</span> I need backup.</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "The Mentor Meeting"
+</div>
+
+<div class="stage-dir">A private Teams call. No new hires — just the veterans. ANDREW, TINA, DEVON, and JEFF M. This is the mentor meeting: an informal, off-the-books call where people who've been around the block compare notes on training the next generation. TINA has a fresh cup of tea. DEVON's camera is off. JEFF M. is walking on his treadmill and has already shared his screen to show a graph that no one asked for.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Alright, I called this because I'm three weeks in with Luke and Anthony and I'm starting to lose it. They're not clocking in on time. Their ticket notes are basically haikus — bad haikus. And I can't tell if they're struggling or if they just... don't care? I need advice. What do I do differently?</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(immediately, warmly)</span> Oh Andrew, three weeks is still early! I remember when I was training new techs in the field — it took at least a month before anyone could read a calibration log without holding it upside down. My advice? Positive reinforcement. Celebrate the small wins. Did Luke close a ticket today? That's a win! Did Anthony show up before nine-thirty? Growth!</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Tina, Anthony showed up at nine-fifteen today and he was still in his car.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(unwavering)</span> But he was <em>on time</em> in the car! That's momentum!</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Devon, what do you think?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(camera off, voice like a man narrating a nature documentary about extinction)</span> What do I think. I think you're asking the wrong question. It's not "what do I do differently." It's "how do I accept that nothing will change." I've seen twelve new hires come through this team in eight years. They all start the same way. Bright-eyed. Enthusiastic. Can't find the admin portal. Three months later they either figure it out or they leave. Your job isn't to make them learn. Your job is to survive until they decide to.</div>
+
+<div class="stage-dir">Silence.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(gently)</span> Devon, that's the most depressing pep talk I've ever heard.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">It's not a pep talk. It's a weather report.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Jeff, you're being quiet. What do you got?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(he has not been quiet — he's been typing furiously while walking on the treadmill)</span> Okay so I've been listening and also simultaneously building a training efficiency tracker in Excel. Here's what I recommend. First: structured micro-goals. Don't say "learn the ticketing system." Say "close one P4 ticket by 11 AM with documentation that includes timestamps, steps taken, and customer confirmation." Measurable. Time-bound. Binary outcome.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">That's... actually not bad.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">Second: shadow sessions. Don't tell them how to do a ticket — let them watch you do one in real time. They need to see the workflow, not hear about it. Third: daily check-ins. Five minutes. Start of day. "What are you working on, what do you need." That's it. Fourth: I built a twenty-seven-page training curriculum with branching scenarios and a skills matrix. I'll send it to you. I already sent it to Brenda.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Why does Brenda keep getting these?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">She's HR, Andrew. She should know about everything. That's her whole job. I'm helping.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">Brenda has no idea who you are, Jeff.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">She will. I'm playing the long game.</div>
+
+<div class="laugh">Laugh track</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  Act Two — "Putting It Into Practice"
+</div>
+
+<div class="stage-dir">Next morning. ANDREW is on a call with LUKE and ANTHONY. He has taken the advice. All of it. From all three mentors. Simultaneously. This is the mistake.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Alright guys, new approach this week. I'm going to start by celebrating some wins from last week —</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(perking up)</span> Oh, nice!</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading from notes)</span> Luke, you clocked in before ten AM on three out of five days.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(genuinely)</span> Let's go!</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading)</span> Anthony, you submitted ticket notes on every ticket this week.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(fist pump)</span> Yes sir!</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">One of them just said "Sent customer a link" with no further context, but we're celebrating volume today.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Now — moving forward. I want to try something Devon suggested. I'm going to step back a little. Give you guys more room. Let you figure things out. I'll be here if you need me, but I'm not going to hover.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(nodding)</span> I respect that. Autonomy.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Love it. Trust-based system.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">And I also want to implement Jeff's structured micro-goals. So — Luke, your goal today: close one P4 ticket by 11 AM. Full documentation. Timestamps, steps taken, customer confirmation. Can you do that?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(saluting the camera)</span> Consider it done.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Anthony, same goal. One ticket. Full docs. By eleven.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">On it. One hundred percent.</div>
+
+<div class="stage-dir">ANDREW ends the call. Leans back. Feels good about this. For exactly forty-five minutes.</div>
+
+<!-- ═══════════ ACT TWO-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  "The Backfire"
+</div>
+
+<div class="stage-dir">10:45 AM. ANDREW checks the ticket dashboard. Neither LUKE nor ANTHONY has closed anything. LUKE's status in Teams says "Away." ANTHONY's status says "In a meeting" — he is not in a meeting. ANDREW takes a breath. Opens a DM to LUKE.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing)</span> Hey Luke, checking in — how's the ticket going? Eleven o'clock goal, remember?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(DM response, two minutes later)</span> Oh yeah totally. I'm in deep on it right now. Really deep. Just gotta figure out one thing.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing)</span> What thing?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(DM, four minutes later)</span> How to open the ticket.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW switches to ANTHONY's DM.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing)</span> Anthony — status check. How's the ticket?</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(DM, immediately)</span> Great news — I found the answer. Sending the customer a link now.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing, slowly)</span> ...What link, Anthony?</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(DM)</span> Google.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(staring at screen)</span></div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(DM)</span> Like, the main page. So they can search for it themselves.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW leans back. Stares at the ceiling. The "step back and give them autonomy" approach has lasted exactly one morning. He hears DEVON's voice in his head: "Your job is to survive until they decide to."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(picking up phone, texting Tina)</span> "The positive reinforcement worked for 45 minutes. Then Luke forgot how to open a ticket and Anthony tried to send a customer the Google homepage."</div>
+
+<div class="stage-dir">TINA's response comes back instantly: "Okay but they're ENGAGING with the work! That's growth! 🌱"</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading the text)</span> She put a seedling emoji. She actually put a seedling emoji.</div>
+
+<div class="laugh">Laugh track</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "The Real Talk"
+</div>
+
+<div class="stage-dir">Afternoon. ANDREW has pulled LUKE and ANTHONY back onto a call. No celebration this time. He's direct but not unkind. He's figured out — the hard way — that the advice he got was all good advice applied at the wrong time. You can't give autonomy to people who haven't learned the basics. You can't celebrate wins that aren't wins yet. And you definitely can't hand a twenty-seven-page curriculum to two guys who can't remember to clock in.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Okay, guys. Level with me. I've been trying different approaches, and I think I overcomplicated it. So let me just ask straight up — what's the hardest part right now? Honestly.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(surprisingly candid)</span> Honestly? There's so many systems. I don't know where anything is. Every time you show me something it makes sense in the moment, but then when I go to do it myself I forget which tab, which portal, which screen. It all kind of blurs together.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Same. And I feel like I should already know this stuff by now, so I don't want to keep asking. Like, I don't want to be the guy who's still asking where the admin portal is on week three.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(genuine, no frustration)</span> Okay. That's actually really helpful. And for the record — you <em>should</em> keep asking. That's literally what I'm here for. I'd rather you ask me twenty times than send a customer a link to Google.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(wincing)</span> ...You saw that.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Anthony, I will see that in my nightmares until the day I die.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Here's what we're going to do. Forget the micro-goals and the curriculum. Tomorrow morning, you're both going to shadow me on a live ticket. You watch. You take notes — <em>real</em> notes, Luke, not "see previous conversation" — and then we'll do one together. Step by step. No shortcuts. No Googling-it-for-the-customer. Deal?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Deal.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Deal.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">And clock in at nine. Both of you. I mean nine o'clock. Not "nine-ish." Not "well, my alarm is on European time." Nine. On the dot. Can I get a nine?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(raising his hand)</span> Nine.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(raising his hand)</span> Nine.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Beautiful.</div>
+
+<div class="laugh applause">Applause</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:15 PM. ANDREW is back on the mentor call with TINA, DEVON, and JEFF M. Debriefing.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">So here's where I landed. All of your advice was good. But I was trying to do all of it at once and it just... exploded. Tina, the positive reinforcement thing — I think that works, but not for "you showed up." I need to save that for when they actually do something. Devon, the stepping-back thing — they're not ready for that yet. They need hand-holding first. And Jeff — the structured goals are solid, but twenty-seven pages is a lot for two guys who just learned where the admin portal is.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(nodding)</span> That's fair. I may have been a little too... optimistic about the car thing.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I stand by my weather report.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">I've already revised the curriculum down to nine pages. Version two. It has fewer branching scenarios. I also added a "quick start guide" on page one. It's just a picture of the admin portal with an arrow pointing to the login button. I think that'll help Luke specifically.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">That... actually might work.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">I sent it to Brenda.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(resigned)</span> Of course you did.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">She replied this time. She said "Please stop emailing me." I think that means she read it.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW laughs. Really laughs. For the first time this episode. The Fiji brochure is visible in his open desk drawer. He doesn't look at it tonight. Progress.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Same time tomorrow, everybody.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I'll be here. I'm always here.</div>
+
+<div class="laugh applause">Applause — warm and familiar</div>
+
+<div class="sfx">♪ END THEME — UPBEAT SYNTH — FREEZE FRAME ON THE MENTOR CALL, FOUR BOXES, FOUR VERY DIFFERENT PEOPLE WHO SOMEHOW MAKE IT WORK ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY ....................... ANTHONY</p>
+  <p>TINA .......................... TINA</p>
+  <p>DEVON ......................... DEVON</p>
+  <p>JEFF M. ....................... JEFF M.</p>
+  <p>BRENDA (HR) ................... BRENDA (NOW AWARE. NOT HAPPY.)</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(who clocked in on time, unlike some people)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">PREVIOUSLY ON "ANDREW": He agreed to mentor two new hires.</p>
+  <p style="color:#555; font-size:11px;">He's beginning to understand the full scope of that decision.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

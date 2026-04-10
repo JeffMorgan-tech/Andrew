@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E09</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0e1520; color: var(--text-cream); font-family: 'Courier Prime', monospace; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+  .vhs-bar { width: 100%; background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #4a5e78; border-bottom: 2px solid #243048; position: sticky; top: 0; z-index: 100; }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+  .tv-frame { width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel); border-radius: 18px; padding: 20px; box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6); position: relative; }
+  .tv-frame::before { content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px; }
+  .screen { background: var(--screen-bg); border-radius: 8px; overflow: hidden; position: relative; border: 3px solid #243048; }
+  .screen::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px); pointer-events: none; z-index: 10; }
+  .title-card { text-align: center; padding: 50px 20px 40px; background: linear-gradient(180deg, #141e30 0%, #121a28 100%); position: relative; overflow: hidden; }
+  .title-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%); animation: glow-rotate 8s linear infinite; }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+  .show-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(28px, 6vw, 52px); background: linear-gradient(180deg, #d4a050 0%, #c08840 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1; }
+  .show-subtitle { font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px); color: #6a7e98a9e; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase; position: relative; z-index: 1; }
+  .episode-info { margin-top: 18px; font-size: 13px; color: #4a5e78e78; letter-spacing: 2px; position: relative; z-index: 1; }
+  .episode-title { font-family: 'Special Elite', cursive; font-size: clamp(16px, 3.5vw, 22px); color: var(--vhs-blue); margin-top: 10px; position: relative; z-index: 1; }
+  .episode-desc { font-size: 12px; color: #4a5a6e; margin-top: 14px; letter-spacing: 1px; position: relative; z-index: 1; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+  .script-body { padding: 30px clamp(15px, 4vw, 40px); background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%); line-height: 1.75; font-size: clamp(14px, 2.2vw, 16px); }
+  .scene-header { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(16px, 3vw, 20px); color: var(--laugh-gold); text-transform: uppercase; letter-spacing: 3px; margin: 40px 0 8px; padding: 12px 0; border-top: 2px solid #243048; border-bottom: 1px solid #1a2438; position: relative; }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num { color: var(--vhs-red); font-size: 12px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+  .stage-dir { color: #6a6a7a; font-style: italic; margin: 14px 0; padding: 8px 14px; border-left: 3px solid #2a3e58; background: rgba(140,160,190,0.03); border-radius: 0 4px 4px 0; }
+  .char { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; display: block; font-size: 13px; }
+  .char.andrew { color: var(--vhs-blue); } .char.luke { color: #5aaa7a; } .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); } .char.devon { color: var(--devon-gray); } .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); } .char.corine { color: var(--corine-teal); }
+  .char.carlos { color: var(--carlos-copper); } .char.juwan { color: var(--juwan-sky); }
+  .dial { margin: 4px 0 12px 20px; color: var(--text-white); }
+  .paren { color: #506880; font-style: italic; font-size: 13px; }
+  .laugh { display: inline-flex; align-items: center; gap: 6px; background: rgba(212,160,80,0.08); border: 1px solid rgba(212,160,80,0.15); color: var(--laugh-gold); font-size: 11px; padding: 3px 10px; border-radius: 20px; margin: 8px 0; letter-spacing: 1px; text-transform: uppercase; cursor: default; animation: laugh-fade 0.4s ease; }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .sfx { color: var(--highlight); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0; opacity: 0.7; }
+  .credits { text-align: center; padding: 40px 20px; border-top: 2px solid #243048; background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%); }
+  .credits p { color: #4a5a6e; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .credits .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 16px; }
+  @media (max-width: 600px) { .tv-frame { padding: 10px; border-radius: 10px; } .script-body { padding: 20px 12px; } .dial { margin-left: 10px; } }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:23:16</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 9</div>
+  <div class="episode-title">"Andrew Knows Best"</div>
+  <div class="episode-desc">HE DOESN'T.</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Tuesday Morning, Ticket Review
+</div>
+
+<div class="stage-dir">ANDREW is on a mentoring call with LUKE and ANTHONY. He's reviewing their recent tickets — a weekly ritual that has become steadily less painful over the last few weeks. The new hires are improving. Slowly. But visibly. ANDREW is feeling confident. Maybe too confident. The kind of confident that comes right before the universe reminds you who's in charge.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Alright guys, looking at this week's tickets — not bad. Luke, your P3 from yesterday? Solid documentation. Timestamps, steps, customer confirmation. That's clean work.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(genuinely proud)</span> Thanks, man. I've been using that template Corine made.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Anthony, your VPN ticket — the resolution notes are clear. Good stuff. One thing though — on ticket 4471, the customer's Eclipse integration is throwing sync errors after the patch. I see you noted that you were going to try rolling back the config and re-syncing manually. But — I think that's the wrong approach. That's going to take way too long. The faster fix is to push a fresh config from the admin side and force a re-auth. I've done it a hundred times. Trust me on this one.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(hesitant)</span> Oh — okay. I mean, I talked to Juwan about it yesterday and he said the rollback is actually safer because the fresh push can sometimes break the custom auth module if the site has legacy integrations. He said he saw it happen on an ARIA site last year.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(waving it off, confident)</span> Nah, that's an edge case. Ninety-nine percent of the time the fresh push works fine. Juwan's being overly cautious. Let's go with the push. I'll walk you through it.</div>
+
+<div class="stage-dir">ANTHONY nods. He doesn't look convinced, but he trusts Andrew. LUKE watches quietly. Something about this feels off to both of them, but neither says anything. They're new. Andrew's the mentor. Andrew knows best.</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "The Push"
+</div>
+
+<div class="stage-dir">An hour later. ANDREW has walked ANTHONY through the fresh config push. ANTHONY executes it. For a moment, everything looks fine. Green status across the board. ANDREW leans back, satisfied.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">See? Clean. Fast. That's how it's done. Juwan's rollback would've taken forty-five minutes. This took four.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(watching the screen)</span> Yeah, it looks — wait. What's that?</div>
+
+<div class="stage-dir">A red banner appears at the top of the customer's system dashboard. "AUTH MODULE ERROR — LEGACY INTEGRATION CONFLICT." The exact thing Juwan warned about.</div>
+
+<div class="sfx">♪ A SINGLE, DEVASTATING ERROR CHIME ♪</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(staring at the screen)</span> ...Oh no.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(reading the error)</span> "Legacy integration conflict." Isn't that what Juwan said would happen?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(very quiet)</span> ...Yes. That is what Juwan said would happen.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">So... we broke it?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(pinching the bridge of his nose)</span> <em>I</em> broke it. I told you to do the push. This one's on me.</div>
+
+<div class="stage-dir">The silence that follows is the silence of a mentor realizing, in front of the people he's supposed to be teaching, that he was wrong. And not a little wrong. Juwan-tried-to-tell-him wrong.</div>
+
+<div class="laugh">Laugh track</div>
+
+<!-- ═══════════ ACT ONE-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  "The Cleanup"
+</div>
+
+<div class="stage-dir">ANDREW immediately calls JUWAN. It takes one ring.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(picking up, calm, no judgment)</span> What happened?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I pushed the fresh config on the Eclipse site. The one Anthony asked you about. The one you said to roll back instead. It broke the auth module. You were right.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(beat)</span> ...The legacy integration?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">The legacy integration.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(not gloating, just steady)</span> Alright. Pull up the admin console. I'll walk you through the recovery. We'll do the rollback first, then re-sync the auth module manually. It'll take about forty-five minutes.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(exhaling)</span> Forty-five minutes. Exactly what it would've taken if I'd listened in the first place.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(small grin)</span> Funny how that works.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">They fix it. It takes forty-seven minutes. ANTHONY and LUKE shadow the whole thing — silently, attentively. They watch Andrew ask for help. They watch Juwan give it without rubbing it in. They watch two peers navigate a mistake like professionals. It's the best lesson they've had all month, and nobody planned it.</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Two — "The Spiral"
+</div>
+
+<div class="stage-dir">Afternoon. The site is fixed. The customer is happy. But ANDREW isn't. He's at his desk, headset off, staring at the ticket notes he wrote: "Root cause: incorrect remediation approach selected by support (me). Corrected via rollback per Juwan's original recommendation." He wrote it honestly. And it's eating him alive.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM to Devon)</span> Hey. Quick question. Have you ever been completely wrong about something in front of the people you were supposed to be training?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(DM back, immediately)</span> Every week for eight years. Welcome to the club.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM)</span> How do you deal with it?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(DM)</span> I stopped pretending I wasn't wrong. That's it. That's the whole thing. The moment you try to protect your image as the guy who knows everything, you become the guy who can't be trusted. The new hires don't need you to be right all the time, Andrew. They need you to be honest all the time. Those are different jobs.</div>
+
+<div class="stage-dir">The most words Devon has typed in a single message all season. ANDREW reads it twice.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM)</span> ...That's actually really good advice, Devon.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(DM)</span> Don't make it a thing.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">Meanwhile, in the team channel:</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(DM to Andrew, unprompted)</span> I heard about the config push. For what it's worth, I made the same mistake in my first year. Except I did it on a production Eclipse environment and it took down treatment planning for six hours. I didn't tell anyone for two of those hours because I thought I could fix it myself. I could not fix it myself. The point is: you're fine. Also, I sent you a meme about it. Check your phone at 2 AM.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "Rachelle's Office"
+</div>
+
+<div class="stage-dir">End of day. RACHELLE pings ANDREW for a one-on-one. Her camera is on. Soft lighting. The bookshelf. A faint clucking sound in the background — she's near the chicken run. She's read the ticket notes. She knows what happened.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">So. I saw the ticket.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(bracing)</span> Yeah. I messed up. Anthony had the right approach — well, Juwan's approach — and I overrode it. The config push broke the auth module. We fixed it, but it shouldn't have happened. I should've listened.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(nodding slowly)</span> You should have. And you know that now. But Andrew — I want to tell you something, and I want you to really hear it. What happened today? That's not a failure. That's one of the most valuable things you could've given Luke and Anthony.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(confused)</span> ...Breaking a customer's system is valuable?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(smiling gently)</span> Showing them that their mentor can be wrong — and admit it — is <em>invaluable.</em> Andrew, think about what they saw today. They saw you make a call. They saw it go bad. They saw you own it immediately — not deflect, not blame the system, not pretend it didn't happen. You called Juwan. You asked for help. You wrote honest ticket notes. You let them watch the whole thing. Do you know how rare that is?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(quiet)</span> It didn't feel valuable. It felt embarrassing.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Of course it did. That's what growth feels like. It feels embarrassing and uncomfortable and like you want to crawl under your desk. But here's the truth: if Luke and Anthony only ever see you being right, they're going to be terrified of being wrong. And in this job — in any job — being wrong is not the problem. Staying wrong is. You didn't stay wrong today. You fixed it. You owned it. That's the lesson.</div>
+
+<div class="stage-dir">ANDREW is quiet for a moment. Really processing it.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Don't take it too hard. You're a good mentor, Andrew. Not because you're always right — but because when you're wrong, you don't hide it. That's the kind of person I'd want teaching me.</div>
+
+<div class="laugh ooh">Audience: "Aww"</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(small, genuine)</span> ...Thanks, Rachelle.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(warm)</span> You know who else had to learn this lesson? Dolly.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">...The chicken?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">She kept trying to roost on the water dish instead of the perch. Every night. Fell in every time. But last week? She figured out the perch. And she figured it out because I let her fall. Sometimes the fall is the lesson.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(beat)</span> Rachelle, did you just compare me to a baby chicken?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(perfect smile)</span> I compared you to a baby chicken who learned.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:20 PM. ANDREW's DMs light up. A message from ANTHONY: "Hey Andrew — I just wanted to say, I know today was rough. But honestly? Watching you call Juwan and fix it together was the most useful thing I've seen since I started. I learned more from that than from any training doc. Thanks for being real about it." ANDREW reads it. Reads it again.</div>
+
+<div class="stage-dir">A message from LUKE: "also — for what it's worth, I didn't know what a legacy auth module was before today and now I do. So technically you DID teach us something. just... the long way around 😂"</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">ANDREW smiles. Opens his desk drawer. The Patagonia brochure is still there. He doesn't pick it up. He picks up his phone instead. Opens Juwan's DM.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing)</span> Hey man — thanks for today. For real. I should've listened the first time. I owe you one.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(DM back)</span> You don't owe me anything. That's what the team is for. But if you want to buy me a coffee next time we're in the same time zone, I won't say no. 😂</div>
+
+<div class="stage-dir">ANDREW's phone buzzes. 2:00 AM preview notification from JEFF M. It's a meme: a picture of a man confidently pressing a big red button while a colleague waves frantically in the background. The caption reads: "Me pushing the fresh config vs. Juwan trying to warn me." It's already been sent to Devon and Tina too.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading it, shaking his head, laughing)</span> ...Two AM. Every time.</div>
+
+<div class="laugh applause">Applause — warm</div>
+
+<div class="sfx">♪ END THEME — UPBEAT SYNTH — FREEZE FRAME ON ANDREW'S FACE, HALF-LAUGHING, HALF-CRINGING, THE FACE OF A MAN WHO LEARNED SOMETHING THE HARD WAY ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW (WRONG, BUT HONEST)</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY ....................... ANTHONY (HAD THE RIGHT ANSWER ALL ALONG)</p>
+  <p>JUWAN ......................... JUWAN (CALLED IT)</p>
+  <p>RACHELLE ...................... RACHELLE (AND DOLLY)</p>
+  <p>DEVON ......................... DEVON (SURPRISINGLY WISE)</p>
+  <p>JEFF M. ....................... JEFF M. (2 AM MEME DELIVERY)</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(who also would've done the fresh push. don't lie.)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">PREVIOUSLY ON "ANDREW": The team had a great Memorial Day.</p>
+  <p style="color:#555; font-size:11px;">This week, Andrew learned that "knowing best" and "being best" aren't the same thing.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

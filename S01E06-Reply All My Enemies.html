@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E06</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0e1520;
+    color: var(--text-cream);
+    font-family: 'Courier Prime', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  .vhs-bar {
+    width: 100%;
+    background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px; color: #4a5e78;
+    border-bottom: 2px solid #243048;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .vhs-bar .rec {
+    color: var(--vhs-red);
+    font-weight: bold;
+    animation: blink 1.2s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode {
+    font-family: 'Courier Prime', monospace;
+    color: #5a7090;
+    letter-spacing: 2px;
+  }
+
+  .tv-frame {
+    width: 95%;
+    max-width: 900px;
+    margin: 30px auto;
+    background: var(--tv-bezel);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow:
+      0 0 60px rgba(0,0,0,0.8),
+      inset 0 0 30px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .tv-frame::before {
+    content: 'TOSHIBA';
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #304060;
+    letter-spacing: 4px;
+  }
+
+  .screen {
+    background: var(--screen-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid #243048;
+  }
+  .screen::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      var(--scanline) 0px,
+      var(--scanline) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .title-card {
+    text-align: center;
+    padding: 50px 20px 40px;
+    background: linear-gradient(180deg, #141e30 0%, #121a28 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .title-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%);
+    animation: glow-rotate 8s linear infinite;
+  }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .show-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 6vw, 52px);
+    background: linear-gradient(180deg, #d4a050 0%, #c08840 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 1;
+    line-height: 1.1;
+  }
+  .show-subtitle {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(14px, 3vw, 20px);
+    color: #6a7e98a9e;
+    margin-top: 8px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-info {
+    margin-top: 18px;
+    font-size: 13px; color: #4a5e78e78;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(16px, 3.5vw, 22px);
+    color: var(--vhs-blue);
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-desc {
+    font-size: 12px;
+    color: #4a5a6e;
+    margin-top: 14px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+  .content-warning {
+    font-size: 11px;
+    color: #6a7a90;
+    margin-top: 20px;
+    padding: 8px 16px;
+    border: 1px solid #2a3a50;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 1px;
+  }
+
+  .script-body {
+    padding: 30px clamp(15px, 4vw, 40px);
+    background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%);
+    line-height: 1.75;
+    font-size: clamp(14px, 2.2vw, 16px);
+  }
+
+  .scene-header {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--laugh-gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 40px 0 8px;
+    padding: 12px 0;
+    border-top: 2px solid #243048;
+    border-bottom: 1px solid #1a2438;
+    position: relative;
+  }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num {
+    color: var(--vhs-red);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 2px;
+    letter-spacing: 5px;
+  }
+
+  .stage-dir {
+    color: #6a6a7a;
+    font-style: italic;
+    margin: 14px 0;
+    padding: 8px 14px;
+    border-left: 3px solid #2a3e58;
+    background: rgba(140,160,190,0.03);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .char {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 16px;
+    display: block;
+    font-size: 13px;
+  }
+  .char.andrew { color: var(--vhs-blue); }
+  .char.luke { color: #5aaa7a; }
+  .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); }
+  .char.devon { color: var(--devon-gray); }
+  .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); }
+  .char.corine { color: var(--corine-teal); }
+
+  .dial {
+    margin: 4px 0 12px 20px;
+    color: var(--text-white);
+  }
+  .paren {
+    color: #506880;
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .laugh {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(212,160,80,0.08);
+    border: 1px solid rgba(212,160,80,0.15);
+    color: var(--laugh-gold);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 8px 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: default;
+    animation: laugh-fade 0.4s ease;
+  }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .sfx {
+    color: var(--highlight);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 10px 0;
+    opacity: 0.7;
+  }
+
+  /* Slack message styling */
+  .slack-msg {
+    background: rgba(140,160,190,0.05);
+    border: 1px solid #2a3a50;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #94a4b4;
+  }
+  .slack-msg .slack-user {
+    font-weight: 700;
+    color: #c0d0e0;
+    margin-right: 6px;
+  }
+  .slack-msg .slack-channel {
+    color: var(--vhs-blue);
+    font-size: 11px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .slack-msg .slack-reaction {
+    display: inline-block;
+    background: rgba(140,160,190,0.08);
+    border: 1px solid #2a3a50;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-top: 6px;
+    margin-right: 4px;
+  }
+
+  .credits {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 2px solid #243048;
+    background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%);
+  }
+  .credits p {
+    color: #4a5a6e;
+    font-size: 12px;
+    margin: 4px 0;
+    letter-spacing: 1px;
+  }
+  .credits .filmed {
+    color: #4a6480;
+    font-family: 'Special Elite', cursive;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+  .credits .psa {
+    color: #7a8a9e;
+    font-size: 12px;
+    max-width: 480px;
+    margin: 20px auto 0;
+    line-height: 1.6;
+    border-top: 1px solid #333;
+    padding-top: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .tv-frame { padding: 10px; border-radius: 10px; }
+    .script-body { padding: 20px 12px; }
+    .dial { margin-left: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:24:08</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 6</div>
+  <div class="episode-title">"Reply All My Enemies"</div>
+  <div class="episode-desc">STARRING THE FULL ENSEMBLE<br>WITH SPECIAL APPEARANCES BY RACHELLE & CORINE</div>
+  <div class="content-warning">THIS EPISODE DEALS WITH WORKPLACE CYBERBULLYING — WITH HEART, HUMOR, AND AN HR INVESTIGATION</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Wednesday Morning, General Slack Channel
+</div>
+
+<div class="stage-dir">ANDREW is at his desk, coffee in hand, scrolling through the team Slack channel. The morning is quiet. Suspiciously quiet. Then he sees it.</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">GregA_SDS:</span> Wow, another ticket bounced back from the remote crew. Shocking. Do these people even have computers or do they just stare at their phones all day? 🙄
+  <span class="slack-reaction">👀 3</span> <span class="slack-reaction">😬 2</span>
+</div>
+
+<div class="stage-dir">ANDREW's eyes narrow. He scrolls up. There's more.</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">GregA_SDS:</span> I love how "working from home" is just code for "I'll get to it between naps." Must be nice having a manager who doesn't check. 🏠💤
+  <span class="slack-reaction">💀 4</span>
+</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">Jeff_M:</span> mUsT bE nIcE hAvInG a MaNaGeR wHo DoEsN't ChEcK
+  <span class="slack-reaction">💀 7</span> <span class="slack-reaction">☠️ 3</span>
+</div>
+
+<div class="stage-dir">ANDREW snorts. Then immediately feels guilty about it. Then scrolls down and stops laughing.</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">GregA_SDS:</span> @Tina maybe if your "field experience" translated to desk work you wouldn't need to ask Tier 2 so many questions 😂 just a thought
+  <span class="slack-reaction">😡 1</span>
+</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(setting down coffee very slowly)</span> ...Okay, Greg.</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "The Discovery"
+</div>
+
+<div class="stage-dir">An impromptu group call — no video. Just voices. ANDREW threw it up in the team channel: "hey, anyone got a minute?" Everyone joined within seconds, which tells you something. ANDREW, TINA, DEVON, LUKE, ANTHONY, JEFF M., and CORINE. CORINE's audio is crisp and clear — she uses a professional USB microphone, because of course she does.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Hey — so, I don't know if everyone saw the Slack messages from Greg this morning, but... that was pretty messed up. Tina, you okay?</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(noticeably less chipper than usual, but trying)</span> Oh — yeah, I saw those. It's... it's fine! I mean, I'm sure he was just joking. You know how Slack is. Tone gets lost in text! I'm totally fine.</div>
+
+<div class="stage-dir">A beat. No one believes her.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(flat)</span> He wasn't joking.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(smaller voice)</span> ...Yeah. I know.</div>
+
+<div class="laugh ooh">Audience: "Aww"</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(calm, measured, precise — the voice of someone who has already pulled up the employee handbook)</span> This isn't the first time. He made a comment two weeks ago in the cross-team channel about remote workers "playing hooky on the company dime." I screenshotted it. Timestamped. I also have the three messages from this morning archived with metadata.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(whispering to Anthony)</span> ...Metadata?</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(whispering back)</span> Don't ask. She's like the FBI but for Slack.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">I heard that.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(immediately)</span> See?</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(pacing audibly, treadmill whirring)</span> Okay so here's where I'm at. I already pulled Greg's Tier 2 ticket resolution data. His average close time is six-point-three days. Mine is eleven minutes. So statistically, if anyone on this team is napping, it's Greg. I made a comparative bar chart. I sent it to Brenda.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Jeff —</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">I also sent it to Greg.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Jeff, dude — you can't just send a guy's performance data to his face as a clapback!</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(genuinely puzzled)</span> Why not? It's just numbers. Numbers don't have feelings, Andrew. They're not like people. Although honestly, some people also don't seem to have feelings. Like Greg.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Jeff, I gotta say though — that reply you left on Greg's Slack message this morning? The "mUsT bE nIcE" thing? <span class="paren">(trying not to laugh)</span> That was insane.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">It's called the Spongebob. It's a rhetorical device. I use it when someone says something so dumb it doesn't deserve a real response. I have a keyboard shortcut for it.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(quietly)</span> ...He has a keyboard shortcut for it.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">For what it's worth, Greg has been like this for years. He takes shots at anyone who isn't in the office. When I first went remote in 2020, he put a cardboard cutout of me in my old cubicle with a sign that said "Gone Fishin'." HR said it was "team humor."</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(gasping)</span> Devon! That's awful!</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">The cutout is still there. It's been four years. They put a party hat on it last Christmas.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(quiet intensity)</span> That's harassment. Section 7.2 of the employee code of conduct: "Repeated disparaging remarks targeting an individual or group based on work arrangement, including but not limited to remote or hybrid status, constitute a hostile work environment." I can recite the whole section if anyone wants.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">She memorized it.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">Of course I memorized it. You should too. It's the handbook. It's literally the rules.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(to Anthony)</span> Did you know there was a handbook?</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">I thought it was optional reading. Like the terms and conditions.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(deeply offended silence)</span></div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  Act Two — "Mama Bear Mode"
+</div>
+
+<div class="stage-dir">RACHELLE's office. She's on camera for once — soft lighting, a bookshelf behind her filled with leadership books and a small framed photo of her team from last year's virtual holiday party. She speaks the way a librarian handles a rare book: gently, but with absolute authority. ANDREW has pinged her privately.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Hey Rachelle, you got a sec? I want to loop you in on something before it snowballs. So Greg over on the SDS team has been going off in the general Slack channel — taking shots at the remote team, calling us lazy, the whole deal. And this morning he tagged Tina by name. Like, directly at her. In front of everyone. Corine's been screenshotting it — she's got stuff going back two weeks. I just... I don't know what the right move is here, but it doesn't feel like something we should just let slide.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(listening intently, nodding slowly, then — very quietly)</span> He tagged Tina by name?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">By name. In the public channel. Tina's doing that thing where she says she's fine but she's clearly not fine.</div>
+
+<div class="stage-dir">RACHELLE's expression doesn't change. But something shifts behind her eyes. It's the look of a woman who has read every HR policy twice, has never once raised her voice, and is about to absolutely ruin someone's Wednesday.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(soft, calm, terrifyingly measured)</span> Andrew, thank you for bringing this to me. I want you to know — this team works hard. I see it every day. The metrics are there. The customer feedback is there. And no one — no one — is going to sit in a public channel and belittle my people because they don't commute to a building. I'm going to handle this.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(exhaling)</span> Okay. Good. I wasn't sure if I was making too big a deal out of it or —</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(gently cutting him off)</span> You're not. Andrew, you did the right thing coming to me. This is exactly what I need to know about. Now let me do my part.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">What are you gonna do?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">It looks like me scheduling a meeting with Greg's manager, cc'ing HR, and attaching Corine's screenshots with timestamps and the relevant sections of the code of conduct. It looks like a formal complaint filed before lunch. And it looks like me sitting on this call right now, completely calm, because I am calm. I'm very calm.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(quietly)</span> You don't seem calm.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(perfect smile)</span> That's because I'm furious. But I'm furious <em>professionally</em>.</div>
+
+<div class="laugh applause">Applause</div>
+
+<div class="stage-dir">Cut to: CORINE has already emailed Rachelle a PDF. It is seven pages long. It has a table of contents.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(via Slack DM to Andrew)</span> I sent Rachelle the documentation package. Twelve incidents. Cross-referenced with dates, channels, and affected parties. I also included a section on precedent from last year's policy update. She should have everything she needs.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading, astonished)</span> Corine, this has... footnotes.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">It has an appendix too. The footnotes reference the appendix.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Have you considered a career in law?</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">I considered it. The hours were too unstructured.</div>
+
+<div class="laugh">Laugh track</div>
+
+<!-- ═══════════ ACT TWO-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Meanwhile — "The Troops Rally"
+</div>
+
+<div class="stage-dir">Back on the team call — now with video. Everyone's cameras are on. Even DEVON's, which is notable. TINA is visibly upset but holding it together. The team, for once, is fully present.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(leaning into camera, no bathrobe today — he's wearing an actual collared shirt)</span> Hey Tina. I just want to say — that guy's a jerk. Like, a real jerk. You taught me how to use the knowledge base last week. I didn't even know we had a knowledge base. And now I do. Because of you.</div>
+
+<div class="laugh ooh">Audience: "Aww"</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Yeah, and for what it's worth — when I first started, you were the only person who didn't make me feel stupid for not knowing how to navigate the ticketing system. You stayed on a call with me for an hour. On a Friday. After five.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(eyes glistening)</span> You guys...</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(clears throat, looks deeply uncomfortable about having a feeling)</span> Tina. When you joined this team, you asked me how my weekend was. No one had asked me that in... <span class="paren">(calculates)</span> ...I don't want to say how long. The point is. You're good at this job. You're good at... people. And Greg is just a guy who peaked when he got the corner cubicle in 2018 and he's been holding on to it ever since. Literally. He taped his nameplate down.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(laughing through tears)</span> Devon, that might be the nicest thing you've ever said.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">Don't get used to it. I've met my annual quota.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(suddenly very close to his camera)</span> Tina. I want you to know something. You are the third most productive person on this team. That's a compliment. First is me. Second is Corine. But third — out of eight? That's top quartile. I made a certificate. It has a gold border. I'm mailing it to your house. I already have your address.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(half-laughing, half-concerned)</span> ...How do you have my address?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial">The same way I have everyone's address. Don't worry about it.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(quiet but firm)</span> Tina, I just want you to know — what Greg did isn't okay. And it's not just "Slack being Slack." It's a pattern, and it's documented. Rachelle has the file. This is going to be handled properly. By the book.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(wiping eyes, genuine smile returning)</span> You guys are making me cry and it's only Wednesday and I haven't even finished my coffee.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(quietly, not trying to make a speech — just saying it)</span> Man. I'm really glad I work with you guys.</div>
+
+<div class="laugh applause">Applause — warm</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(ruining the moment, gently)</span> ...So should I still not eat my burrito, or —</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "The Reckoning"
+</div>
+
+<div class="stage-dir">Two hours later. The #support-team-general Slack channel. A new message appears.</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">Rachelle_M (Manager):</span> Hi team — a quick note. I want to be clear: this channel is a professional workspace. Every member of this team — whether remote, hybrid, or in-office — contributes to our shared success. Disparaging remarks about any colleague's work arrangement are not "jokes." They are violations of our code of conduct and will be treated as such. If anyone is experiencing disrespectful behavior, my door (virtual or otherwise) is always open. We are one team. Let's act like it.
+</div>
+
+<div class="stage-dir">A moment. Then:</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">Corine_R:</span> 👏
+</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">Devon_W:</span> 👏
+</div>
+
+<div class="stage-dir">Then, from people across the company who've been lurking in the channel and watching Greg's behavior for months:</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">Maria_L (Tier 3):</span> Thank you Rachelle. Long overdue. 👏<br>
+  <span class="slack-user">Kenji_S (QA):</span> 👏👏👏<br>
+  <span class="slack-user">Patricia_D (Onboarding):</span> This. All of this. 👏
+</div>
+
+<div class="laugh applause">Applause — building</div>
+
+<div class="stage-dir">ANDREW watches the reactions stack up. His phone buzzes. A private DM from RACHELLE:</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">DM: Rachelle → Andrew</span>
+  <span class="slack-user">Rachelle_M:</span> Greg's manager has been notified. HR investigation opens tomorrow. Formal written warning is the minimum. And Andrew — thank you for coming to me. Not everyone speaks up. I'm glad you did.
+</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(to himself, small smile)</span> Furious professionally. I gotta remember that one.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">Another DM pops up. From JEFF M.</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">DM: Jeff M. → Andrew</span>
+  <span class="slack-user">Jeff_M:</span> Hey Andrew. I figured out Greg's home address. Do you want me to mail him a copy of his own performance data? I already printed it. I also made a second copy for Brenda. And I found his MySpace page from 2006. He had a very interesting haircut. Should I share it in the channel?
+</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing quickly)</span> Jeff. No. Absolutely not. Delete the MySpace thing. Don't mail anything. Don't talk to Greg. Don't talk to Brenda. Just — put the printer down, man.</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">DM: Jeff M. → Andrew</span>
+  <span class="slack-user">Jeff_M:</span> Too late on Brenda. But everything else I can do. Also I want you to know I respect your boundaries even though I don't fully understand them.
+</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">DM: Jeff M. → Andrew</span>
+  <span class="slack-user">Jeff_M:</span> Also Greg just posted in the channel again saying "no hard feelings, it was just banter." You want me to hit him with the Spongebob?
+</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(staring at screen, wrestling with himself for a long moment)</span> ...No. Let Rachelle handle it.</div>
+
+<div class="stage-dir">A pause. Then Andrew types back: "...okay maybe just one."</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">#support-team-general</span>
+  <span class="slack-user">Jeff_M:</span> iT wAs JuSt BaNtEr
+  <span class="slack-reaction">💀 11</span> <span class="slack-reaction">🪦 5</span> <span class="slack-reaction">📸 2</span>
+</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:30 PM. ANDREW at his desk. The day's ticket count: solid across the board. But that's not what matters today. He opens Slack one more time.</div>
+
+<div class="slack-msg">
+  <span class="slack-channel">DM: Tina → Andrew</span>
+  <span class="slack-user">Tina_K:</span> Hey Andrew. I just wanted to say thank you. For the call this morning. For telling Rachelle. For everything. I almost didn't say anything because I thought maybe I was overreacting. I'm glad I wasn't alone in it. This is a good team. 💛
+</div>
+
+<div class="stage-dir">ANDREW reads it twice. Types a reply: "You weren't overreacting. Not even close. See you tomorrow, Tina." He hits send.</div>
+
+<div class="stage-dir">His phone buzzes. Group text. LUKE: "yo team dinner friday? virtual. byob. I'm bringing burritos obviously." ANTHONY: "I'm in. Starbucks run first though." DEVON: "I'll attend. Cameras off." CORINE: "I'll prepare an agenda." JEFF M.: "I already ordered food to everyone's houses. Check your porches in 30 minutes."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW opens his desk drawer. The Fiji brochure. The Patagonia brochure. He picks them both up. Considers them. Drops them in the trash.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(closing the drawer)</span> ...I think I'm good here.</div>
+
+<div class="stage-dir">Beat.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(phone buzzes — looks at it)</span> Jeff just sent me his blood type. Unprompted.</div>
+
+<div class="stage-dir">He opens the drawer back up. Retrieves the Patagonia brochure. Sets it on the desk. Just in case.</div>
+
+<div class="laugh applause">Applause — warm and sustained, longest of the season</div>
+
+<div class="sfx">♪ END THEME — SOFTER TONIGHT, PIANO UNDERNEATH THE SYNTH — FREEZE FRAME ON THE TEAM'S SLACK THREAD, FULL OF 👏 EMOJIS ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY ....................... ANTHONY</p>
+  <p>TINA .......................... TINA</p>
+  <p>DEVON ......................... DEVON</p>
+  <p>JEFF M. ....................... JEFF M.</p>
+  <p>CORINE ........................ CORINE</p>
+  <p>RACHELLE ...................... RACHELLE</p>
+  <p>GREG (TIER 2) ................. GREG (VIA SLACK ONLY)</p>
+  <p>BRENDA (HR) ................... BRENDA (STILL VIA EMAIL ONLY)</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(who gave Greg a 1-star review on Glassdoor)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">PREVIOUSLY ON "ANDREW": The team learned about escalation.</p>
+  <p style="color:#555; font-size:11px;">This week, they learned about each other.</p>
+  <p>&nbsp;</p>
+  <div class="psa">
+    If you or someone you know is experiencing workplace bullying or harassment — online or in person — you're not overreacting. Document it. Report it. Talk to someone you trust. You deserve a workplace where you're respected.
+  </div>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

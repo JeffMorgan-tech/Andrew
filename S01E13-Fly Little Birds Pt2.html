@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E13</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0e1520; color: var(--text-cream); font-family: 'Courier Prime', monospace; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+  .vhs-bar { width: 100%; background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #4a5e78; border-bottom: 2px solid #243048; position: sticky; top: 0; z-index: 100; }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+  .tv-frame { width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel); border-radius: 18px; padding: 20px; box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6); position: relative; }
+  .tv-frame::before { content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px; }
+  .screen { background: var(--screen-bg); border-radius: 8px; overflow: hidden; position: relative; border: 3px solid #243048; }
+  .screen::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px); pointer-events: none; z-index: 10; }
+  .title-card { text-align: center; padding: 50px 20px 40px; background: linear-gradient(180deg, #141e30 0%, #121a28 100%); position: relative; overflow: hidden; }
+  .title-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%); animation: glow-rotate 8s linear infinite; }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+  .show-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(28px, 6vw, 52px); background: linear-gradient(180deg, #d4a050 0%, #c08840 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1; }
+  .show-subtitle { font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px); color: #6a7e98a9e; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase; position: relative; z-index: 1; }
+  .episode-info { margin-top: 18px; font-size: 13px; color: #4a5e78e78; letter-spacing: 2px; position: relative; z-index: 1; }
+  .episode-title { font-family: 'Special Elite', cursive; font-size: clamp(16px, 3.5vw, 22px); color: var(--vhs-blue); margin-top: 10px; position: relative; z-index: 1; }
+  .episode-desc { font-size: 12px; color: #4a5a6e; margin-top: 14px; letter-spacing: 1px; position: relative; z-index: 1; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+  .finale-badge { display: inline-block; margin-top: 18px; padding: 6px 18px; border: 2px solid var(--vhs-red); color: var(--vhs-red); font-size: 12px; letter-spacing: 4px; text-transform: uppercase; position: relative; z-index: 1; border-radius: 4px; }
+  .recap { font-size: 13px; color: #6a7a90; margin-top: 20px; font-style: italic; position: relative; z-index: 1; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6; border-top: 1px solid #333; padding-top: 14px; }
+  .script-body { padding: 30px clamp(15px, 4vw, 40px); background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%); line-height: 1.75; font-size: clamp(14px, 2.2vw, 16px); }
+  .scene-header { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(16px, 3vw, 20px); color: var(--laugh-gold); text-transform: uppercase; letter-spacing: 3px; margin: 40px 0 8px; padding: 12px 0; border-top: 2px solid #243048; border-bottom: 1px solid #1a2438; position: relative; }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num { color: var(--vhs-red); font-size: 12px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+  .stage-dir { color: #6a6a7a; font-style: italic; margin: 14px 0; padding: 8px 14px; border-left: 3px solid #2a3e58; background: rgba(140,160,190,0.03); border-radius: 0 4px 4px 0; }
+  .char { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; display: block; font-size: 13px; }
+  .char.andrew { color: var(--vhs-blue); } .char.luke { color: #5aaa7a; } .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); } .char.devon { color: var(--devon-gray); } .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); } .char.corine { color: var(--corine-teal); }
+  .char.carlos { color: var(--carlos-copper); } .char.juwan { color: var(--juwan-sky); }
+  .char.greg { color: #6a7a8e; }
+  .dial { margin: 4px 0 12px 20px; color: var(--text-white); }
+  .paren { color: #506880; font-style: italic; font-size: 13px; }
+  .laugh { display: inline-flex; align-items: center; gap: 6px; background: rgba(212,160,80,0.08); border: 1px solid rgba(212,160,80,0.15); color: var(--laugh-gold); font-size: 11px; padding: 3px 10px; border-radius: 20px; margin: 8px 0; letter-spacing: 1px; text-transform: uppercase; cursor: default; animation: laugh-fade 0.4s ease; }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  .laugh.standing { background: rgba(212,160,80,0.2); border-color: rgba(212,160,80,0.4); color: var(--laugh-gold); font-size: 12px; padding: 5px 14px; }
+  .laugh.standing::before { content: '🎉'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .sfx { color: var(--highlight); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0; opacity: 0.7; }
+  .post-credits { border-top: 2px solid var(--vhs-red); margin-top: 30px; padding-top: 20px; }
+  .post-credits .pc-label { font-family: 'Special Elite', cursive; font-size: 14px; color: var(--vhs-red); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+  .credits { text-align: center; padding: 40px 20px; border-top: 2px solid #243048; background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%); }
+  .credits p { color: #4a5a6e; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .credits .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 16px; }
+  @media (max-width: 600px) { .tv-frame { padding: 10px; border-radius: 10px; } .script-body { padding: 20px 12px; } .dial { margin-left: 10px; } }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:28:00</span>
+  <span>CH 04 — TGIF LINEUP — SEASON FINALE</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 13</div>
+  <div class="episode-title">"Fly Little Birds" — Part 2</div>
+  <div class="episode-desc">SEASON FINALE — PART 2 OF 2</div>
+  <div class="finale-badge">★ Season Finale ★</div>
+  <div class="recap">Previously: Luke and Anthony went solo. Andrew lost internet during a P1 bridge call. Anthony is alone on the line with Greg and a downed customer site. Luke is troubleshooting a P2 with help from Jeff. Devon is typing...</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  "Previously On..." — The Bridge Call, Continued
+</div>
+
+<div class="stage-dir">We pick up exactly where we left off. The P1 bridge call. ANTHONY is on the line. The customer's ARIA system is down. GREG from SDS has just been asked to check for backend changes. Andrew's webcam box still reads "Disconnected." The silence is deafening.</div>
+
+<div class="stage-dir">GREG comes back on the line.</div>
+
+<span class="char greg">Greg</span>
+<div class="dial"><span class="paren">(grudgingly, like every word costs him money)</span> ...Alright. So. It looks like there was a schema update pushed last night from our side. It was supposed to go to staging but it went to production. That could be causing the connection timeout.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(calm, professional)</span> Okay. So the issue is on the SDS side, not the customer's config.</div>
+
+<span class="char greg">Greg</span>
+<div class="dial"><span class="paren">(defensive)</span> I didn't say it was our <em>fault.</em> I said the schema update <em>could</em> be related. There's a difference. And frankly, your team should have caught this in the logs before escalating to us —</div>
+
+<div class="stage-dir">And that's when it happens.</div>
+
+<div class="sfx">♪ THE SOUND OF A WEBCAM TURNING ON — A CLICK, A HISS OF STATIC, AND THEN LIGHT ♪</div>
+
+<div class="stage-dir">A webcam box on the call that has been dark for the entire season — thirteen episodes, every standup, every meeting, every crisis — suddenly flickers to life. DEVON's camera turns on.</div>
+
+<div class="stage-dir">The team chat explodes silently. Everyone watching sees it at the same time. Devon. On camera. For the first time. He's in his fifties. Salt-and-pepper stubble. A dim room in Vermont. One desk lamp. The same chair from 2007. He looks exactly like you'd imagine — tired, steady, and completely done.</div>
+
+<div class="stage-dir">He looks directly into the camera. He's been listening the whole time.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(on camera, voice flat, absolute zero temperature)</span> Greg. I'm going to stop you right here.</div>
+
+<div class="laugh applause">Applause — immediate, electric</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">I've been on this team for eight years. I've worked more P1s than you've filed. I've written knowledge articles that your own engineers reference when they're stuck. I have been listening to you talk down to people on this team for longer than some of these new hires have been out of college. And I'm done listening.</div>
+
+<div class="stage-dir">GREG opens his mouth. Nothing comes out.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">Anthony asked you a clear, specific, technically sound question. And instead of answering it, you tried to blame his team for a schema update that <em>your</em> side pushed to production by accident. He caught it. Not you. Him. The new guy. On his first solo day. While his mentor's internet was down. And you're sitting there calling him "your guy" and questioning whether he can handle the call.</div>
+
+<div class="stage-dir">Complete silence on the bridge.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(leaning forward, looking directly into the camera — the first time anyone on this team has seen his face, and it is delivering the performance of the season)</span> He can handle the call. He just did. Now roll back the schema update, restore the production database, and let Anthony confirm the fix with his customer. That's the process. You know the process. Follow it.</div>
+
+<div class="laugh standing">Standing ovation</div>
+
+<div class="stage-dir">GREG is quiet. For the first time in the entire series, Greg has nothing to say. The bridge call goes to hold while SDS processes the rollback. ANTHONY sits at his desk, stunned. Devon's camera is still on. He hasn't turned it off yet. This is unprecedented.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(privately, DM to Devon)</span> Devon. Thank you. I don't even know what to say.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(DM back)</span> You don't need to say anything. You did the work. I just made sure nobody got in your way. That's what the team is for.</div>
+
+<div class="laugh ooh">Audience: "Aww"</div>
+
+<div class="stage-dir">Devon turns his camera off. The box goes dark again. Normal service has resumed.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "Meanwhile, in Luke's World"
+</div>
+
+<div class="stage-dir">Simultaneously. LUKE has been working through his P2 Eclipse ticket. Jeff's wall-of-text DM got him to the version mismatch. He walked the customer through the update. But now there's a second issue — the sync still isn't completing even after the version update. He's stuck. And he's panicking.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(DM to Jeff M.)</span> Jeff — the version update went through but the sync is still failing. The customer's getting impatient. I don't know what to try next. The KB article doesn't cover this scenario. What do I do??</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(DM back)</span> Okay so there are fourteen possible causes for a post-update sync failure in Eclipse 16.x. I'll list them in order of probability. Number one: residual cache from the previous version. Flush the Eclipse application cache — there's a utility in the admin tools panel under Advanced > Cache Management. Number two: the sync service might need a restart after the version change. Number three: check if the treatment planning module has a pending license validation — sometimes the license handshake stalls after a major version jump. Number four: examine the database replication logs for — actually hold on. I'm going to send you my full troubleshooting decision tree. It's forty-three nodes. I built it last month. Number five —</div>
+
+<div class="stage-dir">LUKE stares at the messages pouring in. There are now eight consecutive DMs from Jeff. Each one is a paragraph. LUKE's eyes are glazing over. He can feel the customer waiting. He needs to move fast, not read a novel.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(DM to Jeff)</span> Jeff — thank you. Seriously. This is incredible. I need to go simpler though. Is there someone who can walk me through it live? Like, on a call?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(DM back, instantly)</span> Carlos. Call Carlos. He's dealt with more Eclipse sync issues than anyone on the team. He'll know the fastest path. Tell him I said the cache flush is step one. He'll agree. Also — I'm proud of you for asking. That's not weakness. That's efficiency. Now go. And check the meme later.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">LUKE calls CARLOS. One ring.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(picking up, calm as always, coffee probably in hand)</span> Hey Luke. What's going on?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(talking fast, a little frantic)</span> Carlos — I'm on a P2, Eclipse sync failure, customer's waiting, I did the version update per KB-4471, sync still won't complete, Jeff sent me like forty-seven possible causes but I don't know where to start, Andrew's offline, and I think the customer is getting frustrated because I've had them on hold twice and —</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(cutting in, gentle, unhurried)</span> Luke. Slow down. Take a breath.</div>
+
+<div class="stage-dir">LUKE stops. Breathes.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial">Good. Now — Jeff's right about the cache. That's your first move. Flush the application cache, restart the sync service, and give it two minutes. Nine times out of ten, that's all it needs after a version change. If it doesn't work, we'll try the license handshake. But let's start simple. One step at a time. You've got this, young blood.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(calmer already)</span> ...Okay. Cache flush. Restart sync. Two minutes.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial">That's it. I'll stay on the line. Go ahead.</div>
+
+<div class="stage-dir">LUKE goes back to the customer. He walks them through the cache flush. He restarts the sync service. He waits. One minute. Ninety seconds. Two minutes. And then — the sync completes. Green across the board. The data flows. The ticket is resolved.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(exhaling, voice cracking slightly)</span> Carlos... it worked.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(smiling, you can hear it)</span> Of course it did. You did the work, Luke. I just told you which button to press first. That's all mentoring is — someone who's already pressed the wrong button a hundred times telling you which one to press next. You did great today.</div>
+
+<div class="laugh applause">Applause</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(genuine)</span> Thanks, Carlos. And tell Jeff thanks too. Even if his DMs gave me a panic attack.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(laughing)</span> That's just Jeff, man. His heart's in the right place. It's just... a lot of place.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  Act Two — "Resolution"
+</div>
+
+<div class="stage-dir">Back on the P1 bridge call. SDS has rolled back the schema update. The ARIA database connection is restored. The customer's system comes back online. ANTHONY confirms it with the customer directly.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(on the call, professional and steady)</span> I can confirm — ARIA is responding. The clinical workflow is back up. I'll monitor for the next thirty minutes and follow up with a status email by end of day. Is there anything else you need from us right now?</div>
+
+<div class="stage-dir">The customer thanks him. The call ends. ANTHONY leans back in his chair. His hands are still shaking. But it's over. He did it.</div>
+
+<div class="stage-dir">GREG is still on the line. Just him and ANTHONY now. A beat.</div>
+
+<span class="char greg">Greg</span>
+<div class="dial"><span class="paren">(quiet, stripped of the usual edge)</span> ...Good catch on the connection timeout. That was solid troubleshooting.</div>
+
+<div class="stage-dir">It's not an apology. It's not warm. But from Greg — from <em>this</em> Greg — it's the closest thing to respect anyone has ever gotten. ANTHONY nods to himself.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Thanks, Greg.</div>
+
+<div class="stage-dir">The call ends. ANTHONY sits in silence for a full thirty seconds. Then he opens Teams. Devon's DM is still there: "That's what the team is for." He reads it one more time. Then he starts writing his ticket notes. Timestamps. Steps taken. Root cause. Resolution. Everything documented. Everything clean.</div>
+
+<div class="laugh applause">Applause</div>
+
+<!-- ═══════════ ACT TWO-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  "Devon's Moment"
+</div>
+
+<div class="stage-dir">Private call. DEVON and ANTHONY. Camera off — Devon's, obviously. But the tone is different. Warmer. Something shifted on that bridge call and neither of them is pretending it didn't.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">Anthony. I want to say something and then I want to never talk about it again.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(small laugh)</span> Okay.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">When the going got tough today — when Andrew dropped and Greg was doing his thing and the site was down — you didn't fold. You asked the right question. You stayed on the line. You let the data lead you to the answer instead of guessing. That's not something I can teach. That's something you either have or you don't. And you have it.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(quiet)</span> I almost panicked, though. When Andrew's name went to Disconnected, I felt my stomach drop.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">Everybody's stomach drops. Mine dropped on my first P1 in 2016. It dropped again today when I saw Greg start talking to you like that. The difference between a good support engineer and a bad one isn't whether your stomach drops. It's what you do after.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">...What did you do on your first P1 in 2016?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(long pause)</span> I muted my mic and said a word I can't repeat on this call. And then I unmuted and fixed it. Same as you.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">The point is — we figured it out. Together. Even when the going got tough. That's how it works. That's how it's always worked. The team shows up. Not perfectly. Not gracefully. But we show up.</div>
+
+<div class="laugh ooh">Audience: "Aww"</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Devon... can I ask you one more thing?</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">No.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">What do you look like? I finally saw you on camera today and then it was gone in like thirty seconds.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial">And that's all you're going to get. Consider it a limited edition. Don't make it a thing.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "Andrew Comes Home"
+</div>
+
+<div class="stage-dir">4:47 PM. Wisconsin. ANDREW is sitting at his desk. He's been offline for three hours. The longest three hours of his life. He's tried the router six times. He's called the ISP twice from a neighbor's phone. He's paced his entire house. He considered driving to a coffee shop but didn't want to miss the moment his connection came back.</div>
+
+<div class="stage-dir">And then — at 4:47 PM — the modem lights blink. One. Two. Three. Green. The Wi-Fi icon on his laptop flickers. Reconnects. Teams loads. His inbox floods.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(scrambling to his desk, opening everything at once)</span> Come on, come on, come on —</div>
+
+<div class="stage-dir">He opens the ticket dashboard. The P1 bridge call ticket: RESOLVED. Resolved by Anthony. Notes: clean, detailed, timestamped. Root cause: accidental schema push from SDS. Resolution: rollback by engineering, confirmed by support. Customer status: satisfied.</div>
+
+<div class="stage-dir">He opens Luke's tickets. The P2: RESOLVED. Resolved by Luke. Notes: version mismatch identified via KB-4471, updated, cache flushed, sync confirmed. Documented. Flagged for follow-up. Clean.</div>
+
+<div class="stage-dir">Both tickets closed. Both resolved correctly. Both fully documented. Both done without him.</div>
+
+<div class="stage-dir">ANDREW stares at the screen. He reads Anthony's notes again. Then Luke's. Then Anthony's one more time. His eyes are wet. He's not crying. He's not. He's just — his eyes are wet.</div>
+
+<div class="stage-dir">He opens the team Slack channel. He types a message. Deletes it. Types another one. Deletes it. Types a third one. Stares at it. Hits send.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(in Slack)</span> Hey everyone — I'm back. ISP went down for three hours. I just read the tickets. I don't have words. But... I'm proud of you guys. Both of you. All of you.</div>
+
+<div class="stage-dir">Responses come immediately.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(Slack)</span> ANDREW!! You missed the most incredible afternoon!! Anthony held down a P1 bridge call BY HIMSELF. Devon turned his CAMERA ON. Luke resolved a P2 with help from Jeff and Carlos. They were AMAZING.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(Slack)</span> Bro. Your guys crushed it. For real.</div>
+
+<span class="char carlos">Carlos</span>
+<div class="dial"><span class="paren">(Slack)</span> The young bloods flew today, brother. You should be proud. You built this.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(Slack)</span> Both tickets are documented per standard. I checked. Clean work.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(Slack)</span> They did fine.</div>
+
+<div class="stage-dir">From Devon, "they did fine" is a standing ovation.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(Slack)</span> Andrew — I told you at the beginning of the season. You're the right person for this. Today proved it. Not because you were on the calls. But because you <em>weren't</em> — and they still flew. That's the best mentoring there is. The kind that works even when the mentor isn't in the room.</div>
+
+<div class="laugh applause">Applause — building</div>
+
+<div class="stage-dir">ANDREW reads Rachelle's message. He reads it three times. Then he notices something. Luke and Anthony's status: both offline. They clocked out. Already done for the day. They handled it, documented it, and left. Like professionals. Like people who know when the job is done.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(to himself, alone in his office, smiling at his screen)</span> ...They flew.</div>
+
+<div class="laugh standing">Standing ovation — longest of the season</div>
+
+<div class="stage-dir">ANDREW reaches into his desk drawer. The Patagonia brochure. He picks it up. Looks at it one last time. And drops it in the trash. He doesn't need it anymore. He's exactly where he's supposed to be.</div>
+
+<div class="sfx">♪ END THEME — FULL ARRANGEMENT, EVERYTHING IN IT — THE SYNTH, THE PIANO, THE ACOUSTIC GUITAR FROM THE MEMORIAL DAY EPISODE — ALL OF IT TOGETHER FOR THE FIRST AND ONLY TIME ♪</div>
+
+<!-- ═══════════ POST-CREDITS ═══════════ -->
+<div class="post-credits">
+  <div class="pc-label">Post-Credit Scene 1</div>
+</div>
+
+<div class="stage-dir">Late night. JEFF M.'s home office. The house is quiet — the three-year-old is asleep, the teenagers have retreated to their rooms, and his wife has gone to bed. The treadmill is off. Jeff is sitting. Perfectly still. Three monitors glowing. On the center screen: lines of code. On the left screen: a knowledge base article. On the right screen: a chat interface.</div>
+
+<div class="stage-dir">He types a command. Hits enter. Waits. The chat interface flickers. A response appears — generated not by a person, but by something Jeff has been building for months. Something that just ingested every knowledge article in the company's SharePoint library. Something that can search, summarize, and retrieve technical answers in seconds.</div>
+
+<div class="stage-dir">It works. It actually works.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(whispering, staring at the screen, the glow reflecting off his face)</span> ...Hello, BookBot.</div>
+
+<div class="stage-dir">The cursor blinks. BookBot responds: "Hello, Jeff. How can I help you today?"</div>
+
+<div class="stage-dir">Jeff leans back. For the first time all season, the treadmill man is completely still. He smiles. Then — because he's Jeff — he types one more thing.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(typing into BookBot)</span> Can you send memes?</div>
+
+<div class="stage-dir">BookBot responds: "I can be configured to deliver scheduled content to specified recipients at designated intervals."</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(the biggest smile of the season)</span> ...We're going to get along just fine.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="post-credits">
+  <div class="pc-label">Post-Credit Scene 2</div>
+</div>
+
+<div class="stage-dir">5:15 PM. ANDREW's connection has been back for thirty minutes. He's caught up on everything. Read every ticket. Read every Slack message. Seen Devon's camera moment through Tina's excited recap. Seen the team rally around his new hires. And now his DMs light up with one final notification.</div>
+
+<div class="stage-dir">A message from LUKE, sent at 4:30 PM before he clocked out:</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(DM)</span> Hey Andrew — sorry you missed all the action today. Don't worry though. I handled it. Well, Jeff sent me like 800 words and I didn't understand most of them, but Carlos talked me through it and the customer's good. The ticket notes are clean. Oh also — I muted my mic to sneeze today. On a live customer call. The headset worked. Nobody heard it. I just thought you should know. 😤💪</div>
+
+<div class="stage-dir">ANDREW reads it. Reads the sneeze part again. His face goes through every emotion — relief, pride, exhaustion, amusement, and something deeper. Something that feels like the end of a very long road.</div>
+
+<div class="stage-dir">He types back one word:</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM)</span> Pro.</div>
+
+<div class="stage-dir">He closes his laptop. Picks up his coffee mug — the one that says "HAVE YOU TRIED TURNING IT OFF AND ON AGAIN?" — and walks to the kitchen to refill it. The camera holds on his empty desk. The dual monitors. The headset. The desk drawer, closed, the Patagonia brochure gone for good. And pinned to the wall above his monitor, barely visible, a printed-out Slack message from months ago — the very first one Luke ever sent him: "Hey Andrew — thanks for today. I know I wasn't great but I'm going to be better tomorrow."</div>
+
+<div class="stage-dir">He was right.</div>
+
+<div class="laugh standing">Standing ovation — warm, sustained, the kind that means it's over and everyone knows it and nobody wants it to end</div>
+
+<div class="sfx">♪ END THEME — ONE FINAL TIME — FADE OUT SLOW — THE SLOWEST FADE OF THE SEASON — AND THEN SILENCE ♪</div>
+
+<div class="stage-dir" style="text-align: center; margin-top: 30px; border-left: none; background: none; color: #5a6a7e; font-size: 14px; letter-spacing: 2px;">
+  END OF SEASON 1
+</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW (HE BUILT THIS.)</p>
+  <p>LUKE .......................... LUKE (MUTED THE SNEEZE. FLEW.)</p>
+  <p>ANTHONY ....................... ANTHONY (HELD THE LINE. FLEW.)</p>
+  <p>TINA .......................... TINA (TAUGHT THEM TO THINK.)</p>
+  <p>DEVON ......................... DEVON (TURNED THE CAMERA ON. ONCE. IT WAS ENOUGH.)</p>
+  <p>JEFF M. ....................... JEFF M. (BUILT BOOKBOT. IT SENDS MEMES.)</p>
+  <p>CORINE ........................ CORINE (CHECKED THE DOCUMENTATION. IT WAS CLEAN.)</p>
+  <p>RACHELLE ...................... RACHELLE (THE MENTOR'S MENTOR.)</p>
+  <p>CARLOS ........................ CARLOS (ONE STEP AT A TIME, YOUNG BLOOD.)</p>
+  <p>JUWAN ......................... JUWAN (VOICE OF REASON. ALWAYS.)</p>
+  <p>GREG (SDS) .................... GREG (HUMBLED. FINALLY.)</p>
+  <p>BRENDA (HR) ................... BRENDA (NEVER APPEARED. ALWAYS PRESENT.)</p>
+  <p>BOOKBOT ....................... BOOKBOT (HELLO.)</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(who are not ready for this to be over)</div>
+  <p>&nbsp;</p>
+  <p style="color:#888; font-size:13px; font-family: 'Special Elite', cursive; margin-top:20px;">The birds flew.</p>
+  <p>&nbsp;</p>
+  <p style="color:#666; font-size:12px; margin-top:10px;">Andrew — Software Support Specialist will return in Season 2.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

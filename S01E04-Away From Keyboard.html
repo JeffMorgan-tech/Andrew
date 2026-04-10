@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E04</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0e1520;
+    color: var(--text-cream);
+    font-family: 'Courier Prime', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  /* ── VHS Top Bar ── */
+  .vhs-bar {
+    width: 100%;
+    background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px; color: #4a5e78;
+    border-bottom: 2px solid #243048;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .vhs-bar .rec {
+    color: var(--vhs-red);
+    font-weight: bold;
+    animation: blink 1.2s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode {
+    font-family: 'Courier Prime', monospace;
+    color: #5a7090;
+    letter-spacing: 2px;
+  }
+
+  /* ── TV Frame ── */
+  .tv-frame {
+    width: 95%;
+    max-width: 900px;
+    margin: 30px auto;
+    background: var(--tv-bezel);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow:
+      0 0 60px rgba(0,0,0,0.8),
+      inset 0 0 30px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .tv-frame::before {
+    content: 'TOSHIBA';
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #304060;
+    letter-spacing: 4px;
+  }
+
+  .screen {
+    background: var(--screen-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid #243048;
+  }
+  .screen::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      var(--scanline) 0px,
+      var(--scanline) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ── Title Card ── */
+  .title-card {
+    text-align: center;
+    padding: 50px 20px 40px;
+    background: linear-gradient(180deg, #141e30 0%, #121a28 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .title-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%);
+    animation: glow-rotate 8s linear infinite;
+  }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .show-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 6vw, 52px);
+    background: linear-gradient(180deg, #d4a050 0%, #c08840 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 1;
+    text-shadow: none;
+    line-height: 1.1;
+  }
+  .show-subtitle {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(14px, 3vw, 20px);
+    color: #6a7e98a9e;
+    margin-top: 8px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-info {
+    margin-top: 18px;
+    font-size: 13px; color: #4a5e78e78;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+  }
+  .episode-title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(16px, 3.5vw, 22px);
+    color: var(--vhs-blue);
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Script Body ── */
+  .script-body {
+    padding: 30px clamp(15px, 4vw, 40px);
+    background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%);
+    line-height: 1.75;
+    font-size: clamp(14px, 2.2vw, 16px);
+  }
+
+  /* Scene Headers */
+  .scene-header {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--laugh-gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 40px 0 8px;
+    padding: 12px 0;
+    border-top: 2px solid #243048;
+    border-bottom: 1px solid #1a2438;
+    position: relative;
+  }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num {
+    color: var(--vhs-red);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 2px;
+    letter-spacing: 5px;
+  }
+
+  /* Stage Directions */
+  .stage-dir {
+    color: #6a6a7a;
+    font-style: italic;
+    margin: 14px 0;
+    padding: 8px 14px;
+    border-left: 3px solid #2a3e58;
+    background: rgba(140,160,190,0.03);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Character Names */
+  .char {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 16px;
+    display: block;
+    font-size: 13px;
+  }
+  .char.andrew { color: var(--vhs-blue); }
+  .char.luke { color: #5aaa7a; }
+  .char.anthony { color: #c45050; }
+
+  /* Dialogue */
+  .dial {
+    margin: 4px 0 12px 20px;
+    color: var(--text-white);
+  }
+  .paren {
+    color: #506880;
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  /* Laugh Track Cue */
+  .laugh {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(212,160,80,0.08);
+    border: 1px solid rgba(212,160,80,0.15);
+    color: var(--laugh-gold);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 8px 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: default;
+    animation: laugh-fade 0.4s ease;
+  }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SFX */
+  .sfx {
+    color: var(--highlight);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 10px 0;
+    opacity: 0.7;
+  }
+
+  /* Credits */
+  .credits {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 2px solid #243048;
+    background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%);
+  }
+  .credits p {
+    color: #4a5a6e;
+    font-size: 12px;
+    margin: 4px 0;
+    letter-spacing: 1px;
+  }
+  .credits .filmed {
+    color: #4a6480;
+    font-family: 'Special Elite', cursive;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .tv-frame { padding: 10px; border-radius: 10px; }
+    .script-body { padding: 20px 12px; }
+    .dial { margin-left: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- VHS Top Bar -->
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:22:14</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<!-- TV Frame -->
+<div class="tv-frame">
+<div class="screen">
+
+<!-- Title Card -->
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 4</div>
+  <div class="episode-title">"Away From Keyboard"</div>
+</div>
+
+<!-- Script -->
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Andrew's Home Office
+</div>
+
+<div class="stage-dir">ANDREW sits at his home office desk—dual monitors, headset on, a "World's Most Patient Trainer" mug beside him. His webcam light is on. He's mid-sip of coffee, reviewing a Slack thread. A framed motivational poster behind him reads "HAVE YOU TRIED TURNING IT OFF AND ON AGAIN?"</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(to himself, scrolling Slack)</span> Okay. Luke and Anthony have been on the job two weeks now. Time to check in, see how the morning tickets are going. I told them nine A.M. sharp. It is now... <span class="paren">(glances at clock)</span> ...ten forty-seven.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">ANDREW opens Microsoft Teams and clicks on LUKE's name. The call rings. And rings. And rings. The familiar Teams ringtone plays for an uncomfortably long time.</div>
+
+<div class="sfx">♪ TEAMS RINGTONE — 15 AGONIZING SECONDS ♪</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(nodding slowly)</span> Sure. Sure. He's probably just... deeply focused. In the zone. Headphones on. Cranking through tickets.</div>
+
+<div class="stage-dir">The call finally connects. LUKE appears on screen. He is visibly horizontal. Pillow creases on his face. A ceiling fan spins lazily behind him.</div>
+
+<span class="char derek">Luke</span>
+<div class="dial"><span class="paren">(hoarse, squinting at the camera like it's the sun)</span> H... hey. Hey, Andrew. What's — what's the situation.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">The situation is it's almost eleven o'clock on a Tuesday, Luke. Are you... are you in bed right now?</div>
+
+<span class="char derek">Luke</span>
+<div class="dial"><span class="paren">(sitting up slightly, revealing he's wearing a bathrobe)</span> What? No. No no no. This is my — this is my ergonomic workstation. It's a lateral desk. It's a whole thing. Very Silicon Valley.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Luke, I can see your Spongebob pillowcase.</div>
+
+<span class="char derek">Luke</span>
+<div class="dial"><span class="paren">(long pause, glances behind him)</span> ...That's a branded lumbar support.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "The Audit"
+</div>
+
+<div class="stage-dir">ANDREW has now started a group video call. LUKE is in the top-right box, now sitting upright at an actual desk but still in his bathrobe. ANTHONY's box is black with the text "Anthony — Connecting..."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Alright, while we wait for Anthony, let's pull up the ticket queue. Luke, how many did you close this morning?</div>
+
+<span class="char derek">Luke</span>
+<div class="dial"><span class="paren">(with extreme confidence)</span> Several.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Several. Okay. The dashboard says zero.</div>
+
+<span class="char derek">Luke</span>
+<div class="dial">Right, well, I closed them <em>mentally</em>. I triaged them in my head. I've got a system, Andrew. I call it "pre-resolution." I visualize the solution before I execute.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(pinching bridge of nose)</span> That is literally just thinking about working without working.</div>
+
+<span class="char derek">Luke</span>
+<div class="dial"><span class="paren">(pointing at camera)</span> Sounds like you understand the concept.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANTHONY's camera finally turns on. She's sitting in what appears to be a car. A Starbucks drive-thru speaker is audible in the background.</div>
+
+<div class="sfx">♪ MUFFLED DRIVE-THRU INTERCOM ♪</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial"><span class="paren">(wearing sunglasses indoors — in a car)</span> Hey team! Sorry, my internet was being weird. Totally at my desk right now.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Anthony, I can hear someone asking if you want whipped cream.</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial"><span class="paren">(without missing a beat)</span> That's my Alexa. She's been acting up.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Your Alexa is asking about oat milk?</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial"><span class="paren">(holding up one finger to the camera)</span> Hold on. <span class="paren">(turns away, loudly)</span> YES. GRANDE. OAT MILK. EXTRA SHOT. <span class="paren">(turns back, smiling)</span> Sorry. Smart home stuff. You know how it is.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">A car horn honks. ANTHONY doesn't flinch.</div>
+
+<span class="char derek">Luke</span>
+<div class="dial"><span class="paren">(genuinely impressed)</span> Wow, your Alexa has a horn feature? That's next level.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(staring directly into camera — breaking the fourth wall)</span></div>
+
+<div class="laugh applause">Applause</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  Act Two — "The Cover-Up"
+</div>
+
+<div class="stage-dir">Later. ANDREW is now sharing his screen, showing the team ticket dashboard. The "OPEN TICKETS" counter reads 47. The "CLOSED TODAY" counter reads 0.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Okay. So I'm looking at the board, and I want you both to look at it with me. See this number here? Forty-seven. And this number here? Zero. Now, those two numbers should be moving in opposite directions. You see the problem?</div>
+
+<span class="char derek">Luke</span>
+<div class="dial">The font?</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">It is not the font, Luke!</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial"><span class="paren">(now clearly at home, Starbucks cup visible)</span> Andrew, to be fair, I <em>did</em> work on a ticket this morning. The customer's VPN wasn't connecting.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(hopeful)</span> Okay! Great. What was the resolution?</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial">I told them to try again later.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">That's not a resolution, Anthony, that's a horoscope.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial">Well it <em>worked!</em> They stopped emailing!</div>
+
+<span class="char derek">Luke</span>
+<div class="dial">Technically that's a hundred percent resolution rate.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(head in hands)</span> No one — listen to me — no one is resolving tickets by <em>ignoring people until they give up.</em> That is not IT support. That's... that's the DMV.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW's phone buzzes. He looks at it.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Oh wonderful. That's my manager. Asking why our ticket closure rate dropped eighty percent since I got "help."</div>
+
+<span class="char derek">Luke</span>
+<div class="dial"><span class="paren">(nodding thoughtfully)</span> Sounds like a management issue.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Three — "The Intervention"
+</div>
+
+<div class="stage-dir">ANDREW has set up a screen share showing a PowerPoint titled "WHAT YOUR JOB IS: A Refresher" in aggressive red font. Slide 1 reads: "Step 1: Be Awake."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I've prepared a brief presentation.</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial"><span class="paren">(reading slide)</span> "Step one: be awake." Andrew, this feels pointed.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">It is <em>extremely</em> pointed, Anthony.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">He advances to Slide 2: "Step 2: Be At Your Computer (Your ACTUAL Computer)." There is a clip art image of a car with a red X over it.</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial"><span class="paren">(quietly)</span> I feel seen and I don't like it.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">Slide 3: "Step 3: Open a Ticket. Read the Ticket. Fix the Ticket. Close the Ticket." Below it: "This is Not Optional. This is Not a Suggestion. This is the Job."</div>
+
+<span class="char derek">Luke</span>
+<div class="dial">Can I get a copy of these slides? I learn best through documentation.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">You learn best through <em>sleeping</em>, Luke. That is established.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char derek">Luke</span>
+<div class="dial">Okay, look. Andrew. Real talk. I hear you. And I want you to know that starting right now — this very second — I am going to be fully locked in. One hundred percent. I'm going to absolutely crush these tickets.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(cautiously optimistic)</span> ...Really?</div>
+
+<span class="char derek">Luke</span>
+<div class="dial">Right after lunch.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">It's eleven fifteen in the morning!</div>
+
+<span class="char derek">Luke</span>
+<div class="dial"><span class="paren">(checking watch)</span> Early lunch. I'm on a European schedule.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char priya">Anthony</span>
+<div class="dial">You know what, that's not a bad idea actually. I read that productivity peaks after meals. It was in a TED Talk.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Was the TED Talk called "How to Get Fired"?!</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:02 PM. ANDREW is at his desk, exhausted, rubbing his eyes. His mug is empty. He's closed 38 of the 47 tickets himself. A Teams notification pops up.</div>
+
+<div class="sfx">♪ TEAMS NOTIFICATION SOUND ♪</div>
+
+<div class="stage-dir">It's a message from LUKE. It reads: "Hey Andrew, I closed a ticket!! 🎉" ANDREW sits up. Opens the dashboard. One ticket is marked "Resolved." He clicks into it. The resolution notes read: "Customer said nevermind."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(long, hollow stare at monitor)</span></div>
+
+<div class="stage-dir">A second notification appears. It's from ANTHONY: "Also I closed one! 💪" ANDREW clicks her ticket. The resolution notes read: "Resolved — sent customer a link to Google."</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(whispering)</span> A link. To Google.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">ANDREW slowly closes his laptop lid. He stares into middle distance. He opens his desk drawer and pulls out a travel brochure for Fiji.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading brochure, completely deadpan)</span> "No Wi-Fi. No meetings. Just you and the ocean."</div>
+
+<div class="stage-dir">He picks up his phone and dials.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Hi, yes. I'd like to book a one-way ticket. ...No, one-way is fine.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">LUKE sends one more message: "btw can I expense a pillow? for my workstation. it's ergonomic." ANDREW lets out a long breath, then — against every instinct — smiles and shakes his head.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(to no one, closing the brochure)</span> ...Same time tomorrow, I guess.</div>
+
+<div class="laugh applause">Applause — warm and sustained</div>
+
+<div class="sfx">♪ END THEME — UPBEAT SYNTH, FREEZE FRAME ON ANDREW'S TIRED SMILE ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY .......................... ANTHONY</p>
+  <p>STARBUCKS INTERCOM ............ STARBUCKS INTERCOM</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(who were also working from home)</div>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

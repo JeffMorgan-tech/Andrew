@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E10</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0e1520; color: var(--text-cream); font-family: 'Courier Prime', monospace; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+  .vhs-bar { width: 100%; background: linear-gradient(90deg, #111 0%, #1a1a2e 50%, #111 100%); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #555; border-bottom: 2px solid #243048; position: sticky; top: 0; z-index: 100; }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+  .tv-frame { width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel); border-radius: 18px; padding: 20px; box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6); position: relative; }
+  .tv-frame::before { content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px; }
+  .screen { background: var(--screen-bg); border-radius: 8px; overflow: hidden; position: relative; border: 3px solid #243048; }
+  .screen::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px); pointer-events: none; z-index: 10; }
+  .title-card { text-align: center; padding: 50px 20px 40px; background: linear-gradient(180deg, #141e30 0%, #121a28 100%); position: relative; overflow: hidden; }
+  .title-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%); animation: glow-rotate 8s linear infinite; }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+  .show-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(28px, 6vw, 52px); background: linear-gradient(180deg, #d4a050 0%, #c08840 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1; }
+  .show-subtitle { font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px); color: #6a7e98; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase; position: relative; z-index: 1; }
+  .episode-info { margin-top: 18px; font-size: 13px; color: #4a5e78; letter-spacing: 2px; position: relative; z-index: 1; }
+  .episode-title { font-family: 'Special Elite', cursive; font-size: clamp(16px, 3.5vw, 22px); color: var(--vhs-blue); margin-top: 10px; position: relative; z-index: 1; }
+  .episode-desc { font-size: 12px; color: #444; margin-top: 14px; letter-spacing: 1px; position: relative; z-index: 1; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+  .script-body { padding: 30px clamp(15px, 4vw, 40px); background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%); line-height: 1.75; font-size: clamp(14px, 2.2vw, 16px); }
+  .scene-header { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(16px, 3vw, 20px); color: var(--laugh-gold); text-transform: uppercase; letter-spacing: 3px; margin: 40px 0 8px; padding: 12px 0; border-top: 2px solid #243048; border-bottom: 1px solid #1a2438; position: relative; }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num { color: var(--vhs-red); font-size: 12px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+  .stage-dir { color: #6a6a7a; font-style: italic; margin: 14px 0; padding: 8px 14px; border-left: 3px solid #2a3e58; background: rgba(100,140,200,0.02); border-radius: 0 4px 4px 0; }
+  .char { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; display: block; font-size: 13px; }
+  .char.andrew { color: var(--vhs-blue); } .char.luke { color: #27ae60; } .char.anthony { color: var(--vhs-red); }
+  .char.tina { color: var(--tina-pink); } .char.devon { color: var(--devon-gray); } .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); } .char.corine { color: var(--corine-teal); }
+  .char.carlos { color: var(--carlos-copper); } .char.juwan { color: var(--juwan-sky); }
+  .dial { margin: 4px 0 12px 20px; color: var(--text-white); }
+  .paren { color: #506880; font-style: italic; font-size: 13px; }
+  .laugh { display: inline-flex; align-items: center; gap: 6px; background: rgba(244,208,63,0.08); border: 1px solid rgba(244,208,63,0.15); color: var(--laugh-gold); font-size: 11px; padding: 3px 10px; border-radius: 20px; margin: 8px 0; letter-spacing: 1px; text-transform: uppercase; cursor: default; animation: laugh-fade 0.4s ease; }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(244,208,63,0.14); border-color: rgba(244,208,63,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .sfx { color: var(--highlight); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0; opacity: 0.7; }
+  /* Ticket counter */
+  .ticket-counter { text-align: center; padding: 10px; margin: 12px 0; background: rgba(243,156,18,0.08); border: 1px solid rgba(243,156,18,0.2); border-radius: 6px; font-size: 12px; color: var(--highlight); letter-spacing: 3px; text-transform: uppercase; }
+  .ticket-counter .count { font-size: 28px; font-weight: 700; display: block; margin: 4px 0; }
+  .credits { text-align: center; padding: 40px 20px; border-top: 2px solid #243048; background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%); }
+  .credits p { color: #444; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .credits .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 16px; }
+  @media (max-width: 600px) { .tv-frame { padding: 10px; border-radius: 10px; } .script-body { padding: 20px 12px; } .dial { margin-left: 10px; } }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:24:22</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 10</div>
+  <div class="episode-title">"Panic! At the Helpdesk"</div>
+  <div class="episode-desc">EVERYTHING IS ON FIRE.<br>METAPHORICALLY. BUT ALSO KIND OF LITERALLY.</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Wednesday, 8:58 AM
+</div>
+
+<div class="stage-dir">ANDREW logs in two minutes early, coffee in hand, expecting a normal Wednesday. His ticket dashboard loads. He blinks. He sets down the coffee. He blinks again.</div>
+
+<div class="ticket-counter">
+  Open P1 Tickets
+  <span class="count">23</span>
+  AND CLIMBING
+</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(very quietly)</span> ...What happened.</div>
+
+<div class="stage-dir">His phone starts buzzing. Teams notification. Another. Another. Slack pinging. Email alert. A second email alert. The queue is exploding. Twenty-three P1s and it's not even nine o'clock. His phone is vibrating so consistently it's starting to migrate across the desk like a small animal trying to escape.</div>
+
+<div class="sfx">♪ TEAMS NOTIFICATION — OVERLAPPING, RELENTLESS, LIKE A SLOT MACHINE THAT ONLY PAYS OUT IN STRESS ♪</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading the tickets, scanning for a pattern)</span> Eclipse down at three sites. ARIA sync failure at two more. syngo.via connection errors across — wait, this is all the same update. These are all post-patch. Something in last night's 4.3.1 release broke... everything.</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE (PLAYED AT 1.5x SPEED THIS WEEK) ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "All Hands"
+</div>
+
+<div class="stage-dir">9:15 AM. RACHELLE has called an emergency all-hands. Everyone is on. ANDREW, LUKE, ANTHONY, TINA, DEVON, JEFF M., CORINE, CARLOS, JUWAN. The vibe is tense. DEVON's camera is off but his mic is hot — you can hear him typing furiously, which for Devon is the equivalent of screaming.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Alright team, I'll make this fast. Last night's 4.3.1 patch went out to approximately sixty customer sites. As of right now, we have twenty-seven P1 tickets and that number is going up. Engineering is aware. They're working on a rollback. But until that rollback is ready, every single call is ours. I need everyone on the phones today. No exceptions. No project work. <span class="paren">(pointed look at Jeff's webcam box)</span> No side projects.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(pained)</span> ...All day?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">All day, Jeff.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(the sound of a man being told he can't see his best friend)</span> ...Understood.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Andrew — you're lead on triage. Route the incoming tickets. Prioritize clinical sites first. Luke and Anthony, you're on the phones with Andrew. Tina, Devon, Carlos — take the overflow. Corine — documentation. I want a running log of every site affected, every error code, every resolution attempted. Juwan — you're on the engineering bridge call. Jeff — phones. <em>Phones.</em></div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(whispering)</span> Phones.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(camera off, flatly)</span> Here we go.</div>
+
+<!-- ═══════════ ACT ONE-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  "The Grind" — 10:00 AM to 2:00 PM
+</div>
+
+<div class="stage-dir">A montage. The worst kind of montage — the kind where everyone is working and nothing is getting better. The ticket counter ticks up: 31. 34. 38.</div>
+
+<div class="ticket-counter">
+  Open P1 Tickets
+  <span class="count">38</span>
+  NO END IN SIGHT
+</div>
+
+<div class="stage-dir">ANDREW is on back-to-back calls. He ends one, another starts immediately. He hasn't touched his coffee. His headset has made a permanent dent in his hair. LUKE and ANTHONY are fielding calls of their own — shaky, nervous, but doing it. LUKE has his auto-mute headset on and is chewing gum aggressively between calls as a stress response, but at least no one can hear it.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(ending a call, immediately picking up another)</span> Thank you for calling support, this is Andrew — yes ma'am, I understand. The 4.3.1 patch, yes. We're aware of the issue. Let me pull up your — yes. Yes, I know it's been down since six AM. I understand. Let me —</div>
+
+<div class="stage-dir">Cut to DEVON, who is on his fourth consecutive call. His voice has not changed in tone, pitch, or speed since the first one. He is a machine. A tired, dead-eyed machine.</div>
+
+<span class="char devon">Devon</span>
+<div class="dial"><span class="paren">(monotone, to a customer)</span> I understand. We're working on it. The engineering team is aware. I'll update you within the hour. ...Yes. I know you spoke to someone yesterday. That was also me. ...Yes, and the day before. Also me.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">Cut to JEFF M. He's on a call. He is visibly suffering. Not because the call is hard — because he can see his project on his second monitor and he can't touch it. His treadmill is off. He's sitting down. He looks like a caged animal.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(on a customer call, perfectly professional but dying inside)</span> Yes sir, we're tracking the issue. I'm going to have you restart the service and we'll re-sync from the admin console. ...No, I'm not distracted. I'm fully present. <span class="paren">(glances at second monitor)</span> ...Fully present.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">Cut to ANTHONY, who has just gotten off a call and looks like he's been through a war. He DMs ANDREW.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(DM)</span> Andrew that last customer yelled at me for ten minutes. I think I need a break. Or a hug. Or both.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM back, typed while on another call)</span> Can't break. Queue is at 38. Take a breath. Drink water. Next call in 2 min. You're doing great.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(DM)</span> Andrew when was the last time YOU took a break?</div>
+
+<div class="stage-dir">ANDREW doesn't respond. Because the answer is "he hasn't."</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Two — "Tina's Hunch"
+</div>
+
+<div class="stage-dir">2:30 PM. The team is running on fumes. TINA has been on calls all day too — but between calls, she's been doing something no one else has had time to do: reading the actual patch notes. Line by line. Her field service brain — the one trained to read calibration logs and equipment manuals while standing in front of a broken machine — is doing what it does best: looking for the thing everyone else missed.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(DM to Corine)</span> Hey — can you pull up the running error log? I want to see something. Every ticket I've worked today has the same error chain: auth timeout, then sync failure, then cascade. But the auth timeout doesn't match the patch notes. The 4.3.1 update didn't touch the auth module. So why is auth timing out?</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(DM back, intrigued)</span> You're right. The patch notes say 4.3.1 was a UI update and a database optimization. Auth isn't listed.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(DM)</span> Exactly. But what IS listed is a change to the session timeout value. They shortened it from thirty minutes to ten minutes. "For security." Corine — what happens if a site has a legacy integration that takes more than ten minutes to complete its auth handshake?</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(DM, slowly connecting it)</span> ...It times out mid-handshake. Which breaks the sync. Which cascades.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(DM)</span> WHICH CASCADES. It's not the patch itself — it's the timeout change! It's choking every site with a legacy integration! The fix isn't a rollback — it's extending the timeout value back to thirty minutes!</div>
+
+<div class="stage-dir">TINA picks up her phone and calls JUWAN on the engineering bridge.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(on the bridge, energized, the most alive anyone has ever heard her)</span> Juwan — it's the session timeout. They changed it from thirty to ten in 4.3.1. Every legacy site is timing out mid-auth. Tell engineering to push a config override — thirty-minute timeout — to all affected sites. That's the fix. Not a rollback. A timeout extension.</div>
+
+<span class="char juwan">Juwan</span>
+<div class="dial"><span class="paren">(checking, then)</span> ...Tina. You're right. That's it. I'm telling engineering now.</div>
+
+<div class="stage-dir">Within forty-five minutes, the config override is pushed. The ticket counter starts dropping. 38. 35. 30. 24. 18. The phones slow down. The queue begins to breathe. TINA did it.</div>
+
+<div class="ticket-counter">
+  Open P1 Tickets
+  <span class="count">8</span>
+  FALLING — TINA WAS RIGHT
+</div>
+
+<div class="laugh applause">Applause — loud, earned, sustained</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "Under Her Wing"
+</div>
+
+<div class="stage-dir">4:30 PM. The storm has passed. The queue is manageable. ANDREW is at his desk, completely drained. He's been on calls for seven straight hours. His coffee is cold. His headset has left a mark on his skull that may be permanent. TINA pings him.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(DM)</span> Hey — you okay? You've been going nonstop.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM back)</span> I'm fried. Honestly. I don't think I was much help to Luke and Anthony today. I was too buried in my own calls to actually mentor them through any of it. I just kept telling them "next call, next call" and hoping for the best.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(DM)</span> Andrew, you kept the whole triage running. You held it together. But listen — I've got an idea. Let me take Luke and Anthony for the rest of the week. Not permanently. Just a couple of days. I want to show them something different.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM)</span> Different how?</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(DM)</span> You've been teaching them process — and they NEED that. But today showed me something. When everything was on fire, I didn't fix it by following the ticket playbook. I fixed it by reading the patch notes sideways and thinking "what doesn't belong here?" That's field thinking. That's out-of-the-box. I want to teach them how to look at a problem and ask "what is everyone else NOT looking at?" I think they're ready for that.</div>
+
+<div class="stage-dir">ANDREW reads the message. For a second, there's a flicker of something — protectiveness, ego, the instinct of a mentor not wanting to hand off his students. But he remembers Episode 9. He remembers Rachelle's words. He remembers Dolly learning to use the perch.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(DM)</span> ...Do it. They'll learn a lot from you.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(DM)</span> 💛</div>
+
+<div class="stage-dir">The next day. TINA has LUKE and ANTHONY on a call. Her style is completely different from Andrew's — warmer, more exploratory, less "here's the process" and more "let's figure this out together." She's teaching them to think, not just to follow.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">Okay, so — when I was in the field and something broke, the first thing I'd do is ask: "What changed?" Not "what's the error" — that's the symptom. "What changed?" is the cause. Yesterday, everyone was chasing the error codes. But the error codes were just the cascade. The real question was: what did the update actually change? And nobody had time to ask that because everyone was on calls. But <em>someone</em> has to step back and ask the dumb question. That's what I did yesterday. I asked the dumb question. And it turned out it wasn't dumb at all.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(actually taking notes)</span> "What changed." Not "what's the error."</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(beaming)</span> Yes! Exactly! Andrew teaches you how to run the play. I'm teaching you how to call an audible when the play breaks down. You need both. But today — we're doing audibles.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(grinning)</span> This is like having two coaches with totally different playbooks.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">That's exactly what it is. And the best players learn from both.</div>
+
+<div class="laugh applause">Applause</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:45 PM. ANDREW's desk. The ticket counter reads 3. The crisis is over. His phone buzzes. A DM from RACHELLE: "Andrew — you held the line today. I know it didn't feel like mentoring. But keeping the triage moving while your team worked around you IS mentoring. And letting Tina take Luke and Anthony? That took maturity. I'm proud of you." He reads it. Exhales.</div>
+
+<div class="stage-dir">Another DM. From DEVON: "Tina figured it out in the patch notes. While we were all on calls. She read the patch notes. Line by line. While the world was on fire." A beat. Then: "She's the best of us and I will deny saying that."</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="stage-dir">Another DM. From CARLOS: "Good day, brother. Rough, but good. The young bloods held up. You should be proud." ANDREW smiles.</div>
+
+<div class="stage-dir">His phone buzzes one more time. It's from JEFF M., in the group chat: "Now that the crisis is over, I'd like everyone to know that I was on phone duty for SEVEN HOURS today. That's the longest I've been away from the project since I started it. I'm going to need emotional support and also a formal apology from the 4.3.1 patch team. I've already drafted the apology for them. I'll send it to Brenda for distribution."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW looks at the Patagonia brochure. Still on the desk. Still untouched. Today was the worst day of the season. And somehow — the team got through it. Because of a woman from Florida who moved to Cleveland and reads patch notes like poetry.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(to himself, quiet, genuine)</span> Thank God for Tina.</div>
+
+<div class="laugh applause">Applause — warm and sustained</div>
+
+<div class="sfx">♪ END THEME — TONIGHT THE SYNTH IS HEAVIER, MORE TRIUMPHANT, LIKE IT SURVIVED SOMETHING — FREEZE FRAME ON THE TICKET COUNTER: 0 ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW (SEVEN HOURS. NO BREAK.)</p>
+  <p>LUKE .......................... LUKE (AUTO-MUTE HEADSET: DEPLOYED)</p>
+  <p>ANTHONY ....................... ANTHONY (SURVIVED HIS FIRST P1 STORM)</p>
+  <p>TINA .......................... TINA (MVP. FULL STOP.)</p>
+  <p>DEVON ......................... DEVON (SHE'S THE BEST OF US.)</p>
+  <p>JEFF M. ....................... JEFF M. (SEVEN HOURS AWAY FROM THE PROJECT. SEND HELP.)</p>
+  <p>CORINE ........................ CORINE (DOCUMENTATION: FLAWLESS)</p>
+  <p>RACHELLE ...................... RACHELLE</p>
+  <p>CARLOS ........................ CARLOS</p>
+  <p>JUWAN ......................... JUWAN (BRIDGE CALL HERO)</p>
+  <p>THE 4.3.1 PATCH ............... ITSELF (THE REAL VILLAIN)</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(who were also on hold during the outage)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">PREVIOUSLY ON "ANDREW": He learned to be wrong gracefully.</p>
+  <p style="color:#555; font-size:11px;">This week, Tina taught everyone how to be right when it mattered most.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

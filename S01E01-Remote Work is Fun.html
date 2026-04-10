@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E01</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0e1520;
+    color: var(--text-cream);
+    font-family: 'Courier Prime', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  .vhs-bar {
+    width: 100%;
+    background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px; color: #4a5e78;
+    border-bottom: 2px solid #243048;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+
+  .tv-frame {
+    width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel);
+    border-radius: 18px; padding: 20px;
+    box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6);
+    position: relative;
+  }
+  .tv-frame::before {
+    content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%;
+    transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px;
+  }
+
+  .screen {
+    background: var(--screen-bg); border-radius: 8px; overflow: hidden;
+    position: relative; border: 3px solid #243048;
+  }
+  .screen::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px);
+    pointer-events: none; z-index: 10;
+  }
+
+  .title-card {
+    text-align: center; padding: 50px 20px 40px;
+    background: linear-gradient(180deg, #141e30 0%, #121a28 100%);
+    position: relative; overflow: hidden;
+  }
+  .title-card::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%);
+    animation: glow-rotate 8s linear infinite;
+  }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .show-title {
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: clamp(28px, 6vw, 52px);
+    background: linear-gradient(180deg, #d4a050 0%, #c08840 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1;
+  }
+  .show-subtitle {
+    font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px);
+    color: #6a7e98a9e; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+  .episode-info { margin-top: 18px; font-size: 13px; color: #4a5e78e78; letter-spacing: 2px; position: relative; z-index: 1; }
+  .episode-title {
+    font-family: 'Special Elite', cursive; font-size: clamp(16px, 3.5vw, 22px);
+    color: var(--vhs-blue); margin-top: 10px; position: relative; z-index: 1;
+  }
+  .episode-desc {
+    font-size: 12px; color: #4a5a6e; margin-top: 14px; letter-spacing: 1px;
+    position: relative; z-index: 1; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6;
+  }
+  .premiere-badge {
+    display: inline-block; margin-top: 18px; padding: 6px 18px; border: 2px solid var(--laugh-gold);
+    color: var(--laugh-gold); font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
+    position: relative; z-index: 1; border-radius: 4px;
+  }
+
+  .script-body {
+    padding: 30px clamp(15px, 4vw, 40px);
+    background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%);
+    line-height: 1.75; font-size: clamp(14px, 2.2vw, 16px);
+  }
+
+  .scene-header {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    font-size: clamp(16px, 3vw, 20px); color: var(--laugh-gold);
+    text-transform: uppercase; letter-spacing: 3px; margin: 40px 0 8px; padding: 12px 0;
+    border-top: 2px solid #243048; border-bottom: 1px solid #1a2438; position: relative;
+  }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num { color: var(--vhs-red); font-size: 12px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+
+  .stage-dir {
+    color: #6a6a7a; font-style: italic; margin: 14px 0; padding: 8px 14px;
+    border-left: 3px solid #2a3e58; background: rgba(140,160,190,0.03); border-radius: 0 4px 4px 0;
+  }
+
+  .char { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; display: block; font-size: 13px; }
+  .char.andrew { color: var(--vhs-blue); }
+  .char.luke { color: #5aaa7a; }
+  .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); }
+  .char.devon { color: var(--devon-gray); }
+  .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); }
+  .char.corine { color: var(--corine-teal); }
+
+  .dial { margin: 4px 0 12px 20px; color: var(--text-white); }
+  .paren { color: #506880; font-style: italic; font-size: 13px; }
+
+  .laugh {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(212,160,80,0.08); border: 1px solid rgba(212,160,80,0.15);
+    color: var(--laugh-gold); font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    margin: 8px 0; letter-spacing: 1px; text-transform: uppercase; cursor: default;
+    animation: laugh-fade 0.4s ease;
+  }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .sfx { color: var(--highlight); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0; opacity: 0.7; }
+
+  .credits {
+    text-align: center; padding: 40px 20px; border-top: 2px solid #243048;
+    background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%);
+  }
+  .credits p { color: #4a5a6e; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .credits .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 16px; }
+
+  @media (max-width: 600px) {
+    .tv-frame { padding: 10px; border-radius: 10px; }
+    .script-body { padding: 20px 12px; }
+    .dial { margin-left: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:22:07</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 1</div>
+  <div class="episode-title">"Remote Work is Fun?"</div>
+  <div class="episode-desc">SERIES PREMIERE</div>
+  <div class="premiere-badge">★ Pilot Episode ★</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Andrew's Home Office, Monday Morning
+</div>
+
+<div class="stage-dir">Fade in on a home office. It's organized, lived-in, and distinctly "guy who's been doing this for a while." Dual monitors. A headset hanging from a monitor arm. A mug that reads "HAVE YOU TRIED TURNING IT OFF AND ON AGAIN?" — the mug that will become iconic by Season 3. ANDREW sits at his desk, coffee in hand, scrolling through tickets. The morning sun hits the blinds. Everything is calm. Everything is peaceful. This will be the last moment of peace for the entire season.</div>
+
+<div class="sfx">♪ TEAMS CALL RINGTONE ♪</div>
+
+<div class="stage-dir">It's RACHELLE. ANDREW clicks accept. RACHELLE appears on screen — soft lighting, organized bookshelf, the gentle authority of a woman who has never needed to raise her voice because the first time was always enough.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">Good morning, Andrew. Do you have a minute?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Yeah, of course. What's up?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">So, I have an opportunity for you.</div>
+
+<div class="stage-dir">ANDREW freezes. In corporate, "opportunity" never means opportunity. It means more work dressed up in a nicer outfit.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(cautiously)</span> ...An opportunity.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">We've got two new hires starting this week. Luke and Anthony. Both remote. Both brand new to support. And I'd love for you to take them under your wing. Show them the ropes. Be their mentor.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Both of them? At the same time?</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">I know it's a lot. Normally I'd split them between you and Jeff, but Jeff is... well, you know Jeff.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(knowing exactly)</span> He's on the project.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial">He's on the project. He built some kind of — I think it's a knowledge system? He sent me a thirty-page document about it last week. With diagrams. And a timeline. I stopped reading on page four but I told him it was very thorough.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">So Jeff's out, and I've got two rookies.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(warm, encouraging)</span> You're the best person for this, Andrew. You've been on the desk a couple of years now, you know the systems inside and out, and honestly — the team respects you. The new guys are going to need someone steady. Someone patient.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(flattery working, against his better judgment)</span> ...Alright. I'll do it.</div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(beaming)</span> Wonderful. They start tomorrow. I'll send you their onboarding packets.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Wait — <em>tomorrow?</em></div>
+
+<span class="char rachelle">Rachelle</span>
+<div class="dial"><span class="paren">(already ending the call)</span> You're going to be great! Talk soon!</div>
+
+<div class="sfx">♪ TEAMS CALL ENDED ♪</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(staring at the blank screen, coffee getting cold)</span> ...Tomorrow.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "Meet the New Guys"
+</div>
+
+<div class="stage-dir">Tuesday morning. 9:00 AM. ANDREW has set up a welcome call. He's prepared a clean agenda, a shared OneNote, and a positive attitude. The call is scheduled for nine sharp. At 9:00, only ANDREW is on the call. At 9:05, still just ANDREW. At 9:09, a webcam flickers on.</div>
+
+<div class="stage-dir">LUKE appears. He is in bed. Not near a bed. Not on a bed. <em>In</em> bed. Covers pulled up. Hair in four directions. Behind him, a ceiling fan spins lazily. He squints at the screen like a man who has just discovered what sunlight is.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(voice cracking)</span> Hey... hey, is this the — is this the meeting?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(processing what he's seeing)</span> ...Hey, Luke. Yeah, this is it. Welcome to the team.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Awesome. Awesome. Sorry I'm a little late, I was — I had a whole thing with my alarm. It's a time zone issue.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">We're in the same time zone, Luke.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(without missing a beat)</span> Right, but my <em>alarm</em> isn't.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">At 9:14, ANTHONY's camera turns on. He's in a car. Seatbelt on. Something that looks suspiciously like a Starbucks drive-thru is visible through the rear window. He's wearing sunglasses indoors — well, in a car — and smiling brightly.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Hey! Good morning! So sorry — I'm totally at my desk. Just had a quick errand. But I'm here! Fully present!</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Anthony... are you driving?</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(looking around as if surprised by his own surroundings)</span> What? No! This is my... home office. It's got a very open floor plan.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I can see a Starbucks sign behind you.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(glancing over his shoulder, then back)</span> That's a... motivational poster. My wife put it up. She loves coffee culture. As decor.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(closing his eyes, breathing deeply, then opening them with a smile that costs him physically)</span> Okay. Great. Well — welcome, both of you. I'm Andrew. I'll be your mentor. I'm going to help you get acclimated to the team, the tools, and what remote work actually looks like here. Any questions before we start?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Yeah — is there a dress code?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">You're in bed, Luke.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Right, so... no dress code. Got it.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT ONE-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  "Remote Work 101"
+</div>
+
+<div class="stage-dir">ANDREW has begun the orientation. He's sharing his screen, walking through the basics: the ticketing system, the Slack channels, the Teams structure, the knowledge base. LUKE and ANTHONY are on camera. LUKE has at least moved to a desk — though the desk appears to be a TV tray. ANTHONY has arrived home and is at an actual setup, Starbucks cup prominently in frame.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Alright, so — remote work. It's awesome. Genuinely. No commute, flexible setup, work in your own space. But there's a catch. And the catch is: <em>nobody can see you working.</em> Which means you've gotta be intentional about it. Show up to calls on time. Keep your status updated. Respond to messages within a reasonable window. The work is the same as in-office — the only difference is you have to prove you're doing it.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(nodding seriously)</span> Totally. Yeah. Makes sense.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">For sure. Very clear.</div>
+
+<div class="stage-dir">A pause. Neither of them has taken a single note. ANDREW looks at their screens. LUKE appears to have a YouTube tab open. ANTHONY is stirring his coffee.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Are either of you writing this down?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Oh, I have a photographic memory.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">What was the last thing I said?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(long pause)</span> ...Something about being... intentional?</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">I figured we'd get a recording of this.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">We're not recording this. This is a conversation.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(pulling out his phone)</span> Want me to record it on my phone?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(staring into the void)</span> No. I want you to take notes. With a pen. Or a keyboard. Like people have done since the beginning of time.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(opening Notepad on his computer)</span> Okay. Ready. Go ahead.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I've been talking for twenty minutes, Luke.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Right. So I'll just put "see first twenty minutes" and start from here.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Two — "Meanwhile, at Jeff's Desk"
+</div>
+
+<div class="stage-dir">JEFF M.'s home office. Three monitors. Treadmill desk. A whiteboard behind him covered in diagrams, sticky notes, and what appears to be a hand-drawn system architecture with at least forty nodes. He is walking at a brisk pace and typing simultaneously. His phone buzzes. It's ANDREW on a DM.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(via Teams DM)</span> Jeff. I need help. The new guys are... a lot. Can you take one of them? Even just for the week?</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(voice message, slightly out of breath from the treadmill)</span> Andrew. Brother. I would love to. Truly. But I am at a critical juncture with the project. I'm building a metadata pipeline that syncs forty thousand knowledge articles through a SharePoint REST API using FedAuth cookie authentication. I wrote a schema last night with three tables and a full-text index. I haven't slept in a way that would be considered medically appropriate. Also, I sent Rachelle a progress update this morning. It was eleven pages. She responded with a thumbs-up emoji. I'm choosing to interpret that as enthusiastic support.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing)</span> So that's a no.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(voice message)</span> It's a "not right now but I believe in you." Also, I looked up both new hires on LinkedIn. Luke's profile picture is a selfie from what appears to be a bowling alley. Anthony's headline says "Future CEO." I have concerns about both of them but I've documented my concerns in a spreadsheet that I'll send to Brenda.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing)</span> Please do not send anything to Brenda. You don't even know who Brenda is.</div>
+
+<span class="char jeff">Jeff M.</span>
+<div class="dial"><span class="paren">(voice message)</span> I found her on the org chart. She's in HR. She seems important. I've already emailed her twice. She hasn't responded yet but I think we're building a rapport.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT TWO-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  "The First Day Continues"
+</div>
+
+<div class="stage-dir">Back on the orientation call. ANDREW is now walking LUKE and ANTHONY through their first ticket. He's screen sharing the ticketing system. A real, simple, P4 ticket. "Customer needs password reset." The most basic task in support.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Okay, this is a great starter ticket. Customer needs a password reset. Luke, walk me through what you'd do.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(leaning in, studying the screen)</span> Okay so... I would... email them?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Email them what?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Their password?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(carefully)</span> We don't... we don't <em>have</em> their password, Luke. We reset it. Through the admin portal. And then we send them a temporary one.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Oh. Right. Yeah. I knew that. The admin portal.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Do you know where the admin portal is?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(staring at screen, clearly lost)</span> ...Is it the blue one?</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Anthony, what about you?</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(confidently)</span> I'd Google it.</div>
+
+<div class="stage-dir">The words land like a prophecy. ANDREW doesn't know it yet, but this sentence will haunt him for four more episodes.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(blinking)</span> ...We'll work on it.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  Act Three — "The Pep Talk"
+</div>
+
+<div class="stage-dir">End of Day 1. ANDREW is on a private call with TINA. She's in her usual setup — bright, organized, a succulent garden visible in the background. She's already heard about the new hires through the team grapevine.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">So! How'd it go?! Tell me everything!</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Tina, one of them was in bed. The other was in a Starbucks drive-thru. Neither of them took notes. One of them asked if we could just email customers their passwords. The other said he'd "Google it." It was their first day and I already need a vacation.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(undeterred, still smiling)</span> Okay, but that's <em>normal!</em> When I started in the field, I didn't know how to read a calibration log for the first three weeks! My supervisor — Linda, you'd love Linda — she just kept saying, "Give it time, Tina. They'll get there." And she was right!</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Did any of your field trainees join their first day from bed?</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(thinking)</span> Well, no. But we had a guy show up in flip-flops to a hospital install once, so... same energy?</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I don't know, Tina. Maybe I'm not cut out for this. I'm a support guy. I fix tickets. I'm not a teacher.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial"><span class="paren">(leaning into camera, genuine)</span> Andrew. You <em>are</em> a teacher. Every time you walk someone through a ticket, every time you explain a process — that's teaching. You've been doing it the whole time. You just had easier students before.</div>
+
+<div class="laugh ooh">Audience: "Aww"</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(small smile)</span> ...Thanks, Tina.</div>
+
+<span class="char tina">Tina</span>
+<div class="dial">Also, if it helps, Devon said he'd "rather eat glass than mentor anyone," so the bar is literally on the floor. You're already winning.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 7</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">5:30 PM. ANDREW at his desk. He closes his laptop halfway, then stops. Opens his email. There's a message from LUKE. Subject: "Day 1 Notes." ANDREW opens it, expecting nothing. The email reads: "Hey Andrew — thanks for today. I know I wasn't great but I'm going to be better tomorrow. I wrote down everything I could remember. It's not much but it's a start. — Luke." Attached is a Word document. It's one page. The formatting is terrible. But it's there.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(reading, surprised)</span> ...Huh.</div>
+
+<div class="stage-dir">A second email appears. From ANTHONY. Subject: "Quick question." The body reads: "Hey, where's the admin portal again? I want to practice the password reset thing before tomorrow. Also — sorry about the car thing. I'll be at my desk next time. For real." ANDREW exhales. Types back to both of them: "See you at nine. Sharp."</div>
+
+<div class="stage-dir">He leans back in his chair. Looks around his home office. Picks up his mug. Takes a sip. It's cold. He drinks it anyway.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(to himself, half-smiling)</span> Remote work is fun.</div>
+
+<div class="stage-dir">He opens his desk drawer. Inside: a travel brochure for Fiji. He looks at it. Shuts the drawer.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Not yet.</div>
+
+<div class="laugh applause">Applause — warm, the first of many</div>
+
+<div class="sfx">♪ END THEME — UPBEAT SYNTH — FREEZE FRAME ON ANDREW ALONE AT HIS DESK, COLD COFFEE IN HAND, THE BEGINNING OF SOMETHING ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY ....................... ANTHONY</p>
+  <p>RACHELLE ...................... RACHELLE</p>
+  <p>JEFF M. ....................... JEFF M. (VIA VOICE MESSAGE)</p>
+  <p>TINA .......................... TINA</p>
+  <p>BRENDA (HR) ................... BRENDA (EMAILED BUT NOT YET AWARE)</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(none of whom were in bed)</div>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

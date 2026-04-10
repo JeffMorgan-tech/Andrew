@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --screen-bg: #121a28;
+    --laugh-gold: #d4a050;
+    --vhs-blue: #5b8ec9;
+    --text-cream: #b8c8dc;
+  }
+
+  body {
+    background: #0a0e14;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+  }
+
+  /* Full-screen room image — uses <img> for reliable sizing */
+  .room-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    transition: filter 0.4s ease;
+  }
+
+  .room-wrapper.dimmed {
+    filter: blur(6px) brightness(0.4);
+  }
+
+  .room-wrapper img {
+    position: absolute;
+    display: block;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Hotspot areas — positioned as % of the image.
+     These are inside a layer that matches the image dimensions,
+     so they always align regardless of viewport. */
+  .hotspot {
+    position: absolute;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+    z-index: 2;
+  }
+
+  .hotspot:hover {
+    box-shadow: 0 0 25px 6px rgba(212, 160, 80, 0.4), inset 0 0 20px rgba(212, 160, 80, 0.15);
+    background: rgba(212, 160, 80, 0.06);
+  }
+
+  .hotspot::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 14, 20, 0.92);
+    color: var(--laugh-gold);
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 13px;
+    padding: 4px 14px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    border: 1px solid rgba(212, 160, 80, 0.35);
+    letter-spacing: 1px;
+  }
+
+  .hotspot:hover::after {
+    opacity: 1;
+  }
+
+  /* ── Popup overlay ── */
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .popup-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .popup-backdrop {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* The zoomed monitor view + episode list */
+  .popup-card {
+    position: relative;
+    max-width: 600px;
+    width: 92%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 160, 80, 0.12);
+    border: 1px solid rgba(212, 160, 80, 0.3);
+    transform: scale(0.92);
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .popup-overlay.active .popup-card {
+    transform: scale(1);
+  }
+
+  /* Cropped monitor image at top of card */
+  .popup-monitor {
+    width: 100%;
+    height: 220px;
+    background-image: url('AndrewOfficeImage.png');
+    background-repeat: no-repeat;
+    position: relative;
+  }
+
+  /* Scanline overlay on the monitor crop */
+  .popup-monitor::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.06) 2px,
+      rgba(0, 0, 0, 0.06) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* Episode list below the monitor image */
+  .popup-episodes {
+    background: linear-gradient(180deg, #0f1620 0%, #0a0e14 100%);
+    padding: 24px 28px 28px;
+  }
+
+  .popup-episodes h2 {
+    color: var(--laugh-gold);
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(212, 160, 80, 0.2);
+  }
+
+  .popup-episodes ul {
+    list-style: none;
+  }
+
+  .popup-episodes li {
+    margin-bottom: 4px;
+  }
+
+  .popup-episodes a {
+    display: block;
+    padding: 8px 12px;
+    color: var(--text-cream);
+    text-decoration: none;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .popup-episodes a:hover {
+    background: rgba(212, 160, 80, 0.12);
+    color: var(--laugh-gold);
+  }
+
+  .popup-episodes a .ep-num {
+    color: var(--vhs-blue);
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 30px;
+    height: 30px;
+    background: rgba(10, 14, 20, 0.7);
+    border: 1px solid rgba(212, 160, 80, 0.3);
+    border-radius: 50%;
+    color: var(--text-cream);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.2s;
+  }
+
+  .popup-close:hover {
+    background: rgba(212, 160, 80, 0.25);
+    color: var(--laugh-gold);
+  }
+</style>
+</head>
+<body>
+
+<div class="room-wrapper" id="roomWrapper">
+  <img id="roomImg" src="AndrewOfficeImage.png" alt="Andrew's office" draggable="false">
+  <div id="hotspotLayer">
+    <div class="hotspot" id="hotspot-left" data-label="Episodes 1–6"></div>
+    <div class="hotspot" id="hotspot-right" data-label="Episodes 7–13"></div>
+    <div class="hotspot" id="hotspot-laptop" data-label="TV Guide"></div>
+  </div>
+</div>
+
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-backdrop" id="popupBackdrop"></div>
+  <div class="popup-card" id="popupCard">
+    <button class="popup-close" id="popupClose">&times;</button>
+    <div class="popup-monitor" id="popupMonitor"></div>
+    <div class="popup-episodes">
+      <h2 id="popupTitle"></h2>
+      <ul id="popupList"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var IMG_W = 1376;
+  var IMG_H = 768;
+  var IMG_ASPECT = IMG_W / IMG_H;
+
+  var roomImg = document.getElementById('roomImg');
+  var roomWrapper = document.getElementById('roomWrapper');
+  var hotspotLayer = document.getElementById('hotspotLayer');
+  var popupOverlay = document.getElementById('popupOverlay');
+  var popupBackdrop = document.getElementById('popupBackdrop');
+  var popupCard = document.getElementById('popupCard');
+  var popupClose = document.getElementById('popupClose');
+  var popupMonitor = document.getElementById('popupMonitor');
+  var popupTitle = document.getElementById('popupTitle');
+  var popupList = document.getElementById('popupList');
+
+  var popupOpen = false;
+
+  // Hotspot definitions: position in image %, crop region for popup
+  var hotspots = {
+    'hotspot-left': {
+      title: 'Episodes 1–6',
+      // Crop region of the image to show in popup (as % of image)
+      cropX: 22, cropY: 25, cropW: 30, cropH: 45,
+      episodes: [
+        { num: 'S01E01', title: 'Remote Work is Fun', file: 'S01E01-Remote Work is Fun.html' },
+        { num: 'S01E02', title: 'New Hires...', file: 'S01E02-New Hires...html' },
+        { num: 'S01E03', title: "Corine Don't Play", file: "S01E03-Corine Don't Play.html" },
+        { num: 'S01E04', title: 'Away From Keyboard', file: 'S01E04-Away From Keyboard.html' },
+        { num: 'S01E05', title: 'The Chain of Command (of Fools)', file: 'S01E05-The Chain of Command (of Fools).html' },
+        { num: 'S01E06', title: 'Reply All My Enemies', file: 'S01E06-Reply All My Enemies.html' }
+      ]
+    },
+    'hotspot-right': {
+      title: 'Episodes 7–13',
+      cropX: 35, cropY: 25, cropW: 30, cropH: 45,
+      episodes: [
+        { num: 'S01E07', title: 'The Mute Button Exists for a Reason', file: 'S01E07-The Mute Button Exists for a Reason.html' },
+        { num: 'S01E08', title: 'Out of Office', file: 'S01E08-Out of Office.html' },
+        { num: 'S01E09', title: 'Andrew Knows Best', file: 'S01E09-Andrew Knows Best.html' },
+        { num: 'S01E10', title: 'Panic! At the Helpdesk', file: 'S01E10-Panic! At the Helpdesk.html' },
+        { num: 'S01E11', title: 'Email Distribution Lists', file: 'S01E11-Email Distribution Lists.html' },
+        { num: 'S01E12', title: 'Fly Little Birds Pt1', file: 'S01E12-Fly Little Birds Pt1.html' },
+        { num: 'S01E13', title: 'Fly Little Birds Pt2', file: 'S01E13-Fly Little Birds Pt2.html' }
+      ]
+    },
+    'hotspot-laptop': {
+      title: 'TV Guide',
+      cropX: 58, cropY: 38, cropW: 22, cropH: 35,
+      directLink: 'AndrewTVGuideSpot.html'
+    }
+  };
+
+  // Size the image to cover the viewport, keeping aspect ratio.
+  // Position hotspot layer to match.
+  function fitImage() {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var w, h, left, top;
+
+    if (vw / vh > IMG_ASPECT) {
+      w = vw; h = vw / IMG_ASPECT;
+    } else {
+      h = vh; w = vh * IMG_ASPECT;
+    }
+    left = (vw - w) / 2;
+    top = (vh - h) / 2;
+
+    roomImg.style.width = w + 'px';
+    roomImg.style.height = h + 'px';
+    roomImg.style.left = left + 'px';
+    roomImg.style.top = top + 'px';
+
+    hotspotLayer.style.position = 'absolute';
+    hotspotLayer.style.width = w + 'px';
+    hotspotLayer.style.height = h + 'px';
+    hotspotLayer.style.left = left + 'px';
+    hotspotLayer.style.top = top + 'px';
+  }
+
+  fitImage();
+  window.addEventListener('resize', fitImage);
+
+  // Set hotspot positions (% of image)
+  function positionHotspot(id, left, top, width, height) {
+    var el = document.getElementById(id);
+    el.style.position = 'absolute';
+    el.style.left = left + '%';
+    el.style.top = top + '%';
+    el.style.width = width + '%';
+    el.style.height = height + '%';
+  }
+
+  // Positions matched to user's blue-box annotations — inside bezels only
+  positionHotspot('hotspot-left',  37, 35, 10, 15);
+  positionHotspot('hotspot-right', 49, 35.5, 9.5, 12.5);
+  positionHotspot('hotspot-laptop', 64, 49, 8, 8);
+
+  // Open popup
+  function openPopup(hotspotId) {
+    var data = hotspots[hotspotId];
+    if (!data) return;
+
+    // If it's a direct link (laptop → TV Guide), navigate immediately
+    if (data.directLink) {
+      window.location.href = encodeURI(data.directLink);
+      return;
+    }
+
+    // Set the cropped monitor image as popup header background
+    // background-size and background-position crop to the monitor area
+    var cropScale = 100 / data.cropW; // how much to scale to fill the popup width
+    var bgSize = (cropScale * 100) + '%';
+    var bgPosX = (data.cropX / (100 - data.cropW)) * 100;
+    var bgPosY = (data.cropY / (100 - data.cropH)) * 100;
+    popupMonitor.style.backgroundSize = bgSize + ' auto';
+    popupMonitor.style.backgroundPosition = bgPosX + '% ' + bgPosY + '%';
+
+    // Build episode list
+    popupTitle.textContent = data.title;
+    popupList.innerHTML = '';
+    data.episodes.forEach(function(ep) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = encodeURI(ep.file);
+      var span = document.createElement('span');
+      span.className = 'ep-num';
+      span.textContent = ep.num;
+      a.appendChild(span);
+      a.appendChild(document.createTextNode(' ' + ep.title));
+      li.appendChild(a);
+      popupList.appendChild(li);
+    });
+
+    // Show popup, blur background
+    roomWrapper.classList.add('dimmed');
+    popupOverlay.classList.add('active');
+    popupOpen = true;
+  }
+
+  function closePopup() {
+    popupOverlay.classList.remove('active');
+    roomWrapper.classList.remove('dimmed');
+    popupOpen = false;
+  }
+
+  // Click handlers for hotspots
+  document.querySelectorAll('.hotspot').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!popupOpen) openPopup(el.id);
+    });
+  });
+
+  // Close popup
+  popupBackdrop.addEventListener('click', closePopup);
+  popupClose.addEventListener('click', closePopup);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && popupOpen) closePopup();
+  });
+})();
+</script>
+</body>
+</html>

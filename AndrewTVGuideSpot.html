@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | TV Guide — Season 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0e1520; color: var(--text-cream); font-family: 'Courier Prime', monospace; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+
+  .vhs-bar { width: 100%; background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #4a5e78; border-bottom: 2px solid #243048; position: sticky; top: 0; z-index: 100; }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+
+  .tv-frame { width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel); border-radius: 18px; padding: 20px; box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6); position: relative; }
+  .tv-frame::before { content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px; }
+
+  .screen { background: var(--screen-bg); border-radius: 8px; overflow: hidden; position: relative; border: 3px solid #243048; }
+  .screen::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px); pointer-events: none; z-index: 10; }
+
+  /* ── Header ── */
+  .guide-header { text-align: center; padding: 50px 20px 30px; background: linear-gradient(180deg, #1a2236 0%, #141a24 100%); position: relative; overflow: hidden; }
+  .guide-header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%); animation: glow-rotate 8s linear infinite; }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .guide-badge { display: inline-block; border: 1px solid var(--laugh-gold); color: var(--laugh-gold); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; padding: 5px 16px; border-radius: 4px; margin-bottom: 16px; position: relative; z-index: 1; }
+  .show-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(28px, 6vw, 52px); background: linear-gradient(180deg, #d4a050 0%, #c08840 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1; }
+  .show-subtitle { font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px); color: #6a7e98a9e; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase; position: relative; z-index: 1; }
+  .guide-meta { font-size: 13px; color: #4a5e78; margin-top: 16px; line-height: 1.8; position: relative; z-index: 1; letter-spacing: 1px; }
+  .guide-synopsis { font-size: 14px; color: #7a8a9e; margin: 20px auto 0; max-width: 560px; line-height: 1.7; position: relative; z-index: 1; font-style: italic; }
+
+  /* ── Body ── */
+  .guide-body { padding: 30px clamp(15px, 4vw, 40px); background: linear-gradient(180deg, var(--screen-bg) 0%, #101620 100%); }
+
+  /* Section headers */
+  .section-header { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 18px; color: var(--laugh-gold); text-transform: uppercase; letter-spacing: 3px; margin: 30px 0 16px; padding: 10px 0; border-top: 2px solid #243048; border-bottom: 1px solid #1a2230; }
+  .section-header:first-child { margin-top: 0; border-top: none; }
+  .section-header .section-label { color: var(--vhs-red); font-size: 11px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+
+  /* ── Episode cards ── */
+  .ep-card { margin: 16px 0; padding: 16px; background: rgba(140,160,190,0.03); border-left: 3px solid #3a4a60; border-radius: 0 6px 6px 0; transition: border-color 0.2s; }
+  .ep-card:hover { border-left-color: var(--vhs-blue); }
+  .ep-card.premiere { border-left-color: var(--laugh-gold); }
+  .ep-card.debut { border-left-color: var(--corine-teal); }
+  .ep-card.guest { border-left-color: var(--jeff-orange); }
+  .ep-card.holiday { border-left-color: var(--tina-pink); }
+  .ep-card.finale { border-left-color: var(--vhs-red); }
+
+  .ep-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+  .ep-num { font-size: 12px; font-weight: 700; color: var(--vhs-red); letter-spacing: 3px; min-width: 36px; }
+  .ep-title { font-family: 'Special Elite', cursive; font-size: 17px; color: var(--text-white); }
+  .ep-desc { font-size: 13px; color: #6a7a8e; line-height: 1.65; margin-top: 4px; }
+
+  .ep-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; border: 1px solid; }
+  .tag.premiere { color: var(--laugh-gold); border-color: rgba(212,160,80,0.3); background: rgba(212,160,80,0.08); }
+  .tag.debut { color: var(--corine-teal); border-color: rgba(0,184,148,0.3); background: rgba(0,184,148,0.08); }
+  .tag.guest { color: var(--jeff-orange); border-color: rgba(243,156,18,0.3); background: rgba(243,156,18,0.08); }
+  .tag.holiday { color: var(--tina-pink); border-color: rgba(232,67,147,0.3); background: rgba(232,67,147,0.08); }
+  .tag.finale { color: var(--vhs-red); border-color: rgba(231,76,60,0.3); background: rgba(231,76,60,0.08); }
+
+  /* ── Cast grid ── */
+  .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 12px; }
+  .cast-card { background: rgba(140,160,190,0.03); border: 1px solid #2a3444; border-radius: 6px; padding: 10px 14px; }
+  .cast-name { font-weight: 700; font-size: 13px; letter-spacing: 1px; }
+  .cast-name.andrew { color: var(--vhs-blue); }
+  .cast-name.luke { color: #5aaa7a; }
+  .cast-name.anthony { color: var(--vhs-red); }
+  .cast-name.tina { color: var(--tina-pink); }
+  .cast-name.devon { color: var(--devon-gray); }
+  .cast-name.jeff { color: var(--jeff-orange); }
+  .cast-name.corine { color: var(--corine-teal); }
+  .cast-name.rachelle { color: var(--rachelle-violet); }
+  .cast-name.carlos { color: var(--carlos-copper); }
+  .cast-name.juwan { color: var(--juwan-sky); }
+  .cast-name.neutral { color: #7a8a9e; }
+  .cast-role { font-size: 11px; color: #5a6a7e; margin-top: 2px; }
+
+  /* ── Footer ── */
+  .guide-footer { text-align: center; padding: 30px 20px; border-top: 2px solid #2a3444; background: linear-gradient(180deg, #101620 0%, #0e1218 100%); }
+  .guide-footer p { color: #4a5a6e; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .guide-footer .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 12px; }
+
+  @media (max-width: 600px) {
+    .tv-frame { padding: 10px; border-radius: 10px; }
+    .guide-body { padding: 20px 12px; }
+    .cast-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">TV GUIDE — 1993 FALL PREVIEW</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<!-- ── Header ── -->
+<div class="guide-header">
+  <div class="guide-badge">★ TV Guide Featured Listing ★</div>
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="guide-meta">
+    Fridays 8:00 PM ET — Channel 04 TGIF Lineup<br>
+    TV-PG | 22 min | Comedy / Workplace / Sitcom<br>
+    Created by Jeff &amp; Claude | Friday Night Productions
+  </div>
+  <div class="guide-synopsis">
+    When mild-mannered software support specialist Andrew agrees to mentor two remote new hires, he discovers that teaching people to close tickets is easy — teaching them to show up on time, stay off camera at Starbucks, and stop eating burritos during customer calls is the real challenge. Joined by a colorful cast of coworkers spread across the country, the team navigates remote work life with heart, humor, and an alarming number of emails to Brenda in HR.
+  </div>
+</div>
+
+<!-- ── Episode Guide ── -->
+<div class="guide-body">
+
+<div class="section-header">
+  <span class="section-label">Season 1</span>
+  Episode Guide — 13 Episodes
+</div>
+
+<!-- E01 -->
+<div class="ep-card premiere">
+  <div class="ep-top">
+    <span class="ep-num">E01</span>
+    <span class="ep-title">"Remote Work is Fun?"</span>
+  </div>
+  <div class="ep-desc">Rachelle offers Andrew the "opportunity" to mentor two new hires at once — because Jeff is too deep in his pet project to help. Luke shows up in bed. Anthony shows up in a Starbucks drive-thru. Neither takes notes. The Fiji brochure appears for the first time.</div>
+  <div class="ep-tags"><span class="tag premiere">series premiere</span></div>
+</div>
+
+<!-- E02 -->
+<div class="ep-card">
+  <div class="ep-top">
+    <span class="ep-num">E02</span>
+    <span class="ep-title">"New Hires.."</span>
+  </div>
+  <div class="ep-desc">Three weeks in and Andrew isn't seeing progress. He seeks advice from the mentor squad — Tina says celebrate small wins, Devon says accept the void, Jeff sends a 27-page curriculum to Brenda. Andrew tries all three approaches at once. Anthony sends a customer the Google homepage.</div>
+</div>
+
+<!-- E03 -->
+<div class="ep-card guest">
+  <div class="ep-top">
+    <span class="ep-num">E03</span>
+    <span class="ep-title">"Corine Don't Play"</span>
+  </div>
+  <div class="ep-desc">Corine's P1 customer Marion DeFabuloso is furious. Andrew steps in to deescalate and brings the newbs to shadow an engineering meeting with Mike Shimmy. Luke eats a burrito on camera. He drops the burrito. He unmutes to announce he dropped the burrito. Corine's pen goes perpendicular.</div>
+  <div class="ep-tags"><span class="tag guest">guest: Mike Shimmy &amp; Marion DeFabuloso</span></div>
+</div>
+
+<!-- E04 -->
+<div class="ep-card">
+  <div class="ep-top">
+    <span class="ep-num">E04</span>
+    <span class="ep-title">"Away From Keyboard"</span>
+  </div>
+  <div class="ep-desc">Andrew finds both new hires completely checked out on a Tuesday morning. Luke invents "pre-resolution" — visualizing the fix without actually doing it. Anthony's Alexa apparently orders oat milk and honks. Andrew creates a presentation called "WHAT YOUR JOB IS: A Refresher." Slide 1: "Be awake."</div>
+</div>
+
+<!-- E05 -->
+<div class="ep-card debut">
+  <div class="ep-top">
+    <span class="ep-num">E05</span>
+    <span class="ep-title">"The Chain of Command (of Fools)"</span>
+  </div>
+  <div class="ep-desc">The team learns proper internal escalation. Jeff builds a 47-node flowchart that accounts for Mercury retrograde and sends it to the VP of Operations. Devon has memorized KB-4471 from fixing it four hundred times. Anthony quietly follows the process correctly and everyone is stunned.</div>
+  <div class="ep-tags"><span class="tag debut">full ensemble debut: Tina, Devon, Jeff M.</span></div>
+</div>
+
+<!-- E06 -->
+<div class="ep-card debut">
+  <div class="ep-top">
+    <span class="ep-num">E06</span>
+    <span class="ep-title">"Reply All My Enemies"</span>
+  </div>
+  <div class="ep-desc">Greg from SDS publicly mocks the remote team in Slack and singles out Tina by name. Andrew brings it to Rachelle. Corine delivers a 7-page evidence file with footnotes that reference an appendix. Jeff deploys the Spongebob text. Rachelle is furious — professionally. HR investigation opens.</div>
+  <div class="ep-tags"><span class="tag debut">debut: Rachelle &amp; Corine</span></div>
+</div>
+
+<!-- E07 -->
+<div class="ep-card debut">
+  <div class="ep-top">
+    <span class="ep-num">E07</span>
+    <span class="ep-title">"The Mute Button Exists for a Reason"</span>
+  </div>
+  <div class="ep-desc">Luke's kettle chips derail the Thursday standup at 85 decibels. Carlos gives the most effective "cool uncle" talk in mentoring history. Corine creates a food tier list for meetings. Jeff conducts a four-brand chip acoustics study and produces the 14-page Unified Snack Protocol. Devon heard the guacamole.</div>
+  <div class="ep-tags"><span class="tag debut">debut: Carlos &amp; Juwan</span></div>
+</div>
+
+<!-- E08 -->
+<div class="ep-card holiday">
+  <div class="ep-top">
+    <span class="ep-num">E08</span>
+    <span class="ep-title">"Out of Office"</span>
+  </div>
+  <div class="ep-desc">The Memorial Day episode. Tina unpacks boxes in Cleveland (she misses Publix). Andrew escapes to a cabin in Wisconsin. Devon grills his mom's chicken recipe in Vermont. Rachelle tends baby chicks and turkeys in Texas — Dolly graduated to the outdoor run, Big Tex fought the hose and tied. Anthony games for 52 straight hours. Luke tests auto-mute headsets. Jeff's three-year-old tried to eat a sparkler.</div>
+  <div class="ep-tags"><span class="tag holiday">holiday episode</span></div>
+</div>
+
+<!-- E09 -->
+<div class="ep-card">
+  <div class="ep-top">
+    <span class="ep-num">E09</span>
+    <span class="ep-title">"Andrew Knows Best"</span>
+  </div>
+  <div class="ep-desc">Andrew overrides Anthony's correct approach on a ticket and breaks the customer's system — exactly what Juwan warned about. He calls Juwan, owns the mistake, and the newbs watch the recovery. Rachelle tells him the best thing a mentor can do is let students see them be wrong. She compares him to Dolly the chicken. He doesn't love that.</div>
+</div>
+
+<!-- E10 -->
+<div class="ep-card">
+  <div class="ep-top">
+    <span class="ep-num">E10</span>
+    <span class="ep-title">"Panic! At the Helpdesk"</span>
+  </div>
+  <div class="ep-desc">A faulty patch takes down dozens of customer sites. 38 P1 tickets and climbing. The team is on nonstop calls with no breaks — Andrew juggles triage and mentoring until he's running on fumes. Tina reads the patch notes line-by-line, finds the real culprit (a session timeout change), and saves the day. She takes Luke and Anthony under her wing to teach field thinking.</div>
+</div>
+
+<!-- E11 -->
+<div class="ep-card">
+  <div class="ep-top">
+    <span class="ep-num">E11</span>
+    <span class="ep-title">"Email Distribution Lists"</span>
+  </div>
+  <div class="ep-desc">Someone anonymously reply-alls to the CEO's company-wide email — not with text, but with a meme: a cow holding a sign that reads "This isn't a TV show, Greg." Jeff goes full detective — creates a Slack investigation channel, invents an IT form, tracks login timestamps and session tokens. Corine approves the investigation, not the process. The culprit? Brenda from HR, who was trying to send the Greg meme to her friend Pam. She's been a secret Greg hater this whole time. The cow lives forever.</div>
+</div>
+
+<!-- E12 -->
+<div class="ep-card finale">
+  <div class="ep-top">
+    <span class="ep-num">E12</span>
+    <span class="ep-title">"Fly Little Birds" — Part 1</span>
+  </div>
+  <div class="ep-desc">The newbs take calls on their own. Andrew watches from the sidelines, tying his self-worth to their performance. Then his internet drops during a P1 bridge call with SDS. Anthony is alone on the line — site down, customer waiting, and Greg is there. To be continued...</div>
+  <div class="ep-tags"><span class="tag finale">season finale — part 1</span></div>
+</div>
+
+<!-- E13 -->
+<div class="ep-card finale">
+  <div class="ep-top">
+    <span class="ep-num">E13</span>
+    <span class="ep-title">"Fly Little Birds" — Part 2</span>
+  </div>
+  <div class="ep-desc">Devon turns his camera on for the first time all season to put Greg in his place. Carlos talks Luke through the chaos. The team rallies. Andrew's internet comes back — but the newbs already handled it. Post-credits: Jeff's project makes a breakthrough. Luke muted his mic to sneeze. They flew.</div>
+  <div class="ep-tags"><span class="tag finale">season finale — part 2</span></div>
+</div>
+
+<!-- ── Cast ── -->
+<div class="section-header">
+  <span class="section-label">Cast</span>
+  Series Regulars
+</div>
+
+<div class="cast-grid">
+  <div class="cast-card"><div class="cast-name andrew">Andrew</div><div class="cast-role">Support specialist / Mentor — Wisconsin</div></div>
+  <div class="cast-card"><div class="cast-name luke">Luke</div><div class="cast-role">New hire / Professional snacker</div></div>
+  <div class="cast-card"><div class="cast-name anthony">Anthony</div><div class="cast-role">New hire / 52-hour gamer</div></div>
+  <div class="cast-card"><div class="cast-name tina">Tina</div><div class="cast-role">Former field engineer — Cleveland, OH</div></div>
+  <div class="cast-card"><div class="cast-name devon">Devon</div><div class="cast-role">Camera off. Always. — Vermont</div></div>
+  <div class="cast-card"><div class="cast-name jeff">Jeff M.</div><div class="cast-role">Dad of 4 / 3 AM meme dealer — Indiana</div></div>
+  <div class="cast-card"><div class="cast-name corine">Corine</div><div class="cast-role">By the book. With footnotes.</div></div>
+  <div class="cast-card"><div class="cast-name rachelle">Rachelle</div><div class="cast-role">Manager / Chicken mom — Texas</div></div>
+  <div class="cast-card"><div class="cast-name carlos">Carlos</div><div class="cast-role">Remote work OG / Cool uncle</div></div>
+  <div class="cast-card"><div class="cast-name juwan">Juwan</div><div class="cast-role">Andrew's peer / Voice of reason</div></div>
+</div>
+
+<div class="section-header">
+  <span class="section-label">Also Starring</span>
+  Recurring &amp; Guest Characters
+</div>
+
+<div class="cast-grid">
+  <div class="cast-card"><div class="cast-name neutral">Brenda (HR)</div><div class="cast-role">Never on screen. Always emailed. Reply-all culprit.</div></div>
+  <div class="cast-card"><div class="cast-name neutral">Greg (SDS)</div><div class="cast-role">The antagonist. Cubicle guy.</div></div>
+  <div class="cast-card"><div class="cast-name neutral">Mike Shimmy</div><div class="cast-role">SDS Engineering. Three energy drinks.</div></div>
+  <div class="cast-card"><div class="cast-name neutral">Marion DeFabuloso</div><div class="cast-role">Irritated customer. Funny once calm.</div></div>
+  <div class="cast-card"><div class="cast-name neutral">Kevin (Facilities)</div><div class="cast-role">On Jeff's watchlist for attitude.</div></div>
+  <div class="cast-card"><div class="cast-name neutral">Dolly</div><div class="cast-role">Baby chicken. Falls asleep standing up.</div></div>
+  <div class="cast-card"><div class="cast-name neutral">Big Tex</div><div class="cast-role">Turkey poult. Fought the hose. Tied.</div></div>
+  <div class="cast-card"><div class="cast-name neutral">The Cow</div><div class="cast-role">An icon. A legend. A moment.</div></div>
+</div>
+
+</div><!-- /guide-body -->
+
+<!-- ── Footer ── -->
+<div class="guide-footer">
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size: 12px; margin-top: 6px; color: #4a5a6e;">(who were all working from home)</div>
+  <p>&nbsp;</p>
+  <p style="color: #5a6a7e; font-size: 11px;">Season 2 in development. The cow lives forever.</p>
+  <p>&nbsp;</p>
+  <p style="color: #3a4a5e; font-size: 11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>

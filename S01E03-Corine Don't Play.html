@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew — Software Support Specialist | S01E03</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tv-bezel: #1c2333;
+    --screen-bg: #121a28;
+    --scanline: rgba(120,150,200,0.025);
+    --vhs-blue: #5b8ec9;
+    --vhs-red: #c45a5a;
+    --laugh-gold: #d4a050;
+    --text-cream: #b8c8dc;
+    --text-white: #ccd8e8;
+    --highlight: #d4a050;
+    --tina-pink: #c47090;
+    --devon-gray: #7a8ea8;
+    --jeff-orange: #d8a858;
+    --rachelle-violet: #8898c4;
+    --corine-teal: #5a9488;
+    --carlos-copper: #b89050;
+    --juwan-sky: #6aacd8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0e1520; color: var(--text-cream); font-family: 'Courier Prime', monospace;
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
+  }
+
+  .vhs-bar {
+    width: 100%; background: linear-gradient(90deg, #141c2a 0%, #1a2640 50%, #141c2a 100%);
+    padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: #4a5e78; border-bottom: 2px solid #243048; position: sticky; top: 0; z-index: 100;
+  }
+  .vhs-bar .rec { color: var(--vhs-red); font-weight: bold; animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .vhs-bar .timecode { font-family: 'Courier Prime', monospace; color: #5a7090; letter-spacing: 2px; }
+
+  .tv-frame {
+    width: 95%; max-width: 900px; margin: 30px auto; background: var(--tv-bezel);
+    border-radius: 18px; padding: 20px;
+    box-shadow: 0 0 60px rgba(8,14,24,0.9), inset 0 0 30px rgba(8,14,24,0.6); position: relative;
+  }
+  .tv-frame::before {
+    content: 'TOSHIBA'; position: absolute; bottom: 7px; left: 50%;
+    transform: translateX(-50%); font-size: 10px; color: #304060; letter-spacing: 4px;
+  }
+
+  .screen {
+    background: var(--screen-bg); border-radius: 8px; overflow: hidden;
+    position: relative; border: 3px solid #243048;
+  }
+  .screen::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px);
+    pointer-events: none; z-index: 10;
+  }
+
+  .title-card {
+    text-align: center; padding: 50px 20px 40px;
+    background: linear-gradient(180deg, #141e30 0%, #121a28 100%);
+    position: relative; overflow: hidden;
+  }
+  .title-card::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(90,140,200,0.06) 0%, transparent 70%);
+    animation: glow-rotate 8s linear infinite;
+  }
+  @keyframes glow-rotate { to { transform: rotate(360deg); } }
+
+  .show-title {
+    font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(28px, 6vw, 52px);
+    background: linear-gradient(180deg, #d4a050 0%, #c08840 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-transform: uppercase; letter-spacing: 3px; position: relative; z-index: 1; line-height: 1.1;
+  }
+  .show-subtitle {
+    font-family: 'Special Elite', cursive; font-size: clamp(14px, 3vw, 20px);
+    color: #6a7e98a9e; margin-top: 8px; letter-spacing: 6px; text-transform: uppercase; position: relative; z-index: 1;
+  }
+  .episode-info { margin-top: 18px; font-size: 13px; color: #4a5e78e78; letter-spacing: 2px; position: relative; z-index: 1; }
+  .episode-title {
+    font-family: 'Special Elite', cursive; font-size: clamp(16px, 3.5vw, 22px);
+    color: var(--vhs-blue); margin-top: 10px; position: relative; z-index: 1;
+  }
+  .episode-desc {
+    font-size: 12px; color: #4a5a6e; margin-top: 14px; letter-spacing: 1px;
+    position: relative; z-index: 1; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6;
+  }
+
+  .script-body {
+    padding: 30px clamp(15px, 4vw, 40px);
+    background: linear-gradient(180deg, var(--screen-bg) 0%, #0e1520 100%);
+    line-height: 1.75; font-size: clamp(14px, 2.2vw, 16px);
+  }
+
+  .scene-header {
+    font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(16px, 3vw, 20px);
+    color: var(--laugh-gold); text-transform: uppercase; letter-spacing: 3px;
+    margin: 40px 0 8px; padding: 12px 0; border-top: 2px solid #243048;
+    border-bottom: 1px solid #1a2438; position: relative;
+  }
+  .scene-header:first-child { margin-top: 0; border-top: none; }
+  .scene-header .scene-num { color: var(--vhs-red); font-size: 12px; display: block; margin-bottom: 2px; letter-spacing: 5px; }
+
+  .stage-dir {
+    color: #6a6a7a; font-style: italic; margin: 14px 0; padding: 8px 14px;
+    border-left: 3px solid #2a3e58; background: rgba(140,160,190,0.03); border-radius: 0 4px 4px 0;
+  }
+
+  .char { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; display: block; font-size: 13px; }
+  .char.andrew { color: var(--vhs-blue); }
+  .char.luke { color: #5aaa7a; }
+  .char.anthony { color: #c45050; }
+  .char.tina { color: var(--tina-pink); }
+  .char.devon { color: var(--devon-gray); }
+  .char.jeff { color: var(--jeff-orange); }
+  .char.rachelle { color: var(--rachelle-violet); }
+  .char.corine { color: var(--corine-teal); }
+  .char.mike { color: var(--mike-red); }
+  .char.marion { color: var(--marion-gold); }
+
+  .dial { margin: 4px 0 12px 20px; color: var(--text-white); }
+  .paren { color: #506880; font-style: italic; font-size: 13px; }
+
+  .laugh {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(212,160,80,0.08); border: 1px solid rgba(212,160,80,0.15);
+    color: var(--laugh-gold); font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    margin: 8px 0; letter-spacing: 1px; text-transform: uppercase; cursor: default;
+    animation: laugh-fade 0.4s ease;
+  }
+  .laugh::before { content: '😂'; font-size: 13px; }
+  .laugh.big { background: rgba(212,160,80,0.14); border-color: rgba(212,160,80,0.25); }
+  .laugh.big::before { content: '🤣'; }
+  .laugh.applause { background: rgba(58,123,213,0.1); border-color: rgba(58,123,213,0.2); color: var(--vhs-blue); }
+  .laugh.applause::before { content: '👏'; }
+  .laugh.ooh { background: rgba(162,155,254,0.1); border-color: rgba(162,155,254,0.2); color: var(--rachelle-violet); }
+  .laugh.ooh::before { content: '😮'; }
+  .laugh.groan { background: rgba(231,76,60,0.08); border-color: rgba(231,76,60,0.15); color: var(--vhs-red); }
+  .laugh.groan::before { content: '😩'; }
+  @keyframes laugh-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .sfx { color: var(--highlight); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0; opacity: 0.7; }
+
+  .credits {
+    text-align: center; padding: 40px 20px; border-top: 2px solid #243048;
+    background: linear-gradient(180deg, #0e1520 0%, #0a1018 100%);
+  }
+  .credits p { color: #4a5a6e; font-size: 12px; margin: 4px 0; letter-spacing: 1px; }
+  .credits .filmed { color: #4a6480; font-family: 'Special Elite', cursive; font-size: 14px; margin-top: 16px; }
+
+  @media (max-width: 600px) {
+    .tv-frame { padding: 10px; border-radius: 10px; }
+    .script-body { padding: 20px 12px; }
+    .dial { margin-left: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="vhs-bar">
+  <span class="rec">● REC</span>
+  <span class="timecode">SP 00:23:19</span>
+  <span>CH 04 — TGIF LINEUP</span>
+</div>
+
+<div class="tv-frame">
+<div class="screen">
+
+<div class="title-card">
+  <div class="show-title">Andrew</div>
+  <div class="show-subtitle">Software Support Specialist</div>
+  <div class="episode-info">SEASON 1 — EPISODE 3</div>
+  <div class="episode-title">"Corine Don't Play"</div>
+  <div class="episode-desc">GUEST STARRING: MIKE SHIMMY (SDS ENGINEERING)<br>AND MARION DeFABULOSO (IRRITATED CUSTOMER)</div>
+</div>
+
+<div class="script-body">
+
+<!-- ═══════════ COLD OPEN ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 1</span>
+  Cold Open — Tuesday Morning, Corine's Desk
+</div>
+
+<div class="stage-dir">CORINE is at her workstation. Everything is precise: two monitors aligned to the millimeter, a small desk lamp angled exactly where she needs it, a single pen placed parallel to her keyboard. She's on a customer call. Her voice is calm. Professional. But her jaw is tight. The ticket on screen is a P1 — system down — and the customer has been escalated twice already. This is CORINE's third call with them in two days.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">Yes, ma'am, I understand. We've been working with engineering to isolate the root cause. The logs show a conflict between the 4.1 patch and your custom configuration, and —</div>
+
+<span class="char marion">Marion (on phone)</span>
+<div class="dial"><span class="paren">(cutting in, voice like a woman who has been on hold for three lifetimes)</span> Corine. I've heard "working with engineering" for forty-eight hours. My team can't access the system. We have patients. Actual patients. I need a resolution, not an update. I need someone to fix this <em>today</em> or I need to speak to whoever is in charge, because this? This is unacceptable.</div>
+
+<div class="stage-dir">CORINE's eye twitches. Imperceptibly. She does not lose her composure. She never loses her composure. But if composure were a battery, hers just dipped below twenty percent.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(measured)</span> I hear you, Ms. DeFabuloso. And I want you to know that I take this seriously. I've documented every interaction, every step we've taken, and every response from engineering. I'm going to escalate this to the highest priority and make sure someone from our engineering team is on a call with you before end of business today. That's my commitment.</div>
+
+<span class="char marion">Marion</span>
+<div class="dial">That's what the last person said.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(a beat — this one lands)</span> ...I understand. I'm not the last person. I'll follow up within the hour.</div>
+
+<div class="stage-dir">The call ends. CORINE sets down her headset. Stares at her screen. Then, very quietly, moves her pen from parallel to her keyboard to perpendicular. For Corine, this is the equivalent of flipping a table.</div>
+
+<div class="laugh">Laugh track</div>
+
+<div class="sfx">♪ THEME SONG — TITLE SEQUENCE ♪</div>
+
+<!-- ═══════════ ACT ONE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 2</span>
+  Act One — "The Debrief"
+</div>
+
+<div class="stage-dir">CORINE has DM'd ANDREW. Rare. Corine doesn't DM people unless something is either very good or very bad. ANDREW accepts the call immediately.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">I need help. And I don't say that often.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(concerned)</span> What's going on?</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">I've had a P1 open for two days. Customer is Marion DeFabuloso — she runs a clinical site. System is down. I've done everything right. Every step documented. Three calls. Two escalations. Engineering acknowledged the ticket but hasn't assigned anyone. The customer is furious. She's not wrong to be furious. And I'm about ten minutes away from walking into the engineering Slack channel and saying something I can't take back.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(measuring the situation)</span> Okay. What if I take the next customer call? Not instead of you — with you. I can handle the deescalation side while you focus on the technical. And I'll bring Luke and Anthony in to shadow — they need to see how this works when it's real. How we operate as a team when things go sideways.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(considering, then nodding)</span> Fine. But I want to do more than a customer call. I want to get engineering on a live meeting. Screen share. Logs on the table. No more email chains. If your new hires are going to shadow, they should see the whole process — support to engineering to resolution. That's how it really works.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I'm in. Let's set it up.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">I've already set it up. Two o'clock. Mike Shimmy from SDS engineering confirmed. I just needed you to say yes so it would look collaborative instead of aggressive.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(blinking)</span> ...You already booked the meeting before calling me?</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">I believe in being prepared. I also believe in the <em>appearance</em> of consensus.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<!-- ═══════════ ACT ONE-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 3</span>
+  "The Prep Talk"
+</div>
+
+<div class="stage-dir">1:30 PM. ANDREW pulls LUKE and ANTHONY into a quick prep call before the big meeting.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Alright, listen up. At two o'clock we're joining Corine on a meeting with an SDS engineer and a very frustrated customer. This is a live, high-priority issue. This is <em>not</em> a training exercise. You're there to observe. That means cameras on, mics off, and — I cannot stress this enough — <em>do not talk.</em> You are furniture. Professional, attentive furniture. Got it?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Got it. We're furniture.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial">Silent mode. One hundred percent.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Great. And Luke?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">Yeah?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Don't eat anything.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(offended)</span> What? I wasn't going to eat anything.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">I'm just saying. No food. This is a serious meeting with a customer and an engineer. Clean desk. Water only.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(hand over heart)</span> Andrew. You have my word. No food.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(pause, wanting to believe)</span> ...Thank you.</div>
+
+<div class="stage-dir">ANDREW ends the prep call. He feels cautiously optimistic. This will be the last time he feels cautiously optimistic in this episode.</div>
+
+<div class="laugh">Laugh track</div>
+
+<!-- ═══════════ ACT TWO ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 4</span>
+  Act Two — "The Engineering Meeting"
+</div>
+
+<div class="stage-dir">2:00 PM. The Teams meeting opens. Five webcam boxes. CORINE — centered, composed, pen back to parallel. ANDREW — steady, ready to deescalate. MIKE SHIMMY from SDS Engineering — a friendly, slightly harried man in his forties with a "Systems Design Services" polo and what appears to be three energy drinks on his desk. LUKE and ANTHONY — cameras on, mics off, sitting still. Like they were told. For now.</div>
+
+<div class="stage-dir">MARION DeFABULOSO joins. Her webcam frame is all business: clinical office, credentials on the wall, reading glasses on, and the expression of a woman who has been patient for exactly as long as she intends to be.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">Good afternoon, everyone. Thank you for joining. Ms. DeFabuloso, I want you to know we've brought together the right people to get this resolved today. With me is Andrew from our support team, and Mike Shimmy from our SDS engineering group. Mike has the system logs and is prepared to walk through what we've found.</div>
+
+<span class="char marion">Marion</span>
+<div class="dial"><span class="paren">(measured but firm)</span> Thank you, Corine. I appreciate the follow-through. I'll be honest — I've been told three times this would be fixed, and it hasn't been. So I'm here to listen, but I need to see action.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(warm, steady)</span> That's completely fair, Ms. DeFabuloso. And I want to acknowledge up front — the timeline on this hasn't been good enough. You deserve better responsiveness, and that's on us. We're here to make it right today.</div>
+
+<div class="stage-dir">MARION's expression softens one degree. Deescalation in progress.</div>
+
+<span class="char mike">Mike Shimmy</span>
+<div class="dial"><span class="paren">(sharing his screen, pulling up log files)</span> Alright, so — Marion, here's what happened. The 4.1 patch introduced a config change that conflicts with your site's custom auth module. It's not affecting standard deployments, which is why it slipped through QA. But your environment has a legacy integration that —</div>
+
+<div class="sfx">♪ THE SOUND. THE UNMISTAKABLE SOUND. ♪</div>
+
+<div class="stage-dir">A crinkling. A slow, devastating crinkling. The unmistakable sound of aluminum foil being unwrapped. Every head on the call freezes. MIKE stops mid-sentence. CORINE's eye twitches again. ANDREW's blood pressure spikes. The camera boxes tell the story: it's coming from LUKE's feed.</div>
+
+<div class="stage-dir">LUKE is unwrapping a burrito. On camera. In the middle of a P1 customer-facing engineering meeting. The foil catches the light from his desk lamp. It crinkles like a bag of Sun Chips at a funeral. The burrito is enormous. It is roughly the size of a small child. And LUKE — sweet, oblivious Luke — picks it up with both hands and takes a bite.</div>
+
+<div class="sfx">♪ LOUD, WET, CATASTROPHIC BURRITO BITE ♪</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">Sour cream is visible on his chin. He's chewing. On camera. His mic is off, but it doesn't matter — the visual alone is devastating. MARION is staring directly at Luke's webcam box. MIKE has stopped talking. CORINE has closed her eyes.</div>
+
+<span class="char marion">Marion</span>
+<div class="dial"><span class="paren">(slowly, dangerously calm)</span> ...Is someone eating a burrito?</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(texting Luke frantically under the desk — "TURN YOUR CAMERA OFF RIGHT NOW")</span></div>
+
+<div class="stage-dir">LUKE looks at his phone. Looks at the burrito. Looks at the camera. The realization hits him like a freight train. His eyes go wide. He reaches for the camera button. In his panic, he knocks the burrito off the desk. It lands with an audible splat. He then — somehow — accidentally unmutes himself.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(into a live mic, to a live customer, on a live engineering call)</span> Oh no, my burrito —</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">His camera goes off. His mic goes off. The damage is done. The silence that follows is the loudest silence in the history of remote work.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(opening her eyes, voice steady as granite)</span> I apologize for the interruption. Mike, please continue.</div>
+
+<div class="laugh applause">Applause</div>
+
+<span class="char mike">Mike Shimmy</span>
+<div class="dial"><span class="paren">(blinking, deciding to just move on like a professional)</span> ...Right. So, the legacy integration. What we're going to do is roll back the config change for your site specifically and push a hotfix that —</div>
+
+<span class="char marion">Marion</span>
+<div class="dial"><span class="paren">(cutting in, but — remarkably — with the faintest hint of a smile)</span> Mike, I appreciate you continuing. But I need to know — is "the burrito guy" part of the team working on my issue?</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(carefully)</span> He's... he's new. He's shadowing today. He was told not to eat anything. <span class="paren">(beat)</span> He's going to hear about it.</div>
+
+<span class="char marion">Marion</span>
+<div class="dial"><span class="paren">(dryly)</span> Well, at least someone on your team has an appetite for the work.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">Even CORINE almost smiles. Almost.</div>
+
+<!-- ═══════════ ACT THREE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 5</span>
+  Act Three — "The Resolution (Both of Them)"
+</div>
+
+<div class="stage-dir">The rest of the meeting goes smoothly. MIKE walks through the hotfix. CORINE confirms the deployment timeline. ANDREW maintains the customer relationship. ANTHONY, to his credit, has not moved a muscle the entire meeting — he may have actually stopped breathing to avoid making noise. MARION gets her commitment: hotfix deployed by 6 PM, follow-up call tomorrow at nine.</div>
+
+<span class="char marion">Marion</span>
+<div class="dial"><span class="paren">(at the close of the meeting, directed at Corine)</span> Corine — thank you. I know I've been difficult. But I'm difficult because this matters. And you stayed with it. I appreciate that.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(the slightest nod, the Corine equivalent of a standing ovation)</span> You weren't difficult, Ms. DeFabuloso. You were right. And I'd rather work with someone who's right and frustrated than someone who doesn't care.</div>
+
+<div class="laugh ooh">Audience: "Aww"</div>
+
+<span class="char marion">Marion</span>
+<div class="dial">One more thing. Tell the burrito kid that next time he's on my call, he better bring enough for everyone.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">The call ends. CORINE exhales. Moves her pen back to parallel. Order is restored.</div>
+
+<!-- ═══════════ ACT THREE-B ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 6</span>
+  "The Reckoning"
+</div>
+
+<div class="stage-dir">Immediately after. ANDREW, CORINE, LUKE, and ANTHONY on a private call. LUKE's camera is back on. There is a visible sour cream stain on his shirt. His desk has been hastily wiped. He looks like a man standing before a judge.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(not yelling, which is somehow worse)</span> Luke.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(barely audible)</span> ...Yeah.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">What was the one thing I said? The very last thing I said to you before this meeting?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(staring at the floor)</span> ...Don't eat anything.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">Don't eat anything. And what did you do?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial">...I ate a burrito.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial">You ate a burrito. On camera. During a P1 customer call. With an engineer. And a client who has been waiting two days for a resolution. And you dropped it. And then you unmuted yourself to announce that you dropped it.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(miserably)</span> It was a reflex.</div>
+
+<div class="laugh">Laugh track</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(quiet, precise, devastating)</span> Luke. I've been working that ticket for two days. I've made three calls. I've written eleven pages of documentation. I coordinated an engineer, a support lead, and a customer on a live bridge call. I did everything by the book. And the one thing that customer is going to remember about that meeting — the one thing — is a man eating a burrito the size of a football on camera at two in the afternoon.</div>
+
+<div class="stage-dir">Silence.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(genuine, small)</span> ...I'm sorry, Corine. For real. That was dumb. I messed up your meeting.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial"><span class="paren">(a beat, then — softer than anyone expected)</span> The meeting still worked. Marion got her resolution. The hotfix is on track. But Luke — when you're on a customer call, you represent this team. All of us. Every person on that screen. You need to act like it.</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(nodding)</span> I will. I promise.</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">Good. Also — it was Chipotle, wasn't it?</div>
+
+<span class="char luke">Luke</span>
+<div class="dial"><span class="paren">(confused)</span> ...Yeah?</div>
+
+<span class="char corine">Corine</span>
+<div class="dial">Those burritos fall apart every time. If you're going to eat one at your desk — not during a meeting, <em>ever</em> — get a bowl. The structural integrity is better.</div>
+
+<div class="laugh big">Big laugh</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(who has been dead silent this entire time, raising his hand slowly)</span> For the record... I didn't eat anything.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(exhausted, but fair)</span> You did great, Anthony. You did exactly what was asked.</div>
+
+<span class="char anthony">Anthony</span>
+<div class="dial"><span class="paren">(pumping his fist very quietly)</span></div>
+
+<div class="laugh">Laugh track</div>
+
+<!-- ═══════════ TAG SCENE ═══════════ -->
+<div class="scene-header">
+  <span class="scene-num">SCENE 7</span>
+  Tag — End of Day
+</div>
+
+<div class="stage-dir">6:30 PM. ANDREW gets a notification. The hotfix has been deployed. MIKE SHIMMY confirms it in the engineering channel: "Hotfix 4.1.3 pushed to DeFabuloso site. Config conflict resolved. All systems green." CORINE reacts with a single 👍. No words. The most Corine response possible.</div>
+
+<div class="stage-dir">ANDREW's DMs light up. From DEVON: "I heard Luke ate a burrito on a customer call. I've never been prouder to have my camera off at all times." From TINA: "Oh no!! But honestly, that could happen to anyone! When I was in the field, Marcus in Phoenix once ate a sub sandwich during a live install. The customer thought he was a contractor on his lunch break. It worked out!" From JEFF M.: "Andrew. I need Luke's burrito brand and size for my ongoing food-related incident database. I'm tracking a pattern. Also I told Brenda."</div>
+
+<div class="laugh big">Big laugh</div>
+
+<div class="stage-dir">ANDREW shakes his head. Opens his desk drawer. The Fiji brochure. He picks it up. Reads it. Sets it down. Opens a new DM to CORINE.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(typing)</span> Hey — you were great today. Like, really great. Marion noticed. The whole team noticed. I just wanted to say that.</div>
+
+<div class="stage-dir">CORINE's response comes back thirty seconds later. It reads: "Thank you, Andrew. That means a lot." And then, two seconds after: "Please tell Luke that if he ever eats on one of my calls again, I will revoke his Teams access and I have the documentation to justify it." ANDREW smiles.</div>
+
+<span class="char andrew">Andrew</span>
+<div class="dial"><span class="paren">(to himself)</span> Corine don't play.</div>
+
+<div class="laugh applause">Applause — warm and building</div>
+
+<div class="sfx">♪ END THEME — UPBEAT SYNTH — FREEZE FRAME ON CORINE'S PEN, BACK IN PARALLEL POSITION, ORDER RESTORED ♪</div>
+
+</div>
+
+<!-- Credits -->
+<div class="credits">
+  <p>"ANDREW — SOFTWARE SUPPORT SPECIALIST"</p>
+  <p>CREATED BY JEFF & CLAUDE</p>
+  <p>&nbsp;</p>
+  <p>ANDREW ........................ ANDREW</p>
+  <p>LUKE .......................... LUKE</p>
+  <p>ANTHONY ....................... ANTHONY</p>
+  <p>CORINE ........................ CORINE</p>
+  <p>MIKE SHIMMY ................... MIKE SHIMMY (SDS ENGINEERING)</p>
+  <p>MARION DeFABULOSO ............. MARION DeFABULOSO (IRRITATED CUSTOMER)</p>
+  <p>TINA .......................... TINA (VIA DM)</p>
+  <p>DEVON ......................... DEVON (VIA DM)</p>
+  <p>JEFF M. ....................... JEFF M. (VIA DM, AND ALSO BRENDA)</p>
+  <p>BRENDA (HR) ................... BRENDA (TOLD ABOUT THE BURRITO)</p>
+  <p>THE BURRITO ................... ITSELF (R.I.P.)</p>
+  <p>&nbsp;</p>
+  <div class="filmed">Filmed before a live studio audience</div>
+  <div class="filmed" style="font-size:12px; margin-top:6px; color:#444;">(no food was permitted during taping)</div>
+  <p>&nbsp;</p>
+  <p style="color:#555; font-size:11px; margin-top:12px;">NEXT WEEK ON "ANDREW": Luke and Anthony are caught doing absolutely nothing.</p>
+  <p style="color:#555; font-size:11px;">It goes about as well as you'd expect.</p>
+  <p>&nbsp;</p>
+  <p style="color:#333; font-size:11px;">© 1993 FRIDAY NIGHT PRODUCTIONS — ALL RIGHTS RESERVED</p>
+</div>
+
+</div><!-- /screen -->
+</div><!-- /tv-frame -->
+
+</body>
+</html>
