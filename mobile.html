@@ -392,6 +392,25 @@
     flex-shrink: 0;
   }
 
+  .popup-list li.coming-soon-msg {
+    display: block;
+    text-align: center;
+    padding: 36px 20px 40px;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-cream);
+    letter-spacing: 1px;
+    line-height: 1.6;
+    opacity: 0.9;
+    animation: dots-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes dots-pulse {
+    0%, 100% { opacity: 0.75; }
+    50% { opacity: 1; }
+  }
+
   /* ── Music player (compact icon-only for mobile) ── */
   .music-btn {
     position: fixed;
@@ -470,8 +489,8 @@
 
 <div class="room-wrapper">
   <img src="AndrewOfficeImage.png" alt="Andrew's office" draggable="false">
-  <div class="tap-hotspot" id="tap-left" data-target="left" aria-label="Episodes 1 to 6"></div>
-  <div class="tap-hotspot" id="tap-right" data-target="right" aria-label="Episodes 7 to 13"></div>
+  <div class="tap-hotspot" id="tap-left" data-target="left" aria-label="Season 1 episodes"></div>
+  <div class="tap-hotspot" id="tap-right" data-target="right" aria-label="Season 2"></div>
   <div class="tap-hotspot" id="tap-laptop" data-target="laptop" aria-label="TV Guide"></div>
 </div>
 
@@ -486,8 +505,8 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
     </div>
     <div class="text">
-      <div class="label">Episodes 1–6</div>
-      <div class="hint">Left monitor · 6 episodes</div>
+      <div class="label">Season 1</div>
+      <div class="hint">Left monitor · 13 episodes</div>
     </div>
     <div class="chevron">›</div>
   </a>
@@ -496,8 +515,8 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
     </div>
     <div class="text">
-      <div class="label">Episodes 7–13</div>
-      <div class="hint">Right monitor · 7 episodes</div>
+      <div class="label">Season 2</div>
+      <div class="hint"><em>In production…</em></div>
     </div>
     <div class="chevron">›</div>
   </a>
@@ -542,19 +561,14 @@
 (function() {
   var episodes = {
     left: {
-      title: 'Episodes 1–6',
+      title: 'Season 1',
       list: [
         { num: 'S01E01', title: 'Remote Work is Fun', file: 'S01E01-Remote Work is Fun.html' },
         { num: 'S01E02', title: 'New Hires...', file: 'S01E02-New Hires...html' },
         { num: 'S01E03', title: "Corine Don't Play", file: "S01E03-Corine Don't Play.html" },
         { num: 'S01E04', title: 'Away From Keyboard', file: 'S01E04-Away From Keyboard.html' },
         { num: 'S01E05', title: 'The Chain of Command (of Fools)', file: 'S01E05-The Chain of Command (of Fools).html' },
-        { num: 'S01E06', title: 'Reply All My Enemies', file: 'S01E06-Reply All My Enemies.html' }
-      ]
-    },
-    right: {
-      title: 'Episodes 7–13',
-      list: [
+        { num: 'S01E06', title: 'Reply All My Enemies', file: 'S01E06-Reply All My Enemies.html' },
         { num: 'S01E07', title: 'The Mute Button Exists for a Reason', file: 'S01E07-The Mute Button Exists for a Reason.html' },
         { num: 'S01E08', title: 'Out of Office', file: 'S01E08-Out of Office.html' },
         { num: 'S01E09', title: 'Andrew Knows Best', file: 'S01E09-Andrew Knows Best.html' },
@@ -563,6 +577,10 @@
         { num: 'S01E12', title: 'Fly Little Birds Pt1', file: 'S01E12-Fly Little Birds Pt1.html' },
         { num: 'S01E13', title: 'Fly Little Birds Pt2', file: 'S01E13-Fly Little Birds Pt2.html' }
       ]
+    },
+    right: {
+      title: 'Season 2',
+      comingSoon: 'Season 2 is in production...'
     },
     laptop: {
       directLink: 'AndrewTVGuideSpot.html'
@@ -587,18 +605,26 @@
 
     popupTitle.textContent = data.title;
     popupList.innerHTML = '';
-    data.list.forEach(function(ep) {
-      var li = document.createElement('li');
-      var a = document.createElement('a');
-      a.href = encodeURI(ep.file);
-      var num = document.createElement('span');
-      num.className = 'ep-num';
-      num.textContent = ep.num;
-      a.appendChild(num);
-      a.appendChild(document.createTextNode(ep.title));
-      li.appendChild(a);
-      popupList.appendChild(li);
-    });
+
+    if (data.comingSoon) {
+      var msgLi = document.createElement('li');
+      msgLi.className = 'coming-soon-msg';
+      msgLi.textContent = data.comingSoon;
+      popupList.appendChild(msgLi);
+    } else if (data.list) {
+      data.list.forEach(function(ep) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = encodeURI(ep.file);
+        var num = document.createElement('span');
+        num.className = 'ep-num';
+        num.textContent = ep.num;
+        a.appendChild(num);
+        a.appendChild(document.createTextNode(' ' + ep.title));
+        li.appendChild(a);
+        popupList.appendChild(li);
+      });
+    }
 
     overlay.classList.add('active');
     popupOpen = true;
